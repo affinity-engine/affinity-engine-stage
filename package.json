@@ -43,7 +43,8 @@
     "ember-addon"
   ],
   "dependencies": {
-    "ember-cli-babel": "^5.1.6"
+    "ember-cli-babel": "^5.1.6",
+    "ember-theater": "https://github.com/ember-theater/ember-theater#0e0184842668558762e6e3598fe99d73e4fd1b50"
   },
   "ember-addon": {
     "configPath": "tests/dummy/config"
