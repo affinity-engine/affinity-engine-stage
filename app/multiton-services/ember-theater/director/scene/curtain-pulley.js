@@ -1,1 +1,1 @@
-export { default } from 'ember-theater/multiton-services/ember-theater/director/scene/curtain-pulley';
+export { default } from 'ember-theater-director/multiton-services/ember-theater/director/scene/curtain-pulley';

@@ -1,1 +1,1 @@
-export { default, initialize } from 'ember-theater/initializers/ember-theater/director/register-script';
+export { default, initialize } from 'ember-theater-director/initializers/ember-theater/director/register-script';

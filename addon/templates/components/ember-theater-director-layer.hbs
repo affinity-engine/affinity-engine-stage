@@ -1,7 +1,7 @@
 {{#each layerDirectables as |directable|}}
   {{component directable.componentPath
     directable=directable
-    keyboardActivated=keyboardActivated
+    isFocused=isFocused
     theaterId=theaterId
     windowId=windowId
   }}
@@ -10,7 +10,7 @@
 {{#each-in childLayers as |name directables|}}
   {{ember-theater-director-layer
     directables=directables
-    keyboardActivated=keyboardActivated
+    isFocused=isFocused
     name=name
     theaterId=theaterId
     windowId=windowId

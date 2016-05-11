@@ -22,18 +22,19 @@ export default MultitonService.extend(BusPublisherMixin, BusSubscriberMixin, Mul
     this.on(`et:${theaterId}:saveIsLoading`, this, this.loadScene);
   }),
 
-  loadLatestScene: async function() {
+  loadLatestScene() {
     const saveStateManager = get(this, 'saveStateManager');
     const options = { autosave: false };
-    const save = await saveStateManager.get('mostRecentSave');
 
-    if (isPresent(save)) {
-      const sceneId = get(save, 'activeState.sceneId');
+    saveStateManager.get('mostRecentSave').then((save) => {
+      if (isPresent(save)) {
+        const sceneId = get(save, 'activeState.sceneId');
 
-      this.loadScene(save, sceneId, options);
-    } else {
-      this.toInitialScene();
-    }
+        this.loadScene(save, sceneId, options);
+      } else {
+        this.toInitialScene();
+      }
+    });
   },
 
   toInitialScene() {

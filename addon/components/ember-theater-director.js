@@ -15,6 +15,8 @@ const { alias } = computed;
 export default Component.extend({
   layout,
 
+  hook: 'ember_theater_director',
+
   classNames: ['et-director'],
   windowId: 'main',
 
@@ -23,7 +25,6 @@ export default Component.extend({
   stageManager: multiton('ember-theater/director/stage-manager', 'theaterId', 'windowId'),
 
   directables: alias('stageManager.directables'),
-  keyboardActivated: alias('producer.isFocused'),
 
   _loadLatestScene: on('didInsertElement', function() {
     const {
