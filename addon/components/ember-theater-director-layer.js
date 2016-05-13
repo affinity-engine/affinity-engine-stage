@@ -33,6 +33,8 @@ const configurablePriority = [
 export default Component.extend(DirectableComponentMixin, TransitionMixin, TransitionObserverMixin, {
   layout,
 
+  hook: 'ember_theater_director_layer',
+
   attributeBindings: ['animationName:animation-name', 'style'],
   classNames: ['et-layer'],
   classNameBindings: ['layerName'],

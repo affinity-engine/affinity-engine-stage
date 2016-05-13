@@ -1,12 +1,16 @@
 import Ember from 'ember';
 import { moduleForComponent, test } from 'ember-qunit';
 import hbs from 'htmlbars-inline-precompile';
-import { initialize as initializeHook } from 'ember-hook';
+import { $hook, initialize as initializeHook } from 'ember-hook';
 import { initialize as initializeMultitons } from 'ember-multiton-service';
+import { BusSubscriberMixin } from 'ember-message-bus';
 
 const {
-  getOwner
+  getOwner,
+  on
 } = Ember;
+
+const Subscriber = Ember.Object.extend(BusSubscriberMixin);
 
 moduleForComponent('ember-theater-director', 'Integration | Component | ember theater director', {
   integration: true,
@@ -18,25 +22,29 @@ moduleForComponent('ember-theater-director', 'Integration | Component | ember th
 });
 
 test('when no `windowId` is provided, it loads the latest scene and sets the initialScene', function(assert) {
-  assert.expect(2);
+  assert.expect(1);
 
   const initialScene = 'foo';
+  const theaterId = 'bar';
 
-  const sceneManager = {
-    setinitialScene(arg) {
-      assert.equal(arg, initialScene, '`setInitialScene` is passed the `initialScene`');
-    },
-    loadLatestScene() {
-      assert.ok(true, '`loadLatestScene` is called');
-    },
-    toScene() {
-      assert.ok(false, '`toScene` is not called');
-    }
-  };
+  const appInstance = getOwner(this);
+  appInstance.register('emb:subscriber', Subscriber, { instantiate: false });
 
-  this.setProperties({ initialScene, sceneManager });
+  appInstance.lookup('emb:subscriber').extend({
+    gameIsInitializing: on(`et:bar:gameIsInitializing`, function(arg) {
+      assert.equal(arg, initialScene, '`gameIsInitializing` is passed the `initialScene`');
+    }),
+    sceneIsChanging: on(`et:main:${theaterId}:sceneIsChanging`, function() {
+      assert.ok(false, '`sceneIsChanging` is not called');
+    })
+  }).create();
 
-  this.render(hbs`{{ember-theater-director sceneManager=sceneManager initialScene=initialScene}}`);
+  this.setProperties({ initialScene, theaterId });
+
+  this.render(hbs`{{ember-theater-director
+    initialScene=initialScene
+    theaterId=theaterId
+  }}`);
 });
 
 test('when a `windowId` is provided, it calls `toScene`', function(assert) {
@@ -44,22 +52,47 @@ test('when a `windowId` is provided, it calls `toScene`', function(assert) {
 
   const initialScene = 'foo';
   const sceneRecord = {};
+  const theaterId = 'bar';
   const windowArg = {};
+  const windowId = 'baz';
 
-  const sceneManager = {
-    setInitialScene() {
-      assert.ok(false, '`setInitialScene` is not called');
-    },
-    loadLatestScene() {
-      assert.ok(false, '`loadLatestScene` is not called');
-    },
-    toScene(initialSceneArg, options) {
+  const appInstance = getOwner(this);
+  appInstance.register('emb:subscriber', Subscriber, { instantiate: false });
+
+  appInstance.lookup('emb:subscriber').extend({
+    gameIsInitializing: on(`et:${theaterId}:gameIsInitializing`, function() {
+      assert.ok(false, '`gameIsInitializing` is not triggered');
+    }),
+    sceneIsChanging: on(`et:${theaterId}:${windowId}:sceneIsChanging`, function(initialSceneArg, options) {
       assert.equal(initialSceneArg, initialScene, '`initialScene` is passed in');
       assert.deepEqual(options, { autosave: false, sceneRecord, window: windowArg }, '`options` are correct');
-    }
-  };
+    })
+  }).create();
 
-  this.setProperties({ initialScene, sceneRecord, window: windowArg, sceneManager });
+  this.setProperties({
+    initialScene,
+    sceneRecord,
+    theaterId,
+    windowId,
+    window: windowArg
+  });
 
-  this.render(hbs`{{ember-theater-director sceneManager=sceneManager initialScene=initialScene windowId='bar' sceneRecord=sceneRecord window=window}}`);
+  this.render(hbs`{{ember-theater-director
+    initialScene=initialScene
+    sceneRecord=sceneRecord
+    theaterId=theaterId
+    window=window
+    windowId=windowId
+  }}`);
+});
+
+test('it renders an `ember-theater-director-layer`', function(assert) {
+  assert.expect(2);
+
+  this.render(hbs`{{ember-theater-director}}`);
+
+  const $layer = $hook('ember_theater_director_layer');
+
+  assert.equal($layer.length, 1, 'renders a single layer');
+  assert.ok($layer.hasClass('et-layer-'), 'layer has correct name');
 });

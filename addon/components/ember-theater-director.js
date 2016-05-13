@@ -1,6 +1,7 @@
 import Ember from 'ember';
 import layout from '../templates/components/ember-theater-director';
 import multiton from 'ember-multiton-service';
+import { BusPublisherMixin } from 'ember-message-bus';
 
 const {
   Component,
@@ -12,7 +13,7 @@ const {
 
 const { alias } = computed;
 
-export default Component.extend({
+export default Component.extend(BusPublisherMixin, {
   layout,
 
   hook: 'ember_theater_director',
@@ -29,18 +30,21 @@ export default Component.extend({
   _loadLatestScene: on('didInsertElement', function() {
     const {
       initialScene,
-      sceneManager,
+      theaterId,
       windowId,
       window
-    } = getProperties(this, 'initialScene', 'sceneManager', 'windowId', 'window');
+    } = getProperties(this, 'initialScene', 'theaterId', 'windowId', 'window');
 
     if (windowId === 'main') {
-      sceneManager.setinitialScene(initialScene);
-      sceneManager.loadLatestScene();
+      this.publish(`et:${theaterId}:gameIsInitializing`, initialScene);
     } else {
       const sceneRecord = get(this, 'sceneRecord');
 
-      sceneManager.toScene(initialScene, { autosave: false, sceneRecord, window });
+      this.publish(`et:${theaterId}:${windowId}:sceneIsChanging`, initialScene, {
+        autosave: false,
+        sceneRecord,
+        window
+      });
     }
   })
 });
