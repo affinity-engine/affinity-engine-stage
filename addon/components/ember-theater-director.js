@@ -7,8 +7,7 @@ const {
   Component,
   computed,
   get,
-  getProperties,
-  on
+  getProperties
 } = Ember;
 
 const { alias } = computed;
@@ -28,7 +27,7 @@ export default Component.extend(BusPublisherMixin, {
 
   directables: alias('stageManager.directables'),
 
-  _loadLatestScene: on('didInsertElement', function() {
+  didInsertElement() {
     const {
       initialScene,
       theaterId,
@@ -49,7 +48,9 @@ export default Component.extend(BusPublisherMixin, {
         window
       });
     }
-  }),
+
+    this._super();
+  },
 
   _initializeServices() {
     getProperties(this, 'layerManager', 'sceneManager', 'stageManager');

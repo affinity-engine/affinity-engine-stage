@@ -4,7 +4,7 @@ import DirectableComponentMixin from 'ember-theater-director/mixins/ember-theate
 import TransitionMixin from 'ember-theater-director/mixins/ember-theater/director/transition';
 import TransitionObserverMixin from 'ember-theater-director/mixins/ember-theater/director/transition-observer';
 import { deepArrayConfigurable } from 'ember-theater/macros/ember-theater/configurable';
-import multiton from 'ember-multiton-service';
+import { BusPublisherMixin } from 'ember-message-bus';
 import layerName from 'ember-theater-director/utils/ember-theater/director/layer-name';
 
 const {
@@ -14,7 +14,6 @@ const {
   getProperties,
   isPresent,
   observer,
-  on,
   set
 } = Ember;
 
@@ -30,7 +29,7 @@ const configurablePriority = [
   'config.attrs.globals'
 ];
 
-export default Component.extend(DirectableComponentMixin, TransitionMixin, TransitionObserverMixin, {
+export default Component.extend(BusPublisherMixin, DirectableComponentMixin, TransitionMixin, TransitionObserverMixin, {
   layout,
 
   hook: 'ember_theater_director_layer',
@@ -39,27 +38,36 @@ export default Component.extend(DirectableComponentMixin, TransitionMixin, Trans
   classNames: ['et-layer'],
   classNameBindings: ['layerName'],
 
-  layerManager: multiton('ember-theater/director/layer-manager', 'theaterId', 'windowId'),
-
   animation: alias('layerFilter.animation'),
   animationName: alias('layerFilter.animationName'),
   transitions: deepArrayConfigurable(configurablePriority, 'directable.attrs.transitions', 'transition'),
 
-  registerWithLayerManager: on('didInsertElement', function() {
-    get(this, 'layerManager').registerLayer(this);
-  }),
+  didInsertElement() {
+    const { theaterId, windowId } = getProperties(this, 'theaterId', 'windowId');
 
-  unregisterWithLayerManager: on('willDestroyElement', function() {
-    get(this, 'layerManager').unregisterLayer(this);
-  }),
+    this.publish(`et:${theaterId}:${windowId}:layerAdded`, this);
+    this._setFilter();
+
+    this._super();
+  },
+
+  willDestroyElement() {
+    const { theaterId, windowId } = getProperties(this, 'theaterId', 'windowId');
+
+    this.publish(`et:${theaterId}:${windowId}:layerRemoved`, this);
+
+    this._super();
+  },
 
   addFilter(transition) {
     return new Promise((resolve) => {
-      get(this, 'layerManager').addFilter(resolve, get(transition, 'effect'), transition, get(this, 'layerName'));
+      const { theaterId, windowId } = getProperties(this, 'theaterId', 'windowId');
+
+      this.publish(`et:${theaterId}:${windowId}:filterQueued`, resolve, get(transition, 'effect'), transition, get(this, 'layerName'));
     });
   },
 
-  setFilter: on('didInsertElement', function() {
+  _setFilter() {
     this.element.addEventListener('animationend', () => {
       const { layerFilter: {
         effect,
@@ -74,9 +82,9 @@ export default Component.extend(DirectableComponentMixin, TransitionMixin, Trans
 
       if (isPresent(resolve)) { resolve(); }
     });
-  }),
+  },
 
-  resetFilter: observer('layerFilter.effect', function() {
+  _resetFilter: observer('layerFilter.effect', function() {
     // we need to manually reset the filter whenever the effect changes, or else the new effect will
     // not display
     set(this, 'filter', null);
@@ -96,16 +104,6 @@ export default Component.extend(DirectableComponentMixin, TransitionMixin, Trans
         filter: ${filter};
         -webkit-filter: ${filter};
       `.replace(/\n|\s{2}/g, ''));
-    }
-  }).readOnly(),
-
-  layerFilter: computed('layerManager.filters.@each.layer', 'layerName', {
-    get() {
-      const name = get(this, 'layerName');
-
-      return get(this, 'layerManager.filters').find((filter) => {
-        return get(filter, 'layer') === name;
-      }) || {};
     }
   }).readOnly(),
 

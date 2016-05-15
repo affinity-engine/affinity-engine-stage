@@ -29,11 +29,16 @@ export default MultitonService.extend(BusSubscriberMixin, DirectableManagerMixin
   setupEvents: on('init', function() {
     const { theaterId, windowId } = getProperties(this, 'theaterId', 'windowId');
 
+    this.on(`et:${theaterId}:${windowId}:filterQueued`, this, this.addFilter);
+    this.on(`et:${theaterId}:${windowId}:layerAdded`, this, this.registerLayer);
+    this.on(`et:${theaterId}:${windowId}:layerRemoved`, this, this.unregisterLayer);
     this.on(`et:${theaterId}:${windowId}:stageIsClearing`, this, this.clearFilters);
   }),
 
   registerLayer(layer) {
     get(this, 'layers').pushObject(layer);
+
+    this._applyFilter(layer);
   },
 
   unregisterLayer(layer) {
@@ -94,23 +99,36 @@ export default MultitonService.extend(BusSubscriberMixin, DirectableManagerMixin
 
     if (destroy) {
       later(() => {
-        this.destroyFilter(filter);
+        this.destroyFilter(layer, filter);
       }, duration);
     }
+
+    this._applyFilter(layer, filter);
   },
 
-  destroyFilter(filter) {
+  destroyFilter(layer, filter) {
     const { dynamicStylesheet, filters } = getProperties(this, 'dynamicStylesheet', 'filters');
     const keyframes = get(filter, 'keyframes');
 
     dynamicStylesheet.deleteRule(keyframes);
     filters.removeObject(filter);
     filter.destroy();
+
+    this._applyFilter(layer, filter);
   },
 
   clearFilters() {
     get(this, 'filters').forEach((filter) => {
       this.destroyFilter(filter);
     });
+  },
+
+  _applyFilter(layer, pregenFilter) {
+    const name = get(layer, 'layerName');
+    const filter = pregenFilter || get(this, 'filters').find((filter) => {
+      return get(filter, 'layer') === name;
+    }) || {};
+
+    set(layer, 'filter', filter);
   }
 });
