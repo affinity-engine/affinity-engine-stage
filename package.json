@@ -40,7 +40,7 @@
     "ember-load-initializers": "^0.5.1",
     "ember-moment": "6.1.0",
     "ember-resolver": "^2.0.3",
-    "ember-theater": "git+https://github.com/ember-theater/ember-theater.git#10bfd80d0053933c79705df1f22c2bbe38fbf4f0",
+    "ember-theater": "git+https://github.com/ember-theater/ember-theater.git#85802c35eff278d3eb286c03624724b1d0fdd9cd",
     "ember-try": "^0.2.2",
     "loader.js": "^4.0.1"
   },
