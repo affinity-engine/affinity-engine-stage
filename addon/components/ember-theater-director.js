@@ -35,6 +35,8 @@ export default Component.extend(BusPublisherMixin, {
       window
     } = getProperties(this, 'initialScene', 'theaterId', 'windowId', 'window');
 
+    this.initializeMultitons();
+
     if (windowId === 'main') {
       this.publish(`et:${theaterId}:gameIsInitializing`, initialScene);
     } else {
@@ -46,5 +48,9 @@ export default Component.extend(BusPublisherMixin, {
         window
       });
     }
-  })
+  }),
+
+  initializeMultitons() {
+    getProperties(this, 'sceneManager', 'stageManager');
+  }
 });

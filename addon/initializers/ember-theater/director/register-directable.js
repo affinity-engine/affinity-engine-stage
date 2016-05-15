@@ -1,4 +1,4 @@
-import { Directable } from 'ember-theater-director/ember-theater/director';
+import { Directable } from 'ember-theater-director';
 
 export function initialize(application) {
   application.register('directable:main', Directable, { singleton: false, instantiate: false });

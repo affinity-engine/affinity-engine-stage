@@ -1,4 +1,4 @@
-import { Script } from 'ember-theater-director/ember-theater/director';
+import { Script } from 'ember-theater-director';
 
 export function initialize(application) {
   application.register('script:main', Script, { singleton: false, instantiate: false });

@@ -1,11 +1,12 @@
 import Ember from 'ember';
 
 const { RSVP: { Promise } } = Ember;
+const { run: { later } } = Ember;
 
-export default function() {
+export default function(app, duration = 0) {
   return new Promise((resolve) => {
-    Ember.$(document).on('ember-theater-test-direction-step', () => {
+    later(() => {
       resolve();
-    });
+    }, duration);
   });
 }
