@@ -7,7 +7,6 @@ import MultitonIdsMixin from 'ember-theater/mixins/ember-theater/multiton-ids';
 const {
   get,
   getProperties,
-  on,
   set
 } = Ember;
 
@@ -20,13 +19,24 @@ export default MultitonService.extend(BusSubscriberMixin, MultitonIdsMixin, {
 
   sceneRecord: alias('recorder.sceneRecord'),
 
-  setupEvents: on('init', function() {
+  init() {
+    this._initializeServices();
+    this._setupEvents();
+
+    this._super();
+  },
+
+  _initializeServices() {
+    getProperties(this, 'curtainPulley', 'recorder', 'transitionManager');
+  },
+
+  _setupEvents() {
     const { theaterId, windowId } = getProperties(this, 'theaterId', 'windowId');
 
     this.on(`et:${theaterId}:gameIsRewinding`, this, this.rewindToScene);
     this.on(`et:${theaterId}:gameIsInitializing`, this, this.intializeGame);
     this.on(`et:${theaterId}:${windowId}:sceneIsChanging`, this, this.toScene);
-  }),
+  },
 
   intializeGame(initialScene) {
     set(this, 'initialScene', initialScene);

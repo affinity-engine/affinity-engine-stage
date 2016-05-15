@@ -22,6 +22,7 @@ export default Component.extend(BusPublisherMixin, {
   windowId: 'main',
 
   producer: multiton('ember-theater/producer', 'theaterId'),
+  layerManager: multiton('ember-theater/director/layer-manager', 'theaterId', 'windowId'),
   sceneManager: multiton('ember-theater/director/scene-manager', 'theaterId', 'windowId'),
   stageManager: multiton('ember-theater/director/stage-manager', 'theaterId', 'windowId'),
 
@@ -35,7 +36,7 @@ export default Component.extend(BusPublisherMixin, {
       window
     } = getProperties(this, 'initialScene', 'theaterId', 'windowId', 'window');
 
-    this.initializeMultitons();
+    this._initializeServices();
 
     if (windowId === 'main') {
       this.publish(`et:${theaterId}:gameIsInitializing`, initialScene);
@@ -50,7 +51,7 @@ export default Component.extend(BusPublisherMixin, {
     }
   }),
 
-  initializeMultitons() {
-    getProperties(this, 'sceneManager', 'stageManager');
+  _initializeServices() {
+    getProperties(this, 'layerManager', 'sceneManager', 'stageManager');
   }
 });
