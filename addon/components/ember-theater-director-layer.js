@@ -38,6 +38,9 @@ export default Component.extend(BusPublisherMixin, DirectableComponentMixin, Tra
   classNames: ['et-layer'],
   classNameBindings: ['layerName'],
 
+  directables: computed(() => Ember.A()),
+  name: '',
+
   animation: alias('layerFilter.animation'),
   animationName: alias('layerFilter.animationName'),
   transitions: deepArrayConfigurable(configurablePriority, 'directable.attrs.transitions', 'transition'),
@@ -46,7 +49,7 @@ export default Component.extend(BusPublisherMixin, DirectableComponentMixin, Tra
     const { theaterId, windowId } = getProperties(this, 'theaterId', 'windowId');
 
     this.publish(`et:${theaterId}:${windowId}:layerAdded`, this);
-    this._setFilter();
+    this._setupAnimationEnd();
 
     this._super();
   },
@@ -67,8 +70,8 @@ export default Component.extend(BusPublisherMixin, DirectableComponentMixin, Tra
     });
   },
 
-  _setFilter() {
-    this.element.addEventListener('animationend', () => {
+  _setupAnimationEnd() {
+    this.$().on('animationend', () => {
       const { layerFilter: {
         effect,
         resolve

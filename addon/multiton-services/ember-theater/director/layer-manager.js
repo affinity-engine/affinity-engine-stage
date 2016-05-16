@@ -129,6 +129,6 @@ export default MultitonService.extend(BusSubscriberMixin, DirectableManagerMixin
       return get(filter, 'layer') === name;
     }) || {};
 
-    set(layer, 'filter', filter);
+    set(layer, 'layerFilter', filter);
   }
 });
