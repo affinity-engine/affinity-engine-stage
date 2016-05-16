@@ -126,22 +126,22 @@ export default Component.extend(BusPublisherMixin, DirectableComponentMixin, Tra
 
   childLayers: computed('directables.@each.layer', {
     get() {
-      const name = this.get('name');
+      const name = get(this, 'name');
       const parentName = name ? `${name}.` : '';
 
-      const childLayerDirectables = this.get('directables').filter((directable) => {
-        return directable.get('layer').replace(name, '').length > 1;
+      const childLayerDirectables = get(this, 'directables').filter((directable) => {
+        return get(directable, 'layer').replace(name, '').length > 1;
       });
 
       const childLayerNames = Ember.A(childLayerDirectables.map((directable) => {
-        return directable.get('layer');
+        return get(directable, 'layer');
       })).uniq();
 
       return childLayerNames.reduce((layers, layer) => {
         const subName = layer.replace(parentName, '').split('.')[0];
         const childLayerName = name ? `${name}.${subName}` : subName;
         const childLayer = childLayerDirectables.filter((directable) => {
-          return directable.get('layer') === layer;
+          return get(directable, 'layer') === layer;
         });
 
         if (layers[childLayerName]) {
