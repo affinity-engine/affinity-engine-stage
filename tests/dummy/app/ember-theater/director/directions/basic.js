@@ -8,8 +8,8 @@ const {
 } = Ember;
 
 export default Direction.extend({
-  componentPath: 'test-direction',
-  layer: 'theater.meta.test',
+  componentPath: 'basic-direction',
+  layer: 'theater.meta.basic',
 
   _setup(header, footer) {
     this._entryPoint();

@@ -6,6 +6,9 @@ const Router = Ember.Router.extend({
 });
 
 Router.map(function() {
+  this.route('test-scenarios', function() {
+    this.route('basic-direction');
+  })
 });
 
 export default Router;

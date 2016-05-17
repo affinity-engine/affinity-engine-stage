@@ -17,7 +17,7 @@ const configurablePriority = [
 ];
 
 export default Component.extend(DirectableComponentMixin, {
-  hook: 'test_direction',
+  hook: 'basic_direction',
 
   config: multiton('ember-theater/config', 'theaterId'),
 

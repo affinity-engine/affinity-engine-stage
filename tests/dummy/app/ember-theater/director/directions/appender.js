@@ -21,10 +21,10 @@ export default Direction.extend({
     return this;
   },
 
-  Test(header) {
+  Basic(header) {
     this._removeFromQueue();
 
-    const direction = this._createDirection('test');
+    const direction = this._createDirection('basic');
 
     return direction._setup(header, get(this, 'attrs'));
   },
