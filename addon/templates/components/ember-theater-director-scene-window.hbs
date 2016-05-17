@@ -1,0 +1,13 @@
+{{#if screen}}
+  <div class="et-scene-window-screen {{ember-theater/joined-array screen}}" style={{childStyle}}></div>
+{{/if}}
+
+<div class="et-scene-window-main {{joinedConfigurableClassNames}}" style={{childStyle}}>
+  {{ember-theater-director
+    initialScene=sceneId
+    sceneRecord=sceneRecord
+    theaterId=theaterId
+    windowId=sceneWindowId
+    window=window
+  }}
+</div>
