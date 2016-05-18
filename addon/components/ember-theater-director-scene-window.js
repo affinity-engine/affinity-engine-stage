@@ -10,8 +10,7 @@ const {
   Component,
   computed,
   get,
-  isNone,
-  on,
+  isPresent,
   set,
   typeOf
 } = Ember;
@@ -50,6 +49,14 @@ export default Component.extend(BusSubscriberMixin, DirectableComponentMixin, Tr
     }
   }).readOnly(),
 
+  joinedScreenClassNames: computed('screen.[]', {
+    get() {
+      const classNames = get(this, 'screen');
+
+      return typeOf(classNames) === 'array' ? classNames.join(' ') : classNames;
+    }
+  }).readOnly(),
+
   childStyle: computed('priority', {
     get() {
       const priorityMultiplier = 1000;
@@ -59,28 +66,34 @@ export default Component.extend(BusSubscriberMixin, DirectableComponentMixin, Tr
     }
   }).readOnly(),
 
-  setupEvents: on('init', function() {
+  init() {
     const theaterId = get(this, 'theaterId');
     const sceneWindowId = get(this, 'sceneWindowId');
 
     this.on(`et:${theaterId}:${sceneWindowId}:closingWindow`, this, this.close);
-  }),
 
-  handlePriorSceneRecord: on('didReceiveAttrs', function() {
+    this._super();
+  },
+
+  didReceiveAttrs() {
     const sceneRecord = get(this, 'priorSceneRecord') || {};
     const direction = get(this, 'directable.direction');
 
-    if (isNone(direction)) { return; }
+    if (isPresent(direction)) {
+      set(this, 'sceneRecord', sceneRecord);
+      set(direction, 'result', sceneRecord);
+    }
 
-    set(this, 'sceneRecord', sceneRecord);
-    set(direction, 'result', sceneRecord);
-  }),
+    this._super();
+  },
 
-  transitionInWindow: on('didInsertElement', function() {
+  didInsertElement() {
     this.executeTransitionIn().then(() => {
       this.resolve();
     });
-  }),
+
+    this._super();
+  },
 
   close() {
     this.executeTransitionOut().then(() => {
