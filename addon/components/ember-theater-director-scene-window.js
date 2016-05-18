@@ -68,12 +68,12 @@ export default Component.extend(BusSubscriberMixin, DirectableComponentMixin, Tr
 
   handlePriorSceneRecord: on('didReceiveAttrs', function() {
     const sceneRecord = get(this, 'priorSceneRecord') || {};
-    const directable = get(this, 'directable');
+    const direction = get(this, 'directable.direction');
 
-    if (isNone(directable)) { return; }
+    if (isNone(direction)) { return; }
 
     set(this, 'sceneRecord', sceneRecord);
-    set(this, 'directable.direction.result', sceneRecord);
+    set(direction, 'result', sceneRecord);
   }),
 
   transitionInWindow: on('didInsertElement', function() {

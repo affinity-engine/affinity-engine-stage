@@ -21,6 +21,37 @@ moduleForComponent('ember-theater-director-scene-window', 'Integration | Compone
   }
 });
 
+const configurablePriority = [
+  'directable.attrs',
+  'config.attrs.director.scene',
+  'config.attrs.director',
+  'config.attrs.globals'
+];
+
+configurablePriority.forEach((priority) => {
+  test(`applies the classNames found in ${priority}`, function(assert) {
+    assert.expect(1);
+
+    const attrContainer = { config: { }, directable: { } };
+
+    priority.split('.').reduce((parentObject, segment) => {
+      const childObject = { };
+
+      parentObject[segment] = childObject;
+
+      return childObject;
+    }, attrContainer);
+
+    Ember.set(attrContainer, `${priority}.classNames`, ['foo']);
+
+    this.setProperties(Ember.getProperties(attrContainer, 'config', 'directable'));
+
+    this.render(hbs`{{ember-theater-director-scene-window config=config directable=directable}}`);
+
+    assert.ok($hook('ember_theater_director_scene_window_main').hasClass('foo'), 'has class');
+  });
+});
+
 test('it renders a child director', function(assert) {
   assert.expect(1);
 
