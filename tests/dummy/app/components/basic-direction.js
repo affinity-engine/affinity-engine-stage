@@ -1,6 +1,6 @@
 import Ember from 'ember';
 import configurable from 'ember-theater/macros/ember-theater/configurable';
-import DirectableComponentMixin from 'ember-theater-director/mixins/ember-theater/director/directable-component';
+import { DirectableComponentMixin } from 'ember-theater-director';
 import multiton from 'ember-multiton-service';
 
 const {

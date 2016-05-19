@@ -2,7 +2,7 @@ import Ember from 'ember';
 import { MultitonService } from 'ember-multiton-service';
 import MultitonIdsMixin from 'ember-theater/mixins/ember-theater/multiton-ids';
 import { BusSubscriberMixin } from 'ember-message-bus';
-import DirectableManagerMixin from 'ember-theater-director/mixins/ember-theater/director/directable-manager';
+import { DirectableManagerMixin } from 'ember-theater-director';
 import layerName from 'ember-theater-director/utils/ember-theater/director/layer-name';
 
 const {

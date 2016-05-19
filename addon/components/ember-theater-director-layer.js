@@ -1,8 +1,6 @@
 import Ember from 'ember';
 import layout from '../templates/components/ember-theater-director-layer';
-import DirectableComponentMixin from 'ember-theater-director/mixins/ember-theater/director/directable-component';
-import TransitionMixin from 'ember-theater-director/mixins/ember-theater/director/transition';
-import TransitionObserverMixin from 'ember-theater-director/mixins/ember-theater/director/transition-observer';
+import { DirectableComponentMixin, TransitionableComponentAutoMixin } from 'ember-theater-director';
 import { deepArrayConfigurable } from 'ember-theater/macros/ember-theater/configurable';
 import { BusPublisherMixin } from 'ember-message-bus';
 import layerName from 'ember-theater-director/utils/ember-theater/director/layer-name';
@@ -29,7 +27,7 @@ const configurablePriority = [
   'config.attrs.globals'
 ];
 
-export default Component.extend(BusPublisherMixin, DirectableComponentMixin, TransitionMixin, TransitionObserverMixin, {
+export default Component.extend(BusPublisherMixin, DirectableComponentMixin, TransitionableComponentAutoMixin, {
   layout,
 
   hook: 'ember_theater_director_layer',

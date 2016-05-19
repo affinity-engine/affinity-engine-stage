@@ -1,4 +1,5 @@
 import Ember from 'ember';
+import { TransitionableComponentAutoMixin } from 'ember-theater-director';
 
 const {
   Mixin,
@@ -7,7 +8,7 @@ const {
   on
 } = Ember;
 
-export default Mixin.create({
+export default Mixin.create(TransitionableComponentAutoMixin, {
   performTransitions: on('didInsertElement', observer('transitions.[]', function() {
     if (get(this, 'transitions.length') > 0) {
       // create a clone of the transitions before clearing them
