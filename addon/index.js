@@ -12,6 +12,8 @@ import TransitionableComponentAutoMixin from 'ember-theater-director/mixins/tran
 
 import step from 'ember-theater-director/ember-theater/director/test-support/step';
 
+import layerName from 'ember-theater-director/utils/ember-theater/director/layer-name';
+
 export {
   Directable,
   Direction,
@@ -23,5 +25,6 @@ export {
   StyleableComponentMixin,
   TransitionableComponentMixin,
   TransitionableComponentAutoMixin,
-  step
+  step,
+  layerName
 };

@@ -1,9 +1,8 @@
 import Ember from 'ember';
 import layout from '../templates/components/ember-theater-director-layer';
-import { DirectableComponentMixin, TransitionableComponentAutoMixin } from 'ember-theater-director';
-import { deepArrayConfigurable } from 'ember-theater/macros/ember-theater/configurable';
+import { deepArrayConfigurable } from 'ember-theater';
+import { DirectableComponentMixin, TransitionableComponentAutoMixin, layerName } from 'ember-theater-director';
 import { BusPublisherMixin } from 'ember-message-bus';
-import layerName from 'ember-theater-director/utils/ember-theater/director/layer-name';
 
 const {
   Component,

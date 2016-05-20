@@ -1,9 +1,8 @@
 import Ember from 'ember';
 import { MultitonService } from 'ember-multiton-service';
-import animate from 'ember-theater/utils/ember-theater/animate';
 import multiton from 'ember-multiton-service';
 import { BusPublisherMixin } from 'ember-message-bus';
-import MultitonIdsMixin from 'ember-theater/mixins/ember-theater/multiton-ids';
+import { MultitonIdsMixin, animate } from 'ember-theater';
 
 const {
   get,

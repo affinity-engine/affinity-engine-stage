@@ -1,5 +1,5 @@
 import Ember from 'ember';
-import animate from 'ember-theater/utils/ember-theater/animate';
+import { animate } from 'ember-theater';
 
 const {
   Mixin,

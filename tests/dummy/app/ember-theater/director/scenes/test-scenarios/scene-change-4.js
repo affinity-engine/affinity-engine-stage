@@ -1,9 +1,9 @@
-import { Scene, step } from 'ember-theater-director';
+import { Scene } from 'ember-theater-director';
 
 export default Scene.extend({
   name: 'Scene Change 4',
 
-  start: async function(script, window) {
+  start: async function(script) {
     script.Basic('Scene Four');
   }
 });

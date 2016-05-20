@@ -1,9 +1,9 @@
 import Ember from 'ember';
 import layout from '../templates/components/ember-theater-director-scene-window';
 import { BusSubscriberMixin } from 'ember-message-bus';
+import { configurable, deepConfigurable } from 'ember-theater';
 import { DirectableComponentMixin, TransitionableComponentMixin } from 'ember-theater-director';
 import multiton from 'ember-multiton-service';
-import configurable, { deepConfigurable } from 'ember-theater/macros/ember-theater/configurable';
 
 const {
   Component,
