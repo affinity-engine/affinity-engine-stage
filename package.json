@@ -40,6 +40,7 @@
     "ember-load-initializers": "^0.5.1",
     "ember-moment": "6.1.0",
     "ember-resolver": "^2.0.3",
+    "ember-theater": "git+https://github.com/ember-theater/ember-theater.git#v2",
     "ember-try": "^0.2.2",
     "loader.js": "^4.0.1"
   },
@@ -48,7 +49,6 @@
   ],
   "dependencies": {
     "ember-cli-babel": "^5.1.6",
-    "ember-theater": "git+https://github.com/ember-theater/ember-theater.git#v2",
     "ember-cli-htmlbars": "^1.0.3"
   },
   "ember-addon": {
