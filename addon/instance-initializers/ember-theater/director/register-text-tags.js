@@ -7,13 +7,13 @@ export function initialize(appInstance) {
   const textTags = gatherModules('ember-theater\/director\/text-tags');
 
   textTags.forEach((textTag, textTagName) => {
-    appInstance.register(`text-tag:${textTagName}`, textTag, {
+    appInstance.register(`ember-theater/director/text-tag:${textTagName}`, textTag, {
       instantiate: false,
       singleton: false
     });
     appInstance.inject('component:ember-theater/director/directable/text/body',
       camelize(textTagName),
-      `text-tag:${textTagName}`);
+      `ember-theater/director/text-tag:${textTagName}`);
   });
 }
 

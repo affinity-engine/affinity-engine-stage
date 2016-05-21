@@ -66,7 +66,7 @@ export default Ember.Object.extend({
   _createDirection(name) {
     const meta = get(this, '_directionMeta');
 
-    return getOwner(this).lookup(`direction:${name}`).create(meta);
+    return getOwner(this).lookup(`ember-theater/director/direction:${name}`).create(meta);
   },
 
   _directionMeta: computed({

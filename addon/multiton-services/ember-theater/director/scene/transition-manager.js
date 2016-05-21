@@ -58,7 +58,7 @@ export default MultitonService.extend(BusPublisherMixin, MultitonIdsMixin, {
   },
 
   _buildScene(id) {
-    const factory = getOwner(this).lookup(`scene:${id}`);
+    const factory = getOwner(this).lookup(`ember-theater/director/scene:${id}`);
 
     if (isNone(factory)) {
       warn(`Expected to find a scene with id '${id}'. None was found.`);
@@ -78,7 +78,7 @@ export default MultitonService.extend(BusPublisherMixin, MultitonIdsMixin, {
 
   _buildScript() {
     const sceneManager = get(this, 'sceneManager');
-    const factory = getOwner(this).lookup('script:main');
+    const factory = getOwner(this).lookup('ember-theater/director:script');
     const { theaterId, windowId } = getProperties(this, 'theaterId', 'windowId');
     const sceneRecord = get(sceneManager, 'sceneRecord');
 
