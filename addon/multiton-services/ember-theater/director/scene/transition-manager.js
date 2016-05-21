@@ -8,10 +8,12 @@ const {
   get,
   getOwner,
   getProperties,
+  isNone,
   typeOf
 } = Ember;
 
 const { run: { later } } = Ember;
+const { Logger: { warn } } = Ember;
 
 export default MultitonService.extend(BusPublisherMixin, MultitonIdsMixin, {
   config: multiton('ember-theater/config', 'theaterId'),
@@ -27,11 +29,13 @@ export default MultitonService.extend(BusPublisherMixin, MultitonIdsMixin, {
 
     this.publish(`et:${theaterId}:${windowId}:scriptsMustAbort`);
 
-    animate($director, effect, { duration }).then(() => {
+    animate($director, effect, { duration });
+
+    later(() => {
       this._transitionScene(scene, options);
 
       later(() => $director.removeAttr('style'));
-    });
+    }, duration);
   },
 
   _transitionScene(scene, options) {
@@ -40,9 +44,13 @@ export default MultitonService.extend(BusPublisherMixin, MultitonIdsMixin, {
 
     const script = this._buildScript();
 
-    const { start, sceneId, sceneName } = typeOf(scene) === 'function' ?
+    const sceneBundle = typeOf(scene) === 'function' ?
       { start: scene } :
       this._buildScene(scene);
+
+    if (isNone(sceneBundle)) { return; }
+
+    const { start, sceneId, sceneName } = getProperties(sceneBundle, 'start', 'sceneId', 'sceneName');
 
     this._updateAutosave(sceneId, sceneName, options);
 
@@ -51,6 +59,13 @@ export default MultitonService.extend(BusPublisherMixin, MultitonIdsMixin, {
 
   _buildScene(id) {
     const factory = getOwner(this).lookup(`scene:${id}`);
+
+    if (isNone(factory)) {
+      warn(`Expected to find a scene with id '${id}'. None was found.`);
+
+      return;
+    }
+
     const { theaterId, windowId } = getProperties(this, 'theaterId', 'windowId');
     const instance = factory.create({ theaterId, windowId });
 

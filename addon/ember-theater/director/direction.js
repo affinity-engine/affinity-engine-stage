@@ -20,12 +20,6 @@ export default Ember.Object.extend({
   sceneManager: multiton('ember-theater/director/scene-manager', 'theaterId', 'windowId'),
   stageManager: multiton('ember-theater/director/stage-manager', 'theaterId', 'windowId'),
 
-  delay(delay) {
-    set(this, 'attrs.delay', delay);
-
-    return this;
-  },
-
   _$instance: computed({
     get() {
       const component = get(this, 'directable.component');

@@ -1,7 +1,6 @@
 import Ember from 'ember';
 import { Direction } from 'ember-theater-director';
 import { BusPublisherMixin } from 'ember-message-bus';
-import multiton from 'ember-multiton-service';
 
 const {
   get,
@@ -14,8 +13,6 @@ const {
 export default Direction.extend(BusPublisherMixin, {
   componentPath: 'ember-theater-director-scene-window',
   layer: 'windows',
-
-  sceneManager: multiton('ember-theater/director/scene-manager', 'theaterId', 'windowId'),
 
   _setup(sceneId) {
     this._entryPoint();
@@ -102,15 +99,15 @@ export default Direction.extend(BusPublisherMixin, {
   },
 
   _perform(...args) {
-    const attrs = get(this, 'attrs');
+    const { attrs, theaterId, windowId } = getProperties(this, 'attrs', 'theaterId', 'windowId');
     const sceneWindowId = get(attrs, 'sceneWindowId');
 
-    if (isPresent(sceneWindowId) && sceneWindowId !== get(this, 'windowId')) {
+    if (isPresent(sceneWindowId) && sceneWindowId !== windowId) {
       return this._super(...args);
     } else if (isPresent(get(attrs, 'sceneId'))) {
       const sceneId = get(attrs, 'sceneId');
 
-      this.get('sceneManager').toScene(sceneId, attrs);
+      this.publish(`et:${theaterId}:${windowId}:sceneIsChanging`, sceneId, attrs);
     }
   }
 });

@@ -4,6 +4,7 @@ import hbs from 'htmlbars-inline-precompile';
 import { $hook, hook, initialize as initializeHook } from 'ember-hook';
 import { initialize as initializeMultitons } from 'ember-multiton-service';
 import { initializeQUnitAssertions } from 'ember-message-bus';
+import { initialize as initializeDirector } from 'ember-theater-director';
 
 const {
   get,
@@ -20,6 +21,7 @@ moduleForComponent('ember-theater-director-layer', 'Integration | Component | em
     initializeHook();
     initializeMultitons(appInstance);
     initializeQUnitAssertions(appInstance);
+    initializeDirector(appInstance);
   }
 });
 

@@ -8,7 +8,7 @@ const {
 
 const { String: { capitalize } } = Ember;
 
-const injectDirectionProxy = function injectDirectionProxy(application, name) {
+const injectDirectionProxy = function injectDirectionProxy(appInstance, name) {
   const proxy = function proxy(...args) {
     // the scene is the context here
     const factory = getOwner(this).lookup(`direction:${name}`);
@@ -18,21 +18,21 @@ const injectDirectionProxy = function injectDirectionProxy(application, name) {
 
   const constantizedName = name.split('-').map((section) => capitalize(section)).join('');
 
-  application.register(`direction:${name}-proxy`, proxy, { instantiate: false, singleton: false });
-  application.inject('script', constantizedName, `direction:${name}-proxy`);
+  appInstance.register(`direction:${name}-proxy`, proxy, { instantiate: false, singleton: false });
+  appInstance.inject('script', constantizedName, `direction:${name}-proxy`);
 };
 
-export function initialize(application) {
+export function initialize(appInstance) {
   const directions = gatherModules('ember-theater\/director\/directions');
 
   directions.forEach((direction, directionName) => {
     direction.type = directionName;
-    application.register(`direction:${directionName}`, direction, { instantiate: false, singleton: false });
-    injectDirectionProxy(application, directionName);
+    appInstance.register(`direction:${directionName}`, direction, { instantiate: false, singleton: false });
+    injectDirectionProxy(appInstance, directionName);
   });
 }
 
 export default {
   name: 'ember-theater/director/register-directions',
-  initialize: initialize
+  initialize
 };

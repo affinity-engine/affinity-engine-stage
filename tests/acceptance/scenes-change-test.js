@@ -16,18 +16,16 @@ moduleForAcceptance('Acceptance | scenes change', {
 });
 
 test('scene change', function(assert) {
-  assert.expect();
+  assert.expect(15);
 
   visit('/test-scenarios/scene-change').then(() => {
-    return delay(350);
-  }).then(() => {
     assert.equal($hook('basic_direction_header').text().trim(), 'Scene One', 'starts on scene 1');
 
-    return step(100);
+    return step(400);
   }).then(() => {
     assert.equal($hook('basic_direction_header').text().trim(), 'Scene Two', 'transitions to scene 2');
 
-    return step(200);
+    return step(400);
   }).then(() => {
     assert.equal($hook('basic_direction_header').length, 3, 'multiple scenes are present at once');
     assert.equal($hook('basic_direction_header').eq(0).text().trim(), 'Scene Two', 'main scene is unchanged');
@@ -42,19 +40,17 @@ test('scene change', function(assert) {
       Ember.$(`${hook('ember_theater_director_scene_window')}[data-scene-window-id="window-with-screen"]`).
       find(hook('ember_theater_director_scene_window_screen')).hasClass('foo'), 'second child has screen with provided class name');
 
-    return step(100);
+    return step(400);
   }).then(() => {
     assert.equal($hook('basic_direction_header').length, 3, 'number of scenes is unchanged');
     assert.equal($hook('basic_direction_header').eq(0).text().trim(), 'Scene Two', 'main scene is still unchanged');
     assert.equal($hook('basic_direction_header').eq(1).text().trim(), 'Scene Five', 'first child scene changed');
     assert.equal($hook('basic_direction_header').eq(2).text().trim(), 'Scene Four', 'second child scene is unchanged');
 
-    return step(100);
+    return step(400);
   }).then(() => {
     assert.equal($hook('basic_direction_header').length, 2, 'a scene has closed');
     assert.equal($hook('basic_direction_header').eq(0).text().trim(), 'Scene Two', 'main scene is still present');
     assert.equal($hook('basic_direction_header').eq(1).text().trim(), 'Scene Four', 'second child scene is still present');
-
-    return step(100);
-  })
+  });
 });

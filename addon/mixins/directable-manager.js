@@ -10,24 +10,19 @@ const {
   setProperties
 } = Ember;
 
-const { run: { later } } = Ember;
-
 export default Mixin.create({
   handleDirectable(id, properties, resolve) {
     const directable = get(properties, 'direction.directable');
-    const delay = get(properties, 'attrs.delay') || 0;
 
-    later(() => {
-      if (isBlank(directable)) {
-        this._addNewDirectable(merge(properties, { id, resolve }));
-      } else {
-        this._updateDirectable(directable, properties, resolve);
-      }
-    }, delay);
+    if (isBlank(directable)) {
+      this._addNewDirectable(merge(properties, { id, resolve }));
+    } else {
+      this._updateDirectable(directable, properties, resolve);
+    }
   },
 
   _addNewDirectable(properties) {
-    const Directable = getOwner(this).lookup('directable:main');
+    const Directable = getOwner(this).lookup('ember-theater/director:directable');
     const directable = Directable.create(properties);
 
     set(get(properties, 'direction'), 'directable', directable);

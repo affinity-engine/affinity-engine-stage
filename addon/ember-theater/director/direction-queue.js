@@ -4,11 +4,13 @@ const {
   K,
   computed,
   get,
+  run,
   set
 } = Ember;
 
+const { next } = run;
+
 const { RSVP: { Promise } } = Ember;
-const { run: { next } } = Ember;
 
 export default Ember.Object.extend({
   _directions: computed(() => Ember.A()),
@@ -52,12 +54,14 @@ export default Ember.Object.extend({
     const priorSceneRecord = script._getPriorSceneRecord();
 
     return new Promise((resolve) => {
-      let resolveOrK = resolve;
+      run(() => {
+        let resolveOrK = resolve;
 
-      get(this, '_directions').forEach((direction) => {
-        this._resolveDirection(direction, priorSceneRecord, resolveOrK);
+        get(this, '_directions').forEach((direction) => {
+          this._resolveDirection(direction, priorSceneRecord, resolveOrK);
 
-        resolveOrK = K;
+          resolveOrK = K;
+        });
       });
     });
   },
