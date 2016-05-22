@@ -1,11 +1,5 @@
-import gatherModules from 'ember-theater/utils/gather-modules';
-
 export function initialize(appInstance) {
-  const scenes = gatherModules('ember-theater\/director\/scenes');
-
-  scenes.forEach((scene, sceneName) => {
-    appInstance.register(`ember-theater/director/scene:${sceneName}`, scene, { instantiate: false, singleton: false });
-  });
+  appInstance.registerOptionsForType('ember-theater/director/scene', { instantiate: false });
 }
 
 export default {
