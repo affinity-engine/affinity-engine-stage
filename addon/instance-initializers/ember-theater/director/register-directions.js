@@ -6,7 +6,7 @@ const {
   getOwner
 } = Ember;
 
-const { String: { capitalize } } = Ember;
+const { String: { camelize } } = Ember;
 
 const injectDirectionProxy = function injectDirectionProxy(appInstance, name) {
   const proxy = function proxy(...args) {
@@ -16,7 +16,7 @@ const injectDirectionProxy = function injectDirectionProxy(appInstance, name) {
     return get(this, 'director').direct(this, factory, args);
   };
 
-  const constantizedName = name.split('-').map((section) => capitalize(section)).join('');
+  const constantizedName = name.split('-').map((section) => camelize(section)).join('');
 
   appInstance.register(`ember-theater/director/direction:${name}-proxy`, proxy, { instantiate: false, singleton: false });
   appInstance.inject('ember-theater/director:script', constantizedName, `ember-theater/director/direction:${name}-proxy`);

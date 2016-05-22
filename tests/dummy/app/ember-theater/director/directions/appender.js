@@ -21,7 +21,7 @@ export default Direction.extend({
     return this;
   },
 
-  Basic(header) {
+  basic(header) {
     this._removeFromQueue();
 
     const direction = this._createDirection('basic');
