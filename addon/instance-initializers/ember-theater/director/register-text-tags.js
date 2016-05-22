@@ -1,16 +1,14 @@
 import Ember from 'ember';
-import gatherModules from 'ember-theater/utils/gather-modules';
+import { gatherTypes } from 'ember-theater-director';
 
 const { String: { camelize } } = Ember;
 
 export function initialize(appInstance) {
-  const textTags = gatherModules('ember-theater\/director\/text-tags');
+  appInstance.registerOptionsForType('ember-theater/director/text-tag', { instantiate: false });
 
-  textTags.forEach((textTag, textTagName) => {
-    appInstance.register(`ember-theater/director/text-tag:${textTagName}`, textTag, {
-      instantiate: false,
-      singleton: false
-    });
+  const textTagNames = gatherTypes(appInstance, 'ember-theater/director/text-tag');
+
+  textTagNames.forEach((textTagName) => {
     appInstance.inject('component:ember-theater/director/directable/text/body',
       camelize(textTagName),
       `ember-theater/director/text-tag:${textTagName}`);

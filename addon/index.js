@@ -12,6 +12,7 @@ import TransitionableComponentAutoMixin from 'ember-theater-director/mixins/tran
 
 import step from 'ember-theater-director/ember-theater/director/test-support/step';
 
+import gatherTypes from 'ember-theater-director/utils/ember-theater/director/gather-types';
 import layerName from 'ember-theater-director/utils/ember-theater/director/layer-name';
 
 import { initialize as registerDirectable } from 'ember-theater-director/instance-initializers/ember-theater/director/register-directable';
@@ -41,5 +42,6 @@ export {
   TransitionableComponentAutoMixin,
   initialize,
   step,
+  gatherTypes,
   layerName
 };

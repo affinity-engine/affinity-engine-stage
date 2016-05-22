@@ -1,5 +1,5 @@
 import Ember from 'ember';
-import gatherModules from 'ember-theater/utils/gather-modules';
+import { gatherTypes } from 'ember-theater-director';
 
 const {
   get,
@@ -23,11 +23,11 @@ const injectDirectionProxy = function injectDirectionProxy(appInstance, name) {
 };
 
 export function initialize(appInstance) {
-  const directions = gatherModules('ember-theater\/director\/directions');
+  appInstance.registerOptionsForType('ember-theater/director/direction', { instantiate: false });
 
-  directions.forEach((direction, directionName) => {
-    direction.type = directionName;
-    appInstance.register(`ember-theater/director/direction:${directionName}`, direction, { instantiate: false, singleton: false });
+  const directionNames = gatherTypes(appInstance, 'ember-theater/director/direction');
+
+  directionNames.forEach((directionName) => {
     injectDirectionProxy(appInstance, directionName);
   });
 }
