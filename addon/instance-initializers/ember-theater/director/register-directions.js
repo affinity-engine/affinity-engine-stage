@@ -1,5 +1,5 @@
 import Ember from 'ember';
-import { gatherTypes } from 'ember-theater-director';
+import { gatherTypes } from 'ember-theater';
 
 const {
   get,
