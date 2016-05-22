@@ -88,6 +88,10 @@ export default Ember.Object.extend({
     }
   },
 
+  _removeFromQueue() {
+    get(this, 'queue').removeObject(this);
+  },
+
   _perform(priorSceneRecord, resolve) {
     const {
       attrs,

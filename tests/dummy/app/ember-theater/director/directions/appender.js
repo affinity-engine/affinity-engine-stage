@@ -2,7 +2,6 @@ import Ember from 'ember';
 import { Direction } from 'ember-theater-director';
 
 const {
-  get,
   set
 } = Ember;
 
@@ -24,12 +23,6 @@ export default Direction.extend({
   basic(header) {
     this._removeFromQueue();
 
-    const direction = this._createDirection('basic');
-
-    return direction._setup(header, get(this, 'attrs'));
-  },
-
-  _removeFromQueue() {
-    get(this, 'queue').removeObject(this);
+    return this._super(header);
   }
 });

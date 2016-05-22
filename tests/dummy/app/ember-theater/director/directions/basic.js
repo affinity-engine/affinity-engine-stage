@@ -11,11 +11,11 @@ export default Direction.extend({
   componentPath: 'basic-direction',
   layer: 'theater.meta.basic',
 
-  _setup(header, footer) {
+  _setup(header, predecessors = {}) {
     this._entryPoint();
 
     set(this, 'attrs.header', header);
-    set(this, 'attrs.footer', footer);
+    set(this, 'attrs.footer', get(predecessors, 'appender'));
 
     return this;
   },
