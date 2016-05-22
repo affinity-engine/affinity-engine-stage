@@ -2,7 +2,7 @@ import Ember from 'ember';
 import { MultitonService } from 'ember-multiton-service';
 import multiton from 'ember-multiton-service';
 import { BusPublisherMixin } from 'ember-message-bus';
-import { MultitonIdsMixin, animate } from 'ember-theater';
+import { MultitonIdsMixin, animate, deepConfigurable } from 'ember-theater';
 
 const {
   get,
@@ -15,17 +15,26 @@ const {
 const { run: { later } } = Ember;
 const { Logger: { warn } } = Ember;
 
+const configurablePriority = [
+  'config.attrs.director.scene',
+  'config.attrs.director',
+  'config.attrs.globals'
+];
+
 export default MultitonService.extend(BusPublisherMixin, MultitonIdsMixin, {
   config: multiton('ember-theater/config', 'theaterId'),
   autosaveManager: multiton('ember-theater/autosave-manager', 'theaterId'),
   sceneManager: multiton('ember-theater/director/scene-manager', 'theaterId', 'windowId'),
 
+  transitionOut: deepConfigurable(configurablePriority, 'transitionOut'),
+
   toScene(scene, options) {
     const { theaterId, windowId } = getProperties(this, 'theaterId', 'windowId');
     const query = windowId === 'main' ? '.et-director' : `[data-scene-window-id="${windowId}"] .et-director`;
     const $director = Ember.$(query);
-    const duration = get(options, 'transitionOut.duration') || get(this, 'config.attrs.director.scene.transitionOut.duration');
-    const effect = get(options, 'transitionOut.effect') || get(this, 'config.attrs.director.scene.transitionOut.effect');
+    const transitionOut = get(this, 'transitionOut');
+    const duration = get(options, 'transitionOut.duration') || get(transitionOut, 'duration');
+    const effect = get(options, 'transitionOut.effect') || get(transitionOut, 'effect');
 
     this.publish(`et:${theaterId}:${windowId}:scriptsMustAbort`);
 
