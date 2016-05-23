@@ -1,3 +1,3 @@
 module.exports = {
-  description: 'Generates a text-tag for ember-theater.'
+  description: 'Generates the app directories for an ember-theater text tag.'
 };

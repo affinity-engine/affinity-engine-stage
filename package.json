@@ -45,7 +45,10 @@
     "loader.js": "^4.0.1"
   },
   "keywords": [
-    "ember-addon"
+    "ember-addon",
+    "ember-theater",
+    "ember-theater plugin",
+    "ember-theater-director"
   ],
   "dependencies": {
     "ember-cli-babel": "^5.1.6",
