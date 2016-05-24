@@ -1,7 +1,7 @@
 import Ember from 'ember';
 import layout from '../templates/components/ember-theater-director-layer';
 import { deepArrayConfigurable } from 'ember-theater';
-import { DirectableComponentMixin, TransitionableComponentAutoMixin, layerName } from 'ember-theater-director';
+import { DirectableComponentMixin, TransitionableComponentMixin, TransitionableComponentAutoMixin, layerName } from 'ember-theater-director';
 import { BusPublisherMixin } from 'ember-message-bus';
 
 const {
@@ -14,7 +14,6 @@ const {
   set
 } = Ember;
 
-const { Handlebars: { SafeString } } = Ember;
 const { RSVP: { Promise } } = Ember;
 
 const { alias } = computed;
@@ -26,12 +25,12 @@ const configurablePriority = [
   'config.attrs.globals'
 ];
 
-export default Component.extend(BusPublisherMixin, DirectableComponentMixin, TransitionableComponentAutoMixin, {
+export default Component.extend(BusPublisherMixin, DirectableComponentMixin, TransitionableComponentMixin, TransitionableComponentAutoMixin, {
   layout,
 
   hook: 'ember_theater_director_layer',
 
-  attributeBindings: ['animationName:animation-name', 'style'],
+  attributeBindings: ['animationName:animation-name'],
   classNames: ['et-layer'],
   classNameBindings: ['layerName'],
 
@@ -90,7 +89,7 @@ export default Component.extend(BusPublisherMixin, DirectableComponentMixin, Tra
     set(this, 'filter', null);
   }),
 
-  style: computed('animation', 'keyframeName', 'filter', {
+  styles: computed('animation', 'keyframeName', 'filter', {
     get() {
       const {
         animation,
@@ -98,14 +97,14 @@ export default Component.extend(BusPublisherMixin, DirectableComponentMixin, Tra
         filter
       } = getProperties(this, 'animation', 'animationName', 'filter');
 
-      return new SafeString(`
+      return [`
         animation: ${animation};
         animation-name: ${animationName};
         filter: ${filter};
         -webkit-filter: ${filter};
-      `.replace(/\n|\s{2}/g, ''));
+      `.replace(/\n|\s{2}/g, '')];
     }
-  }).readOnly(),
+  }),
 
   layerDirectables: computed('directables.@each.layer', 'name', {
     get() {

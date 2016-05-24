@@ -1,5 +1,4 @@
-import { Scene } from 'ember-theater/ember-theater/director';
-import step from 'ember-theater/ember-theater/director/test-support/step';
+import { Scene, step } from 'ember-theater-director';
 
 export default Scene.extend({
   name: '<%= classifiedModuleName %> Direction Test',
