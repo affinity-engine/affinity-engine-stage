@@ -1,14 +1,14 @@
 import Ember from 'ember';
 import { test } from 'qunit';
-import moduleForAcceptance from '../helpers/module-for-acceptance';
+import moduleForAcceptance from '../../../../tests/helpers/module-for-acceptance';
 import { $hook, hook } from 'ember-hook';
 
-moduleForAcceptance('Acceptance | direction');
+moduleForAcceptance('Acceptance | ember-theater/director/directions/basic-direction');
 
-test('Ember Theater | Director | Basic Direction', function(assert) {
+test('Ember Theater | Director | Directions | BasicDirection', function(assert) {
   assert.expect(12);
 
-  visit('/test-scenarios/basic-direction').then(() => {
+  visit('/ember-theater/test-scenarios/director/directions/basic-direction').then(() => {
     assert.ok(Ember.$(`
       .et-director
       .et-layer-
