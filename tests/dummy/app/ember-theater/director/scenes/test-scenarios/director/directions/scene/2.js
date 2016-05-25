@@ -8,7 +8,7 @@ export default Scene.extend({
 
     await step();
 
-    script.scene('test-scenarios/scene-change-3').window('simple-window');
-    script.scene('test-scenarios/scene-change-4').window('window-with-screen').screen('foo');
+    script.scene('test-scenarios/director/directions/scene/3').window('simple-window');
+    script.scene('test-scenarios/director/directions/scene/4').window('window-with-screen').screen('foo');
   }
 });

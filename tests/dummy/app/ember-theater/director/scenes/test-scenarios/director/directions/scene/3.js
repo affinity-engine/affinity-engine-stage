@@ -8,6 +8,6 @@ export default Scene.extend({
 
     await step();
 
-    script.scene('test-scenarios/scene-change-5');
+    script.scene('test-scenarios/director/directions/scene/5');
   }
 });

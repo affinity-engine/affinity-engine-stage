@@ -1,9 +1,9 @@
 import Ember from 'ember';
 import { test } from 'qunit';
-import moduleForAcceptance from '../../tests/helpers/module-for-acceptance';
+import moduleForAcceptance from '../../../../tests/helpers/module-for-acceptance';
 import { $hook, hook } from 'ember-hook';
 
-moduleForAcceptance('Acceptance | scenes change', {
+moduleForAcceptance('Acceptance | ember-theater/director/directions/scene', {
   beforeEach() {
     Ember.testing = false;
     Ember.$.Velocity.mock = true;
@@ -15,10 +15,10 @@ moduleForAcceptance('Acceptance | scenes change', {
   }
 });
 
-test('scene change', function(assert) {
+test('Ember Theater | Director | Directions | Scene', function(assert) {
   assert.expect(15);
 
-  visit('/test-scenarios/scene-change').then(() => {
+  visit('/ember-theater/test-scenarios/director/directions/scene').then(() => {
     assert.equal($hook('basic_direction_header').text().trim(), 'Scene One', 'starts on scene 1');
 
     return step(125);
