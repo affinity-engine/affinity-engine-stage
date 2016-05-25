@@ -10,6 +10,7 @@ const {
   computed,
   get,
   isPresent,
+  run,
   set,
   typeOf
 } = Ember;
@@ -88,7 +89,9 @@ export default Component.extend(BusSubscriberMixin, DirectableComponentMixin, Tr
 
   didInsertElement() {
     this.executeTransitionIn().then(() => {
-      this.resolve();
+      run(() => {
+        this.resolve();
+      });
     });
 
     this._super();
@@ -96,7 +99,9 @@ export default Component.extend(BusSubscriberMixin, DirectableComponentMixin, Tr
 
   close() {
     this.executeTransitionOut().then(() => {
-      this.removeDirectable();
+      run(() => {
+        this.removeDirectable();
+      });
     });
   }
 });

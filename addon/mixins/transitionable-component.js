@@ -9,12 +9,14 @@ const {
   getProperties,
   isBlank,
   isPresent,
+  run,
   set
 } = Ember;
 
 const { Handlebars: { SafeString } } = Ember;
 const { RSVP: { Promise } } = Ember;
-const { run: { later } } = Ember;
+
+const { later } = run;
 
 export default Mixin.create({
   attributeBindings: ['style'],
@@ -49,7 +51,9 @@ export default Mixin.create({
 
   executeTransitions(transitions) {
     return new Promise((resolve) => {
-      this._executeTransitions(transitions, 'main', resolve);
+      run(() => {
+        this._executeTransitions(transitions, 'main', resolve);
+      });
     });
   },
 
@@ -110,9 +114,11 @@ export default Mixin.create({
     }
 
     return animate(this.element, effect, options).then(() => {
-      if (isPresent(this.element)) {
-        set(this, 'style', this.$().attr('style'));
-      }
+      run(() => {
+        if (isPresent(this.element)) {
+          set(this, 'style', this.$().attr('style'));
+        }
+      });
     });
   }
 });

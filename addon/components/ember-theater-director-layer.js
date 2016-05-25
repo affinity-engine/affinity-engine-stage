@@ -11,6 +11,7 @@ const {
   getProperties,
   isPresent,
   observer,
+  run,
   set
 } = Ember;
 
@@ -60,9 +61,11 @@ export default Component.extend(BusPublisherMixin, DirectableComponentMixin, Tra
 
   addFilter(transition) {
     return new Promise((resolve) => {
-      const { theaterId, windowId } = getProperties(this, 'theaterId', 'windowId');
+      run(() => {
+        const { theaterId, windowId } = getProperties(this, 'theaterId', 'windowId');
 
-      this.publish(`et:${theaterId}:${windowId}:filterQueued`, resolve, get(transition, 'effect'), transition, get(this, 'layerName'));
+        this.publish(`et:${theaterId}:${windowId}:filterQueued`, resolve, get(transition, 'effect'), transition, get(this, 'layerName'));
+      });
     });
   },
 

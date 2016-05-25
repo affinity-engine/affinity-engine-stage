@@ -5,7 +5,6 @@ import { hook } from 'ember-hook';
 
 moduleForAcceptance('Acceptance | ember-theater/director/directions/layer', {
   beforeEach() {
-    Ember.testing = false;
     Ember.$.Velocity.mock = true;
   },
 

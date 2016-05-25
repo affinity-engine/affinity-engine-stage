@@ -4,7 +4,6 @@ import moduleForAcceptance from '../../../../tests/helpers/module-for-acceptance
 
 moduleForAcceptance('Acceptance | ember-theater/director/directions/<%= dasherizedModuleName %>', {
   beforeEach() {
-    Ember.testing = false;
     Ember.$.Velocity.mock = true;
   },
 

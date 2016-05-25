@@ -5,7 +5,6 @@ import { $hook, hook } from 'ember-hook';
 
 moduleForAcceptance('Acceptance | ember-theater/director/directions/scene', {
   beforeEach() {
-    Ember.testing = false;
     Ember.$.Velocity.mock = true;
     localStorage.clear();
   },
