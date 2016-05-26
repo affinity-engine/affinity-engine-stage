@@ -13,5 +13,9 @@ export default Scene.extend({
     await step();
 
     script.layer('theater.meta').transition({ padding: '123px' });
+
+    await step();
+
+    script.layer('theater.meta').transition({ padding: '456px' }).transition({ margin: '789px' }).transition({ margin: '555px' });
   }
 });

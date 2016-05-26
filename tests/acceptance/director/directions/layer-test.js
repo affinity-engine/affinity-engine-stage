@@ -14,7 +14,7 @@ moduleForAcceptance('Acceptance | ember-theater/director/directions/layer', {
 });
 
 test('Ember Theater | Director | Directions | Layer', function(assert) {
-  assert.expect(6);
+  assert.expect(8);
 
   visit('/ember-theater/test-scenarios/director/directions/layer').then(() => {
     assert.ok(Ember.$(`
@@ -36,5 +36,10 @@ test('Ember Theater | Director | Directions | Layer', function(assert) {
   }).then(() => {
     assert.equal(Ember.$('.et-layer-theater-meta').css('opacity'), 0.5, 'layer keeps old transition');
     assert.equal(Ember.$('.et-layer-theater-meta').css('padding'), '123px', 'layer adds new transition');
+
+    return step(50);
+  }).then(() => {
+    assert.equal(Ember.$('.et-layer-theater-meta').css('padding'), '456px', 'layer can rechange attribute');
+    assert.equal(Ember.$('.et-layer-theater-meta').css('margin'), '555px', 'layer can undergo full transition queues');
   });
 });
