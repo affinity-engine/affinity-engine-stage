@@ -71,18 +71,22 @@ export default Component.extend(BusPublisherMixin, DirectableComponentMixin, Tra
 
   _setupAnimationEnd() {
     this.$().on('animationend', () => {
-      const { layerFilter: {
-        effect,
-        resolve
-      } } = getProperties(this, 'layerFilter');
+      run(() => {
+        const {
+          layerFilter: {
+            effect,
+            resolve
+          }
+        } = getProperties(this, 'layerFilter');
 
-      // there's a brief moment after an animation ends before which Ember changes the css through
-      // `set(this, 'filter', effect)`. To get around this, we manually set the `filter` with jquery,
-      // knowing that Ember will overwrite our changes with `attributeBindings: ['style']`.
-      this.$().css({ filter: effect, '-webkit-filter': effect });
-      set(this, 'filter', effect);
+        // there's a brief moment after an animation ends before which Ember changes the css through
+        // `set(this, 'filter', effect)`. To get around this, we manually set the `filter` with jquery,
+        // knowing that Ember will overwrite our changes with `attributeBindings: ['style']`.
+        this.$().css({ filter: effect, '-webkit-filter': effect });
+        set(this, 'filter', effect);
 
-      if (isPresent(resolve)) { resolve(); }
+        if (isPresent(resolve)) { resolve(); }
+      });
     });
   },
 

@@ -37,7 +37,7 @@ test('Ember Theater | Director | Directions | Layer', function(assert) {
     assert.equal(Ember.$('.et-layer-theater-meta').css('opacity'), 0.5, 'layer keeps old transition');
     assert.equal(Ember.$('.et-layer-theater-meta').css('padding'), '123px', 'layer adds new transition');
 
-    return step(50);
+    return step(75);
   }).then(() => {
     assert.equal(Ember.$('.et-layer-theater-meta').css('padding'), '456px', 'layer can rechange attribute');
     assert.equal(Ember.$('.et-layer-theater-meta').css('margin'), '555px', 'layer can undergo full transition queues');

@@ -8,8 +8,7 @@ import { initialize as initializeDirector } from 'ember-theater-director';
 
 const {
   get,
-  getOwner,
-  run
+  getOwner
 } = Ember;
 
 moduleForComponent('ember-theater-director-layer', 'Integration | Component | ember theater director layer', {
@@ -65,11 +64,9 @@ test('`didInsertElement` prepares the layer for a filter animation ending', func
     layerFilter=layerFilter
   }}`);
 
-  run(() => {
-    canResolve = true;
-    $hook('ember_theater_director_layer').trigger('animationend');
-    assert.ok($hook('ember_theater_director_layer').attr('style').indexOf(effect) > 0, 'filter was set');
-  })
+  canResolve = true;
+  $hook('ember_theater_director_layer').trigger('animationend');
+  assert.ok($hook('ember_theater_director_layer').attr('style').indexOf(effect) > 0, 'filter was set');
 });
 
 test('`willDestroyElement` publishes `layerRemoved`', function(assert) {
