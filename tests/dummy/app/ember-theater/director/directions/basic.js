@@ -15,7 +15,7 @@ export default Direction.extend({
     this._entryPoint();
 
     set(this, 'attrs.header', header);
-    set(this, 'attrs.footer', get(predecessors, 'appender'));
+    set(this, 'attrs.footer', get(predecessors, 'Appender'));
 
     return this;
   },

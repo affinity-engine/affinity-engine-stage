@@ -20,7 +20,7 @@ export default Direction.extend({
     return this;
   },
 
-  basic(header) {
+  Basic(header) {
     this._removeFromQueue();
 
     return this._super(header);

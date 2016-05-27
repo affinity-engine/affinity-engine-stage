@@ -4,10 +4,10 @@ export default Scene.extend({
   name: 'Scene Change 1',
 
   start: async function(script) {
-    script.basic('Scene One');
+    script.Basic('Scene One');
 
     await step();
 
-    script.scene('test-scenarios/director/directions/scene/2');
+    script.Scene('test-scenarios/director/directions/scene/2');
   }
 });
