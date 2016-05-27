@@ -4,7 +4,8 @@ const {
   Mixin,
   get,
   observer,
-  on
+  on,
+  run
 } = Ember;
 
 export default Mixin.create({
@@ -16,7 +17,9 @@ export default Mixin.create({
       get(this, 'directable.attrs.transitions').clear();
 
       this.executeTransitions(transitions).then(() => {
-        this.resolve(get(this, 'directable.direction'));
+        run(() => {
+          this.resolve(get(this, 'directable.direction'));
+        });
       });
     }
   })),

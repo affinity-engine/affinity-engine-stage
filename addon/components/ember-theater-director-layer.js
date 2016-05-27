@@ -42,10 +42,15 @@ export default Component.extend(BusPublisherMixin, DirectableComponentMixin, Tra
   animationName: alias('layerFilter.animationName'),
   transitions: deepArrayConfigurable(configurablePriority, 'directable.attrs.transitions', 'transition'),
 
-  didInsertElement() {
+  init() {
     const { theaterId, windowId } = getProperties(this, 'theaterId', 'windowId');
 
     this.publish(`et:${theaterId}:${windowId}:layerAdded`, this);
+
+    this._super();
+  },
+
+  didInsertElement() {
     this._setupAnimationEnd();
 
     this._super();
