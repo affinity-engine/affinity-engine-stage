@@ -4,7 +4,7 @@ export default Scene.extend({
   name: 'Scene Change 5',
 
   start: async function(script, window) {
-    script.Basic('Scene Five');
+    script.basic('Scene Five');
 
     await step();
 

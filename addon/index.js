@@ -2,6 +2,7 @@ import Directable from 'ember-theater-director/ember-theater/director/directable
 import Direction from 'ember-theater-director/ember-theater/director/direction';
 import Scene from 'ember-theater-director/ember-theater/director/scene';
 import Script from 'ember-theater-director/ember-theater/director/script';
+import ScriptProxy from 'ember-theater-director/ember-theater/director/script-proxy';
 import TextTag from 'ember-theater-director/ember-theater/director/text-tag';
 
 import DirectableComponentMixin from 'ember-theater-director/mixins/directable-component';
@@ -33,6 +34,7 @@ export {
   Direction,
   Scene,
   Script,
+  ScriptProxy,
   TextTag,
   DirectableComponentMixin,
   DirectableManagerMixin,

@@ -4,18 +4,18 @@ export default Scene.extend({
   name: 'Layer Direction Test',
 
   start: async function(script) {
-    script.Basic('First Basic Header');
+    script.basic('First Basic Header');
 
     await step();
 
-    script.Layer('theater.meta').transition({ opacity: 0.5 });
+    script.layer('theater.meta').transition({ opacity: 0.5 });
 
     await step();
 
-    script.Layer('theater.meta').transition({ padding: '123px' });
+    script.layer('theater.meta').transition({ padding: '123px' });
 
     await step();
 
-    script.Layer('theater.meta').transition({ padding: '456px' }).transition({ margin: '789px' }).transition({ margin: '555px' });
+    script.layer('theater.meta').transition({ padding: '456px' }).transition({ margin: '789px' }).transition({ margin: '555px' });
   }
 });

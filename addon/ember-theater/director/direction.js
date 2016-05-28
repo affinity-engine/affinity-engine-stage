@@ -3,15 +3,18 @@ import multiton from 'ember-multiton-service';
 import DirectionQueue from './direction-queue';
 
 const {
+  Evented,
   computed,
   get,
   getOwner,
   getProperties,
   isPresent,
-  set
+  on,
+  set,
+  setProperties
 } = Ember;
 
-export default Ember.Object.extend({
+export default Ember.Object.extend(Evented, {
   _isDirection: true,
   _shouldReset: true,
 
@@ -19,6 +22,24 @@ export default Ember.Object.extend({
 
   sceneManager: multiton('ember-theater/director/scene-manager', 'theaterId', 'windowId'),
   stageManager: multiton('ember-theater/director/stage-manager', 'theaterId', 'windowId'),
+
+  prepareForChaining: on('directionReady', function(predecessors) {
+    set(this, 'predecessors', predecessors);
+
+    Object.defineProperty(this, '_', {
+      get() {
+        const script = get(this, 'script');
+        const childPredecessors = Ember.A([this]).pushObjects(predecessors.toArray());
+
+        set(childPredecessors, 'arePredecessors', true);
+
+        return getOwner(this).lookup('ember-theater/director:script-proxy').create(setProperties(this, {
+          script,
+          predecessors: childPredecessors
+        }));
+      }
+    });
+  }),
 
   _$instance: computed({
     get() {

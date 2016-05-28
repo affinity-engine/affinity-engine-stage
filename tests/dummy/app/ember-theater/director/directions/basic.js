@@ -11,11 +11,11 @@ export default Direction.extend({
   componentPath: 'basic-direction',
   layer: 'theater.meta.basic',
 
-  _setup(header, predecessors = {}) {
+  _setup(header) {
     this._entryPoint();
 
     set(this, 'attrs.header', header);
-    set(this, 'attrs.footer', get(predecessors, 'Appender'));
+    set(this, 'attrs.appender', get(this, 'predecessors').findBy('_name', 'appender'));
 
     return this;
   },
@@ -23,7 +23,7 @@ export default Direction.extend({
   _reset() {
     const attrs = get(this, 'attrs');
 
-    return this._super(getProperties(attrs, 'header'));
+    return this._super(getProperties(attrs, 'header', 'footer'));
   },
 
   text(textContent) {

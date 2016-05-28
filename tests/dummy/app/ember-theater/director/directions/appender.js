@@ -2,6 +2,7 @@ import Ember from 'ember';
 import { Direction } from 'ember-theater-director';
 
 const {
+  on,
   set
 } = Ember;
 
@@ -20,9 +21,9 @@ export default Direction.extend({
     return this;
   },
 
-  Basic(header) {
-    this._removeFromQueue();
-
-    return this._super(header);
-  }
+  removeFromQueue: on('willChainDirection', function(name) {
+    if (name === 'basic') {
+      this._removeFromQueue();
+    }
+  })
 });

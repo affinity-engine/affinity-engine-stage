@@ -11,7 +11,7 @@ const {
 
 const configurablePriority = [
   'directable.attrs',
-  'directable.attrs.footer',
+  'directable.attrs.appender.attrs',
   'config.attrs.director',
   'config.attrs.globals'
 ];
@@ -26,7 +26,7 @@ export default Component.extend(DirectableComponentMixin, {
   footerSecondary: configurable(configurablePriority, 'footerSecondary'),
   footerText: configurable(configurablePriority, 'footerText'),
 
-  footer: computed('footerMultiple', 'footerText', {
+  footer: computed('footerSecondary', 'footerText', {
     get() {
       return `${get(this, 'footerText')} ${get(this, 'footerSecondary')}`;
     }

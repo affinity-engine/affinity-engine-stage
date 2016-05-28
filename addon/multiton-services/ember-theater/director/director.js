@@ -15,6 +15,9 @@ export default MultitonService.extend(MultitonIdsMixin, {
 
     const { theaterId, windowId } = getProperties(this, 'theaterId', 'windowId');
     const direction = factory.create({ script, theaterId, windowId });
+    const predecessors = get(args[0], 'arePredecessors') ? args.shift() : Ember.A();
+
+    direction.trigger('directionReady', predecessors);
 
     return direction._setup(...args);
   }
