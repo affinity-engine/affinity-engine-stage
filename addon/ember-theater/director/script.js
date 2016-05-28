@@ -25,8 +25,9 @@ export default Ember.Object.extend(BusPublisherMixin, BusSubscriberMixin, Evente
 
   _executeDirection(directionName, args) {
     const factory = getOwner(this).lookup(`ember-theater/director/direction:${directionName}`);
+    const predecessors = get(args[0], 'arePredecessors') ? args.shift() : Ember.A();
 
-    return get(this, 'director').direct(this, factory, args);
+    return get(this, 'director').direct(this, factory, predecessors, args);
   },
 
   _abort() {

@@ -28,18 +28,24 @@ export default Ember.Object.extend(Evented, {
 
     Object.defineProperty(this, '_', {
       get() {
-        const script = get(this, 'script');
-        const childPredecessors = Ember.A([this]).pushObjects(predecessors.toArray());
-
-        set(childPredecessors, 'arePredecessors', true);
-
-        return getOwner(this).lookup('ember-theater/director:script-proxy').create(setProperties(this, {
-          script,
-          predecessors: childPredecessors
-        }));
+        return get(this, '_scriptProxy');
       }
     });
   }),
+
+  _scriptProxy: computed({
+    get() {
+      const script = get(this, 'script');
+      const predecessors = Ember.A([this]).pushObjects(get(this, 'predecessors'));
+
+      set(predecessors, 'arePredecessors', true);
+
+      return getOwner(this).lookup('ember-theater/director:script-proxy').create(setProperties(this, {
+        script,
+        predecessors
+      }));
+    }
+  }).readOnly(),
 
   _$instance: computed({
     get() {
