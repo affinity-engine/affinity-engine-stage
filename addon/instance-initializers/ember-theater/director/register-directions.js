@@ -1,5 +1,6 @@
 import Ember from 'ember';
 import { gatherTypes } from 'ember-theater';
+import { Script, ScriptProxy } from 'ember-theater-director';
 
 const { String: { camelize } } = Ember;
 
@@ -7,28 +8,19 @@ const applyName = function applyName(appInstance, camelizedName, dasherizedNamed
   const factory = appInstance.lookup(`ember-theater/director/direction:${dasherizedNamed}`);
 
   factory.reopen({
-    _name: camelizedName
+    directionName: camelizedName
   });
 };
 
-const injectIntoScript = function injectIntoScript(appInstance, camelizedName, dasherizedNamed) {
-  const directorProxy = function directorProxy(...args) {
+const injectIntoScript = function injectIntoScript(appInstance, camelizedName, dasherizedOrCamelizedNamed, ClassType) {
+  const directionProxy = { };
+
+  directionProxy[camelizedName] = function(...args) {
     // the scene is the context here
-    return this._executeDirection(dasherizedNamed, args);
+    return this._executeDirection(dasherizedOrCamelizedNamed, args);
   };
 
-  appInstance.register(`ember-theater/director/direction-proxy/script:${dasherizedNamed}`, directorProxy, { instantiate: false });
-  appInstance.inject('ember-theater/director:script', camelizedName, `ember-theater/director/direction-proxy/script:${dasherizedNamed}`);
-};
-
-const injectIntoScriptProxy = function injectIntoScriptProxy(appInstance, camelizedName, dasherizedNamed) {
-  const scriptProxy = function scriptProxy(...args) {
-    // the scene proxy is the context here
-    return this._executeDirection(camelizedName, args);
-  };
-
-  appInstance.register(`ember-theater/director/script-proxy/script:${dasherizedNamed}`, scriptProxy, { instantiate: false });
-  appInstance.inject('ember-theater/director:script-proxy', camelizedName, `ember-theater/director/script-proxy/script:${dasherizedNamed}`);
+  ClassType.reopen(directionProxy);
 };
 
 export function initialize(appInstance) {
@@ -38,8 +30,8 @@ export function initialize(appInstance) {
     const camelizedName = camelize(dasherizedNamed);
 
     applyName(appInstance, camelizedName, dasherizedNamed);
-    injectIntoScript(appInstance, camelizedName, dasherizedNamed);
-    injectIntoScriptProxy(appInstance, dasherizedNamed, camelizedName);
+    injectIntoScript(appInstance, camelizedName, dasherizedNamed, Script);
+    injectIntoScript(appInstance, camelizedName, camelizedName, ScriptProxy);
   });
 }
 

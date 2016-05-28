@@ -15,7 +15,7 @@ export default Direction.extend({
     this._entryPoint();
 
     set(this, 'attrs.header', header);
-    set(this, 'attrs.appender', get(this, 'predecessors').findBy('_name', 'appender'));
+    set(this, 'attrs.appender', get(this, 'predecessors').findBy('directionName', 'appender'));
 
     return this;
   },
