@@ -5,6 +5,7 @@ import { BusPublisherMixin, BusSubscriberMixin } from 'ember-message-bus';
 const {
   Evented,
   get,
+  getOwner,
   getProperties,
   on,
   set,
@@ -21,6 +22,12 @@ export default Ember.Object.extend(BusPublisherMixin, BusSubscriberMixin, Evente
 
     this.on(`et:${theaterId}:${windowId}:scriptsMustAbort`, this, this._abort);
   }),
+
+  _executeDirection(directionName, args) {
+    const factory = getOwner(this).lookup(`ember-theater/director/direction:${directionName}`);
+
+    return get(this, 'director').direct(this, factory, args);
+  },
 
   _abort() {
     set(this, 'isAborted', true);
