@@ -1,7 +1,7 @@
 {
   "name": "ember-theater-director",
   "version": "0.0.0",
-  "description": "The default blueprint for ember-cli addons.",
+  "description": "A dynamic staging plugin for Ember Theater",
   "directories": {
     "doc": "doc",
     "test": "tests"
