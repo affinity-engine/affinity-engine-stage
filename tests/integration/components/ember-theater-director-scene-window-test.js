@@ -4,10 +4,13 @@ import hbs from 'htmlbars-inline-precompile';
 import { $hook, initialize as initializeHook } from 'ember-hook';
 import { initialize as initializeMultitons } from 'ember-multiton-service';
 import { initializeQUnitAssertions } from 'ember-message-bus';
+import { deepStub } from 'ember-theater';
 import { initialize as initializeDirector } from 'ember-theater-director';
 
 const {
-  getOwner
+  getOwner,
+  getProperties,
+  set
 } = Ember;
 
 moduleForComponent('ember-theater-director-scene-window', 'Integration | Component | ember theater director scene window', {
@@ -30,29 +33,13 @@ const configurablePriority = [
   'config.attrs.globals'
 ];
 
-const attrContainerGenerator = (priority) => {
-  const attrContainer = { config: { }, directable: { } };
-
-  priority.split('.').reduce((parentObject, segment) => {
-    const childObject = { };
-
-    parentObject[segment] = childObject;
-
-    return childObject;
-  }, attrContainer);
-
-  return attrContainer;
-}
-
 configurablePriority.forEach((priority) => {
   test(`applies the classNames found in ${priority}`, function(assert) {
     assert.expect(1);
 
-    const attrContainer = attrContainerGenerator(priority);
+    const stub = deepStub(priority, 'classNames', ['foo']);
 
-    Ember.set(attrContainer, `${priority}.classNames`, ['foo']);
-
-    this.setProperties(Ember.getProperties(attrContainer, 'config', 'directable'));
+    this.setProperties(getProperties(stub, 'config', 'directable'));
 
     this.render(hbs`{{ember-theater-director-scene-window config=config directable=directable}}`);
 
@@ -62,11 +49,9 @@ configurablePriority.forEach((priority) => {
   test(`applies a z-index based on ${priority}`, function(assert) {
     assert.expect(1);
 
-    const attrContainer = attrContainerGenerator(priority);
+    const stub = deepStub(priority, 'priority', 5);
 
-    Ember.set(attrContainer, `${priority}.priority`, 5);
-
-    this.setProperties(Ember.getProperties(attrContainer, 'config', 'directable'));
+    this.setProperties(getProperties(stub, 'config', 'directable'));
 
     this.render(hbs`{{ember-theater-director-scene-window config=config directable=directable}}`);
 
@@ -76,11 +61,9 @@ configurablePriority.forEach((priority) => {
   test(`applies the screen based on ${priority}`, function(assert) {
     assert.expect(1);
 
-    const attrContainer = attrContainerGenerator(priority);
+    const stub = deepStub(priority, 'screen', true);
 
-    Ember.set(attrContainer, `${priority}.screen`, true);
-
-    this.setProperties(Ember.getProperties(attrContainer, 'config', 'directable'));
+    this.setProperties(getProperties(stub, 'config', 'directable'));
 
     this.render(hbs`{{ember-theater-director-scene-window config=config directable=directable}}`);
 
@@ -90,12 +73,11 @@ configurablePriority.forEach((priority) => {
   test(`gives the screen a priority based on ${priority}`, function(assert) {
     assert.expect(1);
 
-    const attrContainer = attrContainerGenerator(priority);
+    const stub = deepStub(priority, 'screen', true);
 
-    Ember.set(attrContainer, `${priority}.screen`, true);
-    Ember.set(attrContainer, `${priority}.priority`, 5);
+    set(stub, 'priority', 5);
 
-    this.setProperties(Ember.getProperties(attrContainer, 'config', 'directable'));
+    this.setProperties(getProperties(stub, 'config', 'directable'));
 
     this.render(hbs`{{ember-theater-director-scene-window config=config directable=directable}}`);
 
