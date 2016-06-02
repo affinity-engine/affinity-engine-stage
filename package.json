@@ -56,6 +56,7 @@
   },
   "ember-addon": {
     "configPath": "tests/dummy/config",
+    "demoURL": "http://www.ember.theater/learn/director",
     "after": [
       "ember-theater"
     ]
