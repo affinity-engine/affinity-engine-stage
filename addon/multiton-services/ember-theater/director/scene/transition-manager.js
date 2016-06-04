@@ -15,7 +15,7 @@ const {
 const { run: { later } } = Ember;
 const { Logger: { warn } } = Ember;
 
-const configurablePriority = [
+const configurationTiers = [
   'config.attrs.director.scene',
   'config.attrs.director',
   'config.attrs.globals'
@@ -26,7 +26,7 @@ export default MultitonService.extend(BusPublisherMixin, MultitonIdsMixin, {
   autosaveManager: multiton('ember-theater/autosave-manager', 'theaterId'),
   sceneManager: multiton('ember-theater/director/scene-manager', 'theaterId', 'windowId'),
 
-  transitionOut: deepConfigurable(configurablePriority, 'transitionOut'),
+  transitionOut: deepConfigurable(configurationTiers, 'transitionOut'),
 
   toScene(scene, options) {
     const { theaterId, windowId } = getProperties(this, 'theaterId', 'windowId');

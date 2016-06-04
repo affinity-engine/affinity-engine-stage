@@ -9,7 +9,7 @@ const {
   get
 } = Ember;
 
-const configurablePriority = [
+const configurationTiers = [
   'directable.attrs',
   'directable.attrs.appender.attrs',
   'config.attrs.director',
@@ -21,10 +21,10 @@ export default Component.extend(DirectableComponentMixin, {
 
   config: multiton('ember-theater/config', 'theaterId'),
 
-  header: configurable(configurablePriority, 'header'),
-  text: configurable(configurablePriority, 'textContent'),
-  footerSecondary: configurable(configurablePriority, 'footerSecondary'),
-  footerText: configurable(configurablePriority, 'footerText'),
+  header: configurable(configurationTiers, 'header'),
+  text: configurable(configurationTiers, 'textContent'),
+  footerSecondary: configurable(configurationTiers, 'footerSecondary'),
+  footerText: configurable(configurationTiers, 'footerText'),
 
   footer: computed('footerSecondary', 'footerText', {
     get() {

@@ -19,7 +19,7 @@ const { RSVP: { Promise } } = Ember;
 
 const { alias } = computed;
 
-const configurablePriority = [
+const configurationTiers = [
   'directable.attrs',
   'config.attrs.director.layer',
   'config.attrs.director',
@@ -40,7 +40,7 @@ export default Component.extend(BusPublisherMixin, DirectableComponentMixin, Tra
 
   animation: alias('layerFilter.animation'),
   animationName: alias('layerFilter.animationName'),
-  transitions: deepArrayConfigurable(configurablePriority, 'directable.attrs.transitions', 'transition'),
+  transitions: deepArrayConfigurable(configurationTiers, 'directable.attrs.transitions', 'transition'),
 
   init() {
     const { theaterId, windowId } = getProperties(this, 'theaterId', 'windowId');

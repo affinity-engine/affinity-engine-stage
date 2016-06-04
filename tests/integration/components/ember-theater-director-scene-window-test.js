@@ -26,14 +26,14 @@ moduleForComponent('ember-theater-director-scene-window', 'Integration | Compone
   }
 });
 
-const configurablePriority = [
+const configurationTiers = [
   'directable.attrs',
   'config.attrs.director.scene',
   'config.attrs.director',
   'config.attrs.globals'
 ];
 
-configurablePriority.forEach((priority) => {
+configurationTiers.forEach((priority) => {
   test(`applies the classNames found in ${priority}`, function(assert) {
     assert.expect(1);
 

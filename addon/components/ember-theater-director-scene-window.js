@@ -15,7 +15,7 @@ const {
   typeOf
 } = Ember;
 
-const configurablePriority = [
+const configurationTiers = [
   'directable.attrs',
   'config.attrs.director.scene',
   'config.attrs.director',
@@ -32,14 +32,14 @@ export default Component.extend(BusSubscriberMixin, DirectableComponentMixin, Tr
 
   config: multiton('ember-theater/config', 'theaterId'),
 
-  configurableClassNames: configurable(configurablePriority, 'classNames'),
-  priority: configurable(configurablePriority, 'priority'),
-  sceneId: configurable(configurablePriority, 'sceneId'),
-  sceneWindowId: configurable(configurablePriority, 'sceneWindowId'),
-  screen: configurable(configurablePriority, 'screen'),
-  transitionIn: deepConfigurable(configurablePriority, 'transitionIn'),
-  transitionOut: deepConfigurable(configurablePriority, 'transitionOut'),
-  window: configurable(configurablePriority, 'window'),
+  configurableClassNames: configurable(configurationTiers, 'classNames'),
+  priority: configurable(configurationTiers, 'priority'),
+  sceneId: configurable(configurationTiers, 'sceneId'),
+  sceneWindowId: configurable(configurationTiers, 'sceneWindowId'),
+  screen: configurable(configurationTiers, 'screen'),
+  transitionIn: deepConfigurable(configurationTiers, 'transitionIn'),
+  transitionOut: deepConfigurable(configurationTiers, 'transitionOut'),
+  window: configurable(configurationTiers, 'window'),
 
   joinedConfigurableClassNames: computed('configurableClassNames.[]', {
     get() {
