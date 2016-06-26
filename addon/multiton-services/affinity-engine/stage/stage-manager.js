@@ -15,10 +15,10 @@ export default MultitonService.extend(BusSubscriberMixin, DirectableManagerMixin
   directables: computed(() => Ember.A()),
 
   init() {
-    const { theaterId, windowId } = getProperties(this, 'theaterId', 'windowId');
+    const { engineId, windowId } = getProperties(this, 'engineId', 'windowId');
 
-    this.on(`et:${theaterId}:${windowId}:stageIsClearing`, this, this.clearDirectables);
-    this.on(`et:${theaterId}:${windowId}:removingDirectable`, this, this.removeDirectable);
+    this.on(`et:${engineId}:${windowId}:stageIsClearing`, this, this.clearDirectables);
+    this.on(`et:${engineId}:${windowId}:removingDirectable`, this, this.removeDirectable);
 
     this._super();
   },

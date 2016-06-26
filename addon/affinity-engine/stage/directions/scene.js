@@ -74,10 +74,10 @@ export default Direction.extend(BusPublisherMixin, {
   },
 
   close() {
-    const theaterId = get(this, 'theaterId');
+    const engineId = get(this, 'engineId');
     const sceneWindowId = get(this, 'attrs.sceneWindowId');
 
-    this.publish(`et:${theaterId}:${sceneWindowId}:closingWindow`);
+    this.publish(`et:${engineId}:${sceneWindowId}:closingWindow`);
 
     return this;
   },
@@ -99,7 +99,7 @@ export default Direction.extend(BusPublisherMixin, {
   },
 
   _perform(...args) {
-    const { attrs, theaterId, windowId } = getProperties(this, 'attrs', 'theaterId', 'windowId');
+    const { attrs, engineId, windowId } = getProperties(this, 'attrs', 'engineId', 'windowId');
     const sceneWindowId = get(attrs, 'sceneWindowId');
 
     if (isPresent(sceneWindowId) && sceneWindowId !== windowId) {
@@ -107,7 +107,7 @@ export default Direction.extend(BusPublisherMixin, {
     } else if (isPresent(get(attrs, 'sceneId'))) {
       const sceneId = get(attrs, 'sceneId');
 
-      this.publish(`et:${theaterId}:${windowId}:sceneIsChanging`, sceneId, attrs);
+      this.publish(`et:${engineId}:${windowId}:sceneIsChanging`, sceneId, attrs);
     }
   }
 });

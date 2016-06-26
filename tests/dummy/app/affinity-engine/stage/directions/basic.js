@@ -9,7 +9,7 @@ const {
 
 export default Direction.extend({
   componentPath: 'basic-direction',
-  layer: 'theater.meta.basic',
+  layer: 'engine.meta.basic',
 
   _setup(header) {
     this._entryPoint();

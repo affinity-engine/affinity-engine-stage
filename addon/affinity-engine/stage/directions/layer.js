@@ -10,7 +10,7 @@ const {
 } = Ember;
 
 export default Direction.extend({
-  layerManager: multiton('affinity-engine/stage/layer-manager', 'theaterId', 'windowId'),
+  layerManager: multiton('affinity-engine/stage/layer-manager', 'engineId', 'windowId'),
 
   _setup(layer) {
     this._entryPoint();

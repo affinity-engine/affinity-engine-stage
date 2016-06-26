@@ -3,4 +3,4 @@
 
 # affinity-engine-stage
 
-You'll find the interactive guides [here](http://www.ember.theater/learn/stage).
+You'll find the interactive guides [here](http://www.ember.engine/learn/stage).

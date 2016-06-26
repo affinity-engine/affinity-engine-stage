@@ -26,12 +26,12 @@ export default MultitonService.extend(BusSubscriberMixin, DirectableManagerMixin
   layers: computed(() => Ember.A()),
 
   setupEvents: on('init', function() {
-    const { theaterId, windowId } = getProperties(this, 'theaterId', 'windowId');
+    const { engineId, windowId } = getProperties(this, 'engineId', 'windowId');
 
-    this.on(`et:${theaterId}:${windowId}:filterQueued`, this, this.addFilter);
-    this.on(`et:${theaterId}:${windowId}:layerAdded`, this, this.registerLayer);
-    this.on(`et:${theaterId}:${windowId}:layerRemoved`, this, this.unregisterLayer);
-    this.on(`et:${theaterId}:${windowId}:stageIsClearing`, this, this.clearFilters);
+    this.on(`et:${engineId}:${windowId}:filterQueued`, this, this.addFilter);
+    this.on(`et:${engineId}:${windowId}:layerAdded`, this, this.registerLayer);
+    this.on(`et:${engineId}:${windowId}:layerRemoved`, this, this.unregisterLayer);
+    this.on(`et:${engineId}:${windowId}:stageIsClearing`, this, this.clearFilters);
   }),
 
   registerLayer(layer) {

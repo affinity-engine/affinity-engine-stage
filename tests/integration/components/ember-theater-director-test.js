@@ -10,7 +10,7 @@ const {
   getOwner
 } = Ember;
 
-moduleForComponent('affinity-engine-stage', 'Integration | Component | ember theater stage', {
+moduleForComponent('affinity-engine-stage', 'Integration | Component | ember engine stage', {
   integration: true,
 
   beforeEach() {
@@ -27,15 +27,15 @@ test('when no `windowId` is provided, it publishes `gameIsInitializing`', functi
   assert.expect(1);
 
   const initialScene = 'foo';
-  const theaterId = 'bar';
+  const engineId = 'bar';
 
   assert.willPublish('et:bar:gameIsInitializing', [initialScene], '`gameIsInitializing` is passed the `initialScene`');
 
-  this.setProperties({ initialScene, theaterId });
+  this.setProperties({ initialScene, engineId });
 
   this.render(hbs`{{affinity-engine-stage
     initialScene=initialScene
-    theaterId=theaterId
+    engineId=engineId
   }}`);
 });
 
@@ -44,17 +44,17 @@ test('when a `windowId` is provided, it publishes `sceneIsChanging`', function(a
 
   const initialScene = 'foo';
   const sceneRecord = {};
-  const theaterId = 'bar';
+  const engineId = 'bar';
   const windowArg = {};
   const windowId = 'baz';
 
-  assert.willNotPublish(`et:${theaterId}:gameIsInitializing`, '`gameIsInitializing` is not triggered');
-  assert.willPublish(`et:${theaterId}:${windowId}:sceneIsChanging`, [initialScene, { autosave: false, sceneRecord, window: windowArg }], '`sceneIsChanging` is triggered');
+  assert.willNotPublish(`et:${engineId}:gameIsInitializing`, '`gameIsInitializing` is not triggered');
+  assert.willPublish(`et:${engineId}:${windowId}:sceneIsChanging`, [initialScene, { autosave: false, sceneRecord, window: windowArg }], '`sceneIsChanging` is triggered');
 
   this.setProperties({
     initialScene,
     sceneRecord,
-    theaterId,
+    engineId,
     windowId,
     window: windowArg
   });
@@ -62,7 +62,7 @@ test('when a `windowId` is provided, it publishes `sceneIsChanging`', function(a
   this.render(hbs`{{affinity-engine-stage
     initialScene=initialScene
     sceneRecord=sceneRecord
-    theaterId=theaterId
+    engineId=engineId
     window=window
     windowId=windowId
   }}`);
@@ -73,7 +73,7 @@ test('it renders an `affinity-engine-stage-layer`', function(assert) {
 
   this.render(hbs`{{affinity-engine-stage}}`);
 
-  const $layer = $hook('ember_theater_stage_layer');
+  const $layer = $hook('affinity_engine_stage_layer');
 
   assert.equal($layer.length, 1, 'renders a single layer');
   assert.ok($layer.hasClass('et-layer-'), 'layer has correct name');

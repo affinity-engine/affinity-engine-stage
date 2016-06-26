@@ -42,8 +42,8 @@ export default Mixin.create(BusPublisherMixin, {
   },
 
   removeDirectable() {
-    const { directable, theaterId, windowId } = getProperties(this, 'directable', 'theaterId', 'windowId');
+    const { directable, engineId, windowId } = getProperties(this, 'directable', 'engineId', 'windowId');
 
-    this.publish(`et:${theaterId}:${windowId}:removingDirectable`, directable);
+    this.publish(`et:${engineId}:${windowId}:removingDirectable`, directable);
   }
 });

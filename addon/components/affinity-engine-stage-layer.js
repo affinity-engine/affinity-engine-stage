@@ -29,7 +29,7 @@ const configurationTiers = [
 export default Component.extend(BusPublisherMixin, DirectableComponentMixin, TransitionableComponentMixin, TransitionableComponentAutoMixin, {
   layout,
 
-  hook: 'ember_theater_stage_layer',
+  hook: 'affinity_engine_stage_layer',
 
   attributeBindings: ['animationName:animation-name'],
   classNames: ['et-layer'],
@@ -43,9 +43,9 @@ export default Component.extend(BusPublisherMixin, DirectableComponentMixin, Tra
   transitions: deepArrayConfigurable(configurationTiers, 'directable.attrs.transitions', 'transition'),
 
   init() {
-    const { theaterId, windowId } = getProperties(this, 'theaterId', 'windowId');
+    const { engineId, windowId } = getProperties(this, 'engineId', 'windowId');
 
-    this.publish(`et:${theaterId}:${windowId}:layerAdded`, this);
+    this.publish(`et:${engineId}:${windowId}:layerAdded`, this);
 
     this._super();
   },
@@ -57,9 +57,9 @@ export default Component.extend(BusPublisherMixin, DirectableComponentMixin, Tra
   },
 
   willDestroyElement() {
-    const { theaterId, windowId } = getProperties(this, 'theaterId', 'windowId');
+    const { engineId, windowId } = getProperties(this, 'engineId', 'windowId');
 
-    this.publish(`et:${theaterId}:${windowId}:layerRemoved`, this);
+    this.publish(`et:${engineId}:${windowId}:layerRemoved`, this);
 
     this._super();
   },
@@ -67,9 +67,9 @@ export default Component.extend(BusPublisherMixin, DirectableComponentMixin, Tra
   addFilter(transition) {
     return new Promise((resolve) => {
       run(() => {
-        const { theaterId, windowId } = getProperties(this, 'theaterId', 'windowId');
+        const { engineId, windowId } = getProperties(this, 'engineId', 'windowId');
 
-        this.publish(`et:${theaterId}:${windowId}:filterQueued`, resolve, get(transition, 'effect'), transition, get(this, 'layerName'));
+        this.publish(`et:${engineId}:${windowId}:filterQueued`, resolve, get(transition, 'effect'), transition, get(this, 'layerName'));
       });
     });
   },

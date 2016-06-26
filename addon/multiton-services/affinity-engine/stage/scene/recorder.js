@@ -12,9 +12,9 @@ const {
 
 export default MultitonService.extend(BusSubscriberMixin, Evented, MultitonIdsMixin, {
   setupEvents: on('init', function() {
-    const { theaterId, windowId } = getProperties(this, 'theaterId', 'windowId');
+    const { engineId, windowId } = getProperties(this, 'engineId', 'windowId');
 
-    this.on(`et:${theaterId}:${windowId}:directionCompleted`, this, this._update);
+    this.on(`et:${engineId}:${windowId}:directionCompleted`, this, this._update);
   }),
 
   setRecord(sceneRecord = {}) {

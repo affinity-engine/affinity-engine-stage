@@ -14,7 +14,7 @@ moduleForAcceptance('Acceptance | affinity-engine/stage/directions/scene', {
   }
 });
 
-test('Ember Theater | stage | Directions | Scene', function(assert) {
+test('Affinity Engine | stage | Directions | Scene', function(assert) {
   assert.expect(15);
 
   visit('/affinity-engine/test-scenarios/stage/directions/scene').then(() => {
@@ -32,12 +32,12 @@ test('Ember Theater | stage | Directions | Scene', function(assert) {
     assert.equal($hook('basic_direction_header').eq(2).text().trim(), 'Scene Four', 'second child scene is present');
 
     assert.equal(
-      Ember.$(`${hook('ember_theater_stage_scene_window')}[data-scene-window-id="simple-window"]`).
-      find(hook('ember_theater_stage_scene_window_screen')).length, 0, 'first child has no screen');
+      Ember.$(`${hook('affinity_engine_stage_scene_window')}[data-scene-window-id="simple-window"]`).
+      find(hook('affinity_engine_stage_scene_window_screen')).length, 0, 'first child has no screen');
 
     assert.ok(
-      Ember.$(`${hook('ember_theater_stage_scene_window')}[data-scene-window-id="window-with-screen"]`).
-      find(hook('ember_theater_stage_scene_window_screen')).hasClass('foo'), 'second child has screen with provided class name');
+      Ember.$(`${hook('affinity_engine_stage_scene_window')}[data-scene-window-id="window-with-screen"]`).
+      find(hook('affinity_engine_stage_scene_window_screen')).hasClass('foo'), 'second child has screen with provided class name');
 
     return step(150);
   }).then(() => {

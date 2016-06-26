@@ -25,12 +25,12 @@ const configurationTiers = [
 export default Component.extend(BusSubscriberMixin, DirectableComponentMixin, TransitionableComponentMixin, {
   layout,
 
-  hook: 'ember_theater_stage_scene_window',
+  hook: 'affinity_engine_stage_scene_window',
 
   attributeBindings: ['sceneWindowId:data-scene-window-id'],
   classNames: ['et-scene-window'],
 
-  config: multiton('affinity-engine/config', 'theaterId'),
+  config: multiton('affinity-engine/config', 'engineId'),
 
   configurableClassNames: configurable(configurationTiers, 'classNames'),
   priority: configurable(configurationTiers, 'priority'),
@@ -67,10 +67,10 @@ export default Component.extend(BusSubscriberMixin, DirectableComponentMixin, Tr
   }).readOnly(),
 
   init() {
-    const theaterId = get(this, 'theaterId');
+    const engineId = get(this, 'engineId');
     const sceneWindowId = get(this, 'sceneWindowId');
 
-    this.on(`et:${theaterId}:${sceneWindowId}:closingWindow`, this, this.close);
+    this.on(`et:${engineId}:${sceneWindowId}:closingWindow`, this, this.close);
 
     this._super();
   },

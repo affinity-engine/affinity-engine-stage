@@ -22,21 +22,21 @@ const configurationTiers = [
 ];
 
 export default MultitonService.extend(BusPublisherMixin, MultitonIdsMixin, {
-  config: multiton('affinity-engine/config', 'theaterId'),
-  autosaveManager: multiton('affinity-engine/autosave-manager', 'theaterId'),
-  sceneManager: multiton('affinity-engine/stage/scene-manager', 'theaterId', 'windowId'),
+  config: multiton('affinity-engine/config', 'engineId'),
+  autosaveManager: multiton('affinity-engine/autosave-manager', 'engineId'),
+  sceneManager: multiton('affinity-engine/stage/scene-manager', 'engineId', 'windowId'),
 
   transitionOut: deepConfigurable(configurationTiers, 'transitionOut'),
 
   toScene(scene, options) {
-    const { theaterId, windowId } = getProperties(this, 'theaterId', 'windowId');
+    const { engineId, windowId } = getProperties(this, 'engineId', 'windowId');
     const query = windowId === 'main' ? '.et-stage' : `[data-scene-window-id="${windowId}"] .et-stage`;
     const $stage = Ember.$(query);
     const transitionOut = get(this, 'transitionOut');
     const duration = get(options, 'transitionOut.duration') || get(transitionOut, 'duration');
     const effect = get(options, 'transitionOut.effect') || get(transitionOut, 'effect');
 
-    this.publish(`et:${theaterId}:${windowId}:scriptsMustAbort`);
+    this.publish(`et:${engineId}:${windowId}:scriptsMustAbort`);
 
     animate($stage, effect, { duration });
 
@@ -75,8 +75,8 @@ export default MultitonService.extend(BusPublisherMixin, MultitonIdsMixin, {
       return;
     }
 
-    const { theaterId, windowId } = getProperties(this, 'theaterId', 'windowId');
-    const instance = factory.create({ theaterId, windowId });
+    const { engineId, windowId } = getProperties(this, 'engineId', 'windowId');
+    const instance = factory.create({ engineId, windowId });
 
     return {
       start: instance.start,
@@ -88,16 +88,16 @@ export default MultitonService.extend(BusPublisherMixin, MultitonIdsMixin, {
   _buildScript() {
     const sceneManager = get(this, 'sceneManager');
     const factory = getOwner(this).lookup('affinity-engine/stage:script');
-    const { theaterId, windowId } = getProperties(this, 'theaterId', 'windowId');
+    const { engineId, windowId } = getProperties(this, 'engineId', 'windowId');
     const sceneRecord = get(sceneManager, 'sceneRecord');
 
-    return factory.create({ sceneRecord, theaterId, windowId });
+    return factory.create({ sceneRecord, engineId, windowId });
   },
 
   _clearStage() {
-    const { theaterId, windowId } = getProperties(this, 'theaterId', 'windowId');
+    const { engineId, windowId } = getProperties(this, 'engineId', 'windowId');
 
-    this.publish(`et:${theaterId}:${windowId}:stageIsClearing`);
+    this.publish(`et:${engineId}:${windowId}:stageIsClearing`);
   },
 
   _setSceneManager(options) {
@@ -110,17 +110,17 @@ export default MultitonService.extend(BusPublisherMixin, MultitonIdsMixin, {
   _updateAutosave(sceneId, sceneName, options) {
     if (get(options, 'autosave') === false || get(this, 'config.attrs.stage.scene.autosave') === false) { return; }
 
-    const theaterId = get(this, 'theaterId');
+    const engineId = get(this, 'engineId');
 
     get(this, 'autosaveManager'); // initialize the autosave-manager
 
-    this.publish(`et:${theaterId}:deletingStateValue`, '_sceneRecord');
+    this.publish(`et:${engineId}:deletingStateValue`, '_sceneRecord');
 
-    this.publish(`et:${theaterId}:appendingActiveState`, {
+    this.publish(`et:${engineId}:appendingActiveState`, {
       sceneId,
       sceneName
     });
 
-    this.publish(`et:${theaterId}:writingAutosave`);
+    this.publish(`et:${engineId}:writingAutosave`);
   }
 });

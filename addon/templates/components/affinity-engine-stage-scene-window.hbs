@@ -1,12 +1,12 @@
 {{#if screen}}
-  <div class="et-scene-window-screen {{joinedScreenClassNames}}" style={{childStyle}} data-test={{hook "ember_theater_stage_scene_window_screen"}}></div>
+  <div class="et-scene-window-screen {{joinedScreenClassNames}}" style={{childStyle}} data-test={{hook "affinity_engine_stage_scene_window_screen"}}></div>
 {{/if}}
 
-<div class="et-scene-window-main {{joinedConfigurableClassNames}}" style={{childStyle}} data-test={{hook "ember_theater_stage_scene_window_main"}}>
+<div class="et-scene-window-main {{joinedConfigurableClassNames}}" style={{childStyle}} data-test={{hook "affinity_engine_stage_scene_window_main"}}>
   {{affinity-engine-stage
     initialScene=sceneId
     sceneRecord=sceneRecord
-    theaterId=theaterId
+    engineId=engineId
     windowId=sceneWindowId
     window=window
   }}

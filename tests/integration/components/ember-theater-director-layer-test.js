@@ -11,7 +11,7 @@ const {
   getOwner
 } = Ember;
 
-moduleForComponent('affinity-engine-stage-layer', 'Integration | Component | ember theater stage layer', {
+moduleForComponent('affinity-engine-stage-layer', 'Integration | Component | ember engine stage layer', {
   integration: true,
 
   beforeEach() {
@@ -27,20 +27,20 @@ moduleForComponent('affinity-engine-stage-layer', 'Integration | Component | emb
 test('`didInsertElement` publishes `layerAdded`', function(assert) {
   assert.expect(1);
 
-  const theaterId = 'foo';
+  const engineId = 'foo';
   const windowId = 'bar';
   const name = 'baz';
 
   assert.willPublish(
-    `et:${theaterId}:${windowId}:layerAdded`,
+    `et:${engineId}:${windowId}:layerAdded`,
     (layer) => get(layer, 'name') === name,
     '`layerAdded` is published with `layer`'
   );
 
-  this.setProperties({ theaterId, windowId, name });
+  this.setProperties({ engineId, windowId, name });
 
   this.render(hbs`{{affinity-engine-stage-layer
-    theaterId=theaterId
+    engineId=engineId
     windowId=windowId
     name=name
   }}`);
@@ -65,27 +65,27 @@ test('`didInsertElement` prepares the layer for a filter animation ending', func
   }}`);
 
   canResolve = true;
-  $hook('ember_theater_stage_layer').trigger('animationend');
-  assert.ok($hook('ember_theater_stage_layer').attr('style').indexOf(effect) > 0, 'filter was set');
+  $hook('affinity_engine_stage_layer').trigger('animationend');
+  assert.ok($hook('affinity_engine_stage_layer').attr('style').indexOf(effect) > 0, 'filter was set');
 });
 
 test('`willDestroyElement` publishes `layerRemoved`', function(assert) {
   assert.expect(1);
 
-  const theaterId = 'foo';
+  const engineId = 'foo';
   const windowId = 'bar';
   const name = 'baz';
 
-  this.setProperties({ theaterId, windowId, name });
+  this.setProperties({ engineId, windowId, name });
 
   this.render(hbs`{{affinity-engine-stage-layer
-    theaterId=theaterId
+    engineId=engineId
     windowId=windowId
     name=name
   }}`);
 
   assert.willPublish(
-    `et:${theaterId}:${windowId}:layerRemoved`,
+    `et:${engineId}:${windowId}:layerRemoved`,
     (layer) => get(layer, 'name') === name,
     '`layerRemoved` is published with `layer`'
   );
@@ -102,11 +102,11 @@ test('class name is bound to layer name', function(assert) {
     name=name
   }}`);
 
-  assert.ok($hook('ember_theater_stage_layer').hasClass('et-layer-'), 'has correct class when name is blank');
+  assert.ok($hook('affinity_engine_stage_layer').hasClass('et-layer-'), 'has correct class when name is blank');
 
   this.set('name', 'foo');
 
-  assert.ok($hook('ember_theater_stage_layer').hasClass('et-layer-foo'), 'has correct class when name is foo');
+  assert.ok($hook('affinity_engine_stage_layer').hasClass('et-layer-foo'), 'has correct class when name is foo');
 });
 
 test('class name is bound to layer name', function(assert) {
@@ -118,11 +118,11 @@ test('class name is bound to layer name', function(assert) {
     name=name
   }}`);
 
-  assert.ok($hook('ember_theater_stage_layer').hasClass('et-layer-'), 'has correct class when name is blank');
+  assert.ok($hook('affinity_engine_stage_layer').hasClass('et-layer-'), 'has correct class when name is blank');
 
   this.set('name', 'foo');
 
-  assert.ok($hook('ember_theater_stage_layer').hasClass('et-layer-foo'), 'has correct class when name is foo');
+  assert.ok($hook('affinity_engine_stage_layer').hasClass('et-layer-foo'), 'has correct class when name is foo');
 });
 
 test('renders a filtered list of directables', function(assert) {

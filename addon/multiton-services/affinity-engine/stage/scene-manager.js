@@ -13,9 +13,9 @@ const {
 const { computed: { alias } } = Ember;
 
 export default MultitonService.extend(BusSubscriberMixin, MultitonIdsMixin, {
-  curtainPulley: multiton('affinity-engine/stage/scene/curtain-pulley', 'theaterId', 'windowId'),
-  recorder: multiton('affinity-engine/stage/scene/recorder', 'theaterId', 'windowId'),
-  transitionManager: multiton('affinity-engine/stage/scene/transition-manager', 'theaterId', 'windowId'),
+  curtainPulley: multiton('affinity-engine/stage/scene/curtain-pulley', 'engineId', 'windowId'),
+  recorder: multiton('affinity-engine/stage/scene/recorder', 'engineId', 'windowId'),
+  transitionManager: multiton('affinity-engine/stage/scene/transition-manager', 'engineId', 'windowId'),
 
   sceneRecord: alias('recorder.sceneRecord'),
 
@@ -31,11 +31,11 @@ export default MultitonService.extend(BusSubscriberMixin, MultitonIdsMixin, {
   },
 
   _setupEvents() {
-    const { theaterId, windowId } = getProperties(this, 'theaterId', 'windowId');
+    const { engineId, windowId } = getProperties(this, 'engineId', 'windowId');
 
-    this.on(`et:${theaterId}:gameIsRewinding`, this, this.rewindToScene);
-    this.on(`et:${theaterId}:gameIsInitializing`, this, this.intializeGame);
-    this.on(`et:${theaterId}:${windowId}:sceneIsChanging`, this, this.toScene);
+    this.on(`et:${engineId}:gameIsRewinding`, this, this.rewindToScene);
+    this.on(`et:${engineId}:gameIsInitializing`, this, this.intializeGame);
+    this.on(`et:${engineId}:${windowId}:sceneIsChanging`, this, this.toScene);
   },
 
   intializeGame(initialScene) {

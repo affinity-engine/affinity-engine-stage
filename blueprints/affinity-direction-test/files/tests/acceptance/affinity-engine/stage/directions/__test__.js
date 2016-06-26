@@ -12,6 +12,6 @@ moduleForAcceptance('Acceptance | affinity-engine/stage/directions/<%= dasherize
   }
 });
 
-test('Ember Theater | stage | Directions | <%= classifiedModuleName %>', function(assert) {
+test('Affinity Engine | stage | Directions | <%= classifiedModuleName %>', function(assert) {
   visit('/test-scenarios/affinity-engine/stage/directions/<%= dasherizedModuleName %>');
 });

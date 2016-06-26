@@ -15,34 +15,34 @@ const { alias } = computed;
 export default Component.extend(BusPublisherMixin, {
   layout,
 
-  hook: 'ember_theater_stage',
+  hook: 'affinity_engine_stage',
 
   classNames: ['et-stage'],
   windowId: 'main',
 
-  producer: multiton('affinity-engine/producer', 'theaterId'),
-  layerManager: multiton('affinity-engine/stage/layer-manager', 'theaterId', 'windowId'),
-  sceneManager: multiton('affinity-engine/stage/scene-manager', 'theaterId', 'windowId'),
-  stageManager: multiton('affinity-engine/stage/stage-manager', 'theaterId', 'windowId'),
+  producer: multiton('affinity-engine/producer', 'engineId'),
+  layerManager: multiton('affinity-engine/stage/layer-manager', 'engineId', 'windowId'),
+  sceneManager: multiton('affinity-engine/stage/scene-manager', 'engineId', 'windowId'),
+  stageManager: multiton('affinity-engine/stage/stage-manager', 'engineId', 'windowId'),
 
   directables: alias('stageManager.directables'),
 
   didInsertElement() {
     const {
       initialScene,
-      theaterId,
+      engineId,
       windowId,
       window
-    } = getProperties(this, 'initialScene', 'theaterId', 'windowId', 'window');
+    } = getProperties(this, 'initialScene', 'engineId', 'windowId', 'window');
 
     this._initializeServices();
 
     if (windowId === 'main') {
-      this.publish(`et:${theaterId}:gameIsInitializing`, initialScene);
+      this.publish(`et:${engineId}:gameIsInitializing`, initialScene);
     } else {
       const sceneRecord = get(this, 'sceneRecord');
 
-      this.publish(`et:${theaterId}:${windowId}:sceneIsChanging`, initialScene, {
+      this.publish(`et:${engineId}:${windowId}:sceneIsChanging`, initialScene, {
         autosave: false,
         sceneRecord,
         window

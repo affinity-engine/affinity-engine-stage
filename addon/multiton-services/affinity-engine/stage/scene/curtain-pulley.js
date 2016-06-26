@@ -12,14 +12,14 @@ const {
 } = Ember;
 
 export default MultitonService.extend(BusPublisherMixin, BusSubscriberMixin, MultitonIdsMixin, {
-  saveStateManager: multiton('affinity-engine/save-state-manager', 'theaterId'),
-  sceneManager: multiton('affinity-engine/stage/scene-manager', 'theaterId', 'windowId'),
+  saveStateManager: multiton('affinity-engine/save-state-manager', 'engineId'),
+  sceneManager: multiton('affinity-engine/stage/scene-manager', 'engineId', 'windowId'),
 
   setupEvents: on('init', function() {
-    const theaterId = get(this, 'theaterId');
+    const engineId = get(this, 'engineId');
 
-    this.on(`et:${theaterId}:gameIsResetting`, this, this.toInitialScene);
-    this.on(`et:${theaterId}:saveIsLoading`, this, this.loadScene);
+    this.on(`et:${engineId}:gameIsResetting`, this, this.toInitialScene);
+    this.on(`et:${engineId}:saveIsLoading`, this, this.loadScene);
   }),
 
   loadLatestScene() {
@@ -47,12 +47,12 @@ export default MultitonService.extend(BusPublisherMixin, BusSubscriberMixin, Mul
     const {
       saveStateManager,
       sceneManager,
-      theaterId
-    } = getProperties(this, 'saveStateManager', 'sceneManager', 'theaterId');
+      engineId
+    } = getProperties(this, 'saveStateManager', 'sceneManager', 'engineId');
 
     saveStateManager.loadRecord(save);
 
-    this.publish(`et:${theaterId}:reseting`);
+    this.publish(`et:${engineId}:reseting`);
 
     options.sceneRecord = saveStateManager.getStateValue('_sceneRecord') || {};
 

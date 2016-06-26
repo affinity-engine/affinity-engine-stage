@@ -8,7 +8,7 @@ const {
 export default Ember.Object.extend({
   layer: computed('options.layer', {
     get() {
-      return get(this, 'options.layer') || 'theater';
+      return get(this, 'options.layer') || 'engine';
     }
   })
 });

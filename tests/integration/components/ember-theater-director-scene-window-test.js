@@ -13,7 +13,7 @@ const {
   set
 } = Ember;
 
-moduleForComponent('affinity-engine-stage-scene-window', 'Integration | Component | ember theater stage scene window', {
+moduleForComponent('affinity-engine-stage-scene-window', 'Integration | Component | ember engine stage scene window', {
   integration: true,
 
   beforeEach() {
@@ -43,7 +43,7 @@ configurationTiers.forEach((priority) => {
 
     this.render(hbs`{{affinity-engine-stage-scene-window config=config directable=directable}}`);
 
-    assert.ok($hook('ember_theater_stage_scene_window_main').hasClass('foo'), 'has class');
+    assert.ok($hook('affinity_engine_stage_scene_window_main').hasClass('foo'), 'has class');
   });
 
   test(`applies a z-index based on ${priority}`, function(assert) {
@@ -55,7 +55,7 @@ configurationTiers.forEach((priority) => {
 
     this.render(hbs`{{affinity-engine-stage-scene-window config=config directable=directable}}`);
 
-    assert.equal($hook('ember_theater_stage_scene_window_main').attr('style'), 'z-index: 5000;', 'style is correct');
+    assert.equal($hook('affinity_engine_stage_scene_window_main').attr('style'), 'z-index: 5000;', 'style is correct');
   });
 
   test(`applies the screen based on ${priority}`, function(assert) {
@@ -67,7 +67,7 @@ configurationTiers.forEach((priority) => {
 
     this.render(hbs`{{affinity-engine-stage-scene-window config=config directable=directable}}`);
 
-    assert.ok($hook('ember_theater_stage_scene_window_screen').length > 0, 'screen is visible');
+    assert.ok($hook('affinity_engine_stage_scene_window_screen').length > 0, 'screen is visible');
   });
 
   test(`gives the screen a priority based on ${priority}`, function(assert) {
@@ -81,7 +81,7 @@ configurationTiers.forEach((priority) => {
 
     this.render(hbs`{{affinity-engine-stage-scene-window config=config directable=directable}}`);
 
-    assert.ok($hook('ember_theater_stage_scene_window_screen').attr('style'), 'z-index: 5000;', 'style is correct');
+    assert.ok($hook('affinity_engine_stage_scene_window_screen').attr('style'), 'z-index: 5000;', 'style is correct');
   });
 });
 
@@ -90,7 +90,7 @@ test('it renders a child stage', function(assert) {
 
   this.render(hbs`{{affinity-engine-stage-scene-window}}`);
 
-  assert.ok($hook('ember_theater_stage').length > 0, 'stage is rendered');
+  assert.ok($hook('affinity_engine_stage').length > 0, 'stage is rendered');
 });
 
 test('hides the screen by default', function(assert) {
@@ -98,7 +98,7 @@ test('hides the screen by default', function(assert) {
 
   this.render(hbs`{{affinity-engine-stage-scene-window}}`);
 
-  assert.ok($hook('ember_theater_stage_scene_window_screen').length === 0, 'screen is hidden');
+  assert.ok($hook('affinity_engine_stage_scene_window_screen').length === 0, 'screen is hidden');
 });
 
 test('sets data scene-window-id', function(assert) {
@@ -110,5 +110,5 @@ test('sets data scene-window-id', function(assert) {
 
   this.render(hbs`{{affinity-engine-stage-scene-window sceneWindowId=sceneWindowId}}`);
 
-  assert.ok($hook('ember_theater_stage_scene_window').data('scene-window-id'), 'foo', 'data set correctly');
+  assert.ok($hook('affinity_engine_stage_scene_window').data('scene-window-id'), 'foo', 'data set correctly');
 });

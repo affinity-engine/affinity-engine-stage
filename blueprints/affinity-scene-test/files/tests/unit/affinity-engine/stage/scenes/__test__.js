@@ -1,7 +1,7 @@
 import <%= camelizedModuleName %> from '<%= dasherizedPackageName %>/affinity-engine/stage/scenes/<%= dasherizedModuleName %>';
 import { module, test } from 'qunit';
 
-module('Unit | EmberTheaterScene | <%= dasherizedModuleName %>');
+module('Unit | AffinityEngineScene | <%= dasherizedModuleName %>');
 
 // Replace this with your real tests.
 test('it works', function(assert) {

@@ -15,12 +15,12 @@ const {
 export default Ember.Object.extend(BusPublisherMixin, BusSubscriberMixin, Evented, {
   _sceneRecordIndex: -1,
 
-  stage: multiton('affinity-engine/stage/stage', 'theaterId', 'windowId'),
+  stage: multiton('affinity-engine/stage/stage', 'engineId', 'windowId'),
 
   _setupEvents: on('init', function() {
-    const { theaterId, windowId } = getProperties(this, 'theaterId', 'windowId');
+    const { engineId, windowId } = getProperties(this, 'engineId', 'windowId');
 
-    this.on(`et:${theaterId}:${windowId}:scriptsMustAbort`, this, this._abort);
+    this.on(`et:${engineId}:${windowId}:scriptsMustAbort`, this, this._abort);
   }),
 
   _executeDirection(directionName, args) {
@@ -45,7 +45,7 @@ export default Ember.Object.extend(BusPublisherMixin, BusSubscriberMixin, Evente
   },
 
   _record(promise) {
-    const theaterId = get(this, 'theaterId');
+    const engineId = get(this, 'engineId');
     const sceneRecordIndex = get(this, '_sceneRecordIndex');
 
     promise.then((direction) => {
@@ -54,7 +54,7 @@ export default Ember.Object.extend(BusPublisherMixin, BusSubscriberMixin, Evente
       const isDirection = typeOf(direction) === 'instance' && get(direction, '_isDirection');
       const value = isDirection ? get(direction, 'result') || '_RESOLVED' : direction;
 
-      this.publish(`et:${theaterId}:${get(this, 'windowId')}:directionCompleted`, sceneRecordIndex, value);
+      this.publish(`et:${engineId}:${get(this, 'windowId')}:directionCompleted`, sceneRecordIndex, value);
     });
   }
 });

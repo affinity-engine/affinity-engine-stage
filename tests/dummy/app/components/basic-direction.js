@@ -19,7 +19,7 @@ const configurationTiers = [
 export default Component.extend(DirectableComponentMixin, {
   hook: 'basic_direction',
 
-  config: multiton('affinity-engine/config', 'theaterId'),
+  config: multiton('affinity-engine/config', 'engineId'),
 
   header: configurable(configurationTiers, 'header'),
   text: configurable(configurationTiers, 'textContent'),

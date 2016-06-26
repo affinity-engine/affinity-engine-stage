@@ -20,8 +20,8 @@ export default Ember.Object.extend(Evented, {
 
   attrs: computed(() => Ember.Object.create({ instance: 0 })),
 
-  sceneManager: multiton('affinity-engine/stage/scene-manager', 'theaterId', 'windowId'),
-  stageManager: multiton('affinity-engine/stage/stage-manager', 'theaterId', 'windowId'),
+  sceneManager: multiton('affinity-engine/stage/scene-manager', 'engineId', 'windowId'),
+  stageManager: multiton('affinity-engine/stage/stage-manager', 'engineId', 'windowId'),
 
   prepareForChaining: on('directionReady', function(predecessors) {
     set(this, 'predecessors', predecessors);
@@ -98,7 +98,7 @@ export default Ember.Object.extend(Evented, {
 
   _directionMeta: computed({
     get() {
-      return getProperties(this, 'priorSceneRecord', 'queue', 'script', 'theaterId', 'windowId');
+      return getProperties(this, 'priorSceneRecord', 'queue', 'script', 'engineId', 'windowId');
     }
   }).readOnly().volatile(),
 
