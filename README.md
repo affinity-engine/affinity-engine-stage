@@ -1,6 +1,6 @@
-[![npm version](https://badge.fury.io/js/ember-theater-director.svg)](https://badge.fury.io/js/ember-theater-director)
-[![Build Status](https://travis-ci.org/ember-theater/ember-theater-director.svg?branch=master)](https://travis-ci.org/ember-theater/ember-theater-director)
+[![npm version](https://badge.fury.io/js/affinity-engine-stage.svg)](https://badge.fury.io/js/affinity-engine-stage)
+[![Build Status](https://travis-ci.org/affinity-engine/affinity-engine-stage.svg?branch=master)](https://travis-ci.org/affinity-engine/affinity-engine-stage)
 
-# ember-theater-director
+# affinity-engine-stage
 
-You'll find the interactive guides [here](http://www.ember.theater/learn/director).
+You'll find the interactive guides [here](http://www.ember.theater/learn/stage).

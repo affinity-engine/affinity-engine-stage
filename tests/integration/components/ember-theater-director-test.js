@@ -4,13 +4,13 @@ import hbs from 'htmlbars-inline-precompile';
 import { $hook, initialize as initializeHook } from 'ember-hook';
 import { initialize as initializeMultitons } from 'ember-multiton-service';
 import { initializeQUnitAssertions } from 'ember-message-bus';
-import { initialize as initializeDirector } from 'ember-theater-director';
+import { initialize as initializestage } from 'affinity-engine-stage';
 
 const {
   getOwner
 } = Ember;
 
-moduleForComponent('ember-theater-director', 'Integration | Component | ember theater director', {
+moduleForComponent('affinity-engine-stage', 'Integration | Component | ember theater stage', {
   integration: true,
 
   beforeEach() {
@@ -19,7 +19,7 @@ moduleForComponent('ember-theater-director', 'Integration | Component | ember th
     initializeHook();
     initializeMultitons(appInstance);
     initializeQUnitAssertions(appInstance);
-    initializeDirector(appInstance);
+    initializestage(appInstance);
   }
 });
 
@@ -33,7 +33,7 @@ test('when no `windowId` is provided, it publishes `gameIsInitializing`', functi
 
   this.setProperties({ initialScene, theaterId });
 
-  this.render(hbs`{{ember-theater-director
+  this.render(hbs`{{affinity-engine-stage
     initialScene=initialScene
     theaterId=theaterId
   }}`);
@@ -59,7 +59,7 @@ test('when a `windowId` is provided, it publishes `sceneIsChanging`', function(a
     window: windowArg
   });
 
-  this.render(hbs`{{ember-theater-director
+  this.render(hbs`{{affinity-engine-stage
     initialScene=initialScene
     sceneRecord=sceneRecord
     theaterId=theaterId
@@ -68,12 +68,12 @@ test('when a `windowId` is provided, it publishes `sceneIsChanging`', function(a
   }}`);
 });
 
-test('it renders an `ember-theater-director-layer`', function(assert) {
+test('it renders an `affinity-engine-stage-layer`', function(assert) {
   assert.expect(2);
 
-  this.render(hbs`{{ember-theater-director}}`);
+  this.render(hbs`{{affinity-engine-stage}}`);
 
-  const $layer = $hook('ember_theater_director_layer');
+  const $layer = $hook('ember_theater_stage_layer');
 
   assert.equal($layer.length, 1, 'renders a single layer');
   assert.ok($layer.hasClass('et-layer-'), 'layer has correct name');

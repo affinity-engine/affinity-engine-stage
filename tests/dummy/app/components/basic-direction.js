@@ -1,6 +1,6 @@
 import Ember from 'ember';
-import configurable from 'ember-theater/macros/ember-theater/configurable';
-import { DirectableComponentMixin } from 'ember-theater-director';
+import configurable from 'affinity-engine/macros/affinity-engine/configurable';
+import { DirectableComponentMixin } from 'affinity-engine-stage';
 import multiton from 'ember-multiton-service';
 
 const {
@@ -12,14 +12,14 @@ const {
 const configurationTiers = [
   'directable.attrs',
   'directable.attrs.appender.attrs',
-  'config.attrs.director',
+  'config.attrs.stage',
   'config.attrs.globals'
 ];
 
 export default Component.extend(DirectableComponentMixin, {
   hook: 'basic_direction',
 
-  config: multiton('ember-theater/config', 'theaterId'),
+  config: multiton('affinity-engine/config', 'theaterId'),
 
   header: configurable(configurationTiers, 'header'),
   text: configurable(configurationTiers, 'textContent'),

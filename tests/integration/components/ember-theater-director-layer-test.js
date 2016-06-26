@@ -4,14 +4,14 @@ import hbs from 'htmlbars-inline-precompile';
 import { $hook, hook, initialize as initializeHook } from 'ember-hook';
 import { initialize as initializeMultitons } from 'ember-multiton-service';
 import { initializeQUnitAssertions } from 'ember-message-bus';
-import { initialize as initializeDirector } from 'ember-theater-director';
+import { initialize as initializestage } from 'affinity-engine-stage';
 
 const {
   get,
   getOwner
 } = Ember;
 
-moduleForComponent('ember-theater-director-layer', 'Integration | Component | ember theater director layer', {
+moduleForComponent('affinity-engine-stage-layer', 'Integration | Component | ember theater stage layer', {
   integration: true,
 
   beforeEach() {
@@ -20,7 +20,7 @@ moduleForComponent('ember-theater-director-layer', 'Integration | Component | em
     initializeHook();
     initializeMultitons(appInstance);
     initializeQUnitAssertions(appInstance);
-    initializeDirector(appInstance);
+    initializestage(appInstance);
   }
 });
 
@@ -39,7 +39,7 @@ test('`didInsertElement` publishes `layerAdded`', function(assert) {
 
   this.setProperties({ theaterId, windowId, name });
 
-  this.render(hbs`{{ember-theater-director-layer
+  this.render(hbs`{{affinity-engine-stage-layer
     theaterId=theaterId
     windowId=windowId
     name=name
@@ -60,13 +60,13 @@ test('`didInsertElement` prepares the layer for a filter animation ending', func
 
   this.setProperties({ layerFilter });
 
-  this.render(hbs`{{ember-theater-director-layer
+  this.render(hbs`{{affinity-engine-stage-layer
     layerFilter=layerFilter
   }}`);
 
   canResolve = true;
-  $hook('ember_theater_director_layer').trigger('animationend');
-  assert.ok($hook('ember_theater_director_layer').attr('style').indexOf(effect) > 0, 'filter was set');
+  $hook('ember_theater_stage_layer').trigger('animationend');
+  assert.ok($hook('ember_theater_stage_layer').attr('style').indexOf(effect) > 0, 'filter was set');
 });
 
 test('`willDestroyElement` publishes `layerRemoved`', function(assert) {
@@ -78,7 +78,7 @@ test('`willDestroyElement` publishes `layerRemoved`', function(assert) {
 
   this.setProperties({ theaterId, windowId, name });
 
-  this.render(hbs`{{ember-theater-director-layer
+  this.render(hbs`{{affinity-engine-stage-layer
     theaterId=theaterId
     windowId=windowId
     name=name
@@ -98,15 +98,15 @@ test('class name is bound to layer name', function(assert) {
 
   this.set('name', '');
 
-  this.render(hbs`{{ember-theater-director-layer
+  this.render(hbs`{{affinity-engine-stage-layer
     name=name
   }}`);
 
-  assert.ok($hook('ember_theater_director_layer').hasClass('et-layer-'), 'has correct class when name is blank');
+  assert.ok($hook('ember_theater_stage_layer').hasClass('et-layer-'), 'has correct class when name is blank');
 
   this.set('name', 'foo');
 
-  assert.ok($hook('ember_theater_director_layer').hasClass('et-layer-foo'), 'has correct class when name is foo');
+  assert.ok($hook('ember_theater_stage_layer').hasClass('et-layer-foo'), 'has correct class when name is foo');
 });
 
 test('class name is bound to layer name', function(assert) {
@@ -114,15 +114,15 @@ test('class name is bound to layer name', function(assert) {
 
   this.set('name', '');
 
-  this.render(hbs`{{ember-theater-director-layer
+  this.render(hbs`{{affinity-engine-stage-layer
     name=name
   }}`);
 
-  assert.ok($hook('ember_theater_director_layer').hasClass('et-layer-'), 'has correct class when name is blank');
+  assert.ok($hook('ember_theater_stage_layer').hasClass('et-layer-'), 'has correct class when name is blank');
 
   this.set('name', 'foo');
 
-  assert.ok($hook('ember_theater_director_layer').hasClass('et-layer-foo'), 'has correct class when name is foo');
+  assert.ok($hook('ember_theater_stage_layer').hasClass('et-layer-foo'), 'has correct class when name is foo');
 });
 
 test('renders a filtered list of directables', function(assert) {
@@ -147,7 +147,7 @@ test('renders a filtered list of directables', function(assert) {
 
   this.setProperties({ name, directables });
 
-  this.render(hbs`{{ember-theater-director-layer
+  this.render(hbs`{{affinity-engine-stage-layer
     directables=directables
     name=name
     hook="parent_layer"
@@ -182,7 +182,7 @@ test('renders a filtered list of directables', function(assert) {
 
   this.setProperties({ name, directables });
 
-  this.render(hbs`{{ember-theater-director-layer
+  this.render(hbs`{{affinity-engine-stage-layer
     directables=directables
     name=name
     hook="parent_layer"
@@ -217,7 +217,7 @@ test('renders child layers based on the layer names of its directables', functio
 
   this.setProperties({ name, directables });
 
-  this.render(hbs`{{ember-theater-director-layer
+  this.render(hbs`{{affinity-engine-stage-layer
     directables=directables
     name=name
     hook="parent_layer"

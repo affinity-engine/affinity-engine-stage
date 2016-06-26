@@ -1,0 +1,18 @@
+{{#each layerDirectables as |directable|}}
+  {{component directable.componentPath
+    directable=directable
+    isFocused=isFocused
+    theaterId=theaterId
+    windowId=windowId
+  }}
+{{/each}}
+
+{{#each-in childLayers as |name directables|}}
+  {{affinity-engine-stage-layer
+    directables=directables
+    isFocused=isFocused
+    name=name
+    theaterId=theaterId
+    windowId=windowId
+  }}
+{{/each-in}}

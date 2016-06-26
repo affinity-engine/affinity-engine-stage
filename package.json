@@ -1,7 +1,7 @@
 {
-  "name": "ember-theater-director",
+  "name": "affinity-engine-stage",
   "version": "0.0.0",
-  "description": "A dynamic staging plugin for Ember Theater",
+  "description": "Stand proud and speak your heart: an Affinity Engine game plugin",
   "directories": {
     "doc": "doc",
     "test": "tests"
@@ -11,7 +11,7 @@
     "start": "ember server",
     "test": "ember try:testall"
   },
-  "repository": "https://github.com/ember-theater/ember-theater-director",
+  "repository": "https://github.com/affinity-engine/affinity-engine-stage",
   "engines": {
     "node": ">= 0.10.0"
   },
@@ -40,15 +40,15 @@
     "ember-load-initializers": "^0.5.1",
     "ember-moment": "6.1.0",
     "ember-resolver": "^2.0.3",
-    "ember-theater": "git+https://github.com/ember-theater/ember-theater.git#v2",
+    "affinity-engine": "git+https://github.com/affinity-engine/affinity-engine.git",
     "ember-try": "^0.2.2",
     "loader.js": "^4.0.1"
   },
   "keywords": [
     "ember-addon",
-    "ember-theater",
-    "ember-theater plugin",
-    "ember-theater-director"
+    "affinity-engine",
+    "affinity-engine plugin",
+    "affinity-engine-stage"
   ],
   "dependencies": {
     "ember-cli-babel": "^5.1.6",
@@ -58,7 +58,7 @@
     "configPath": "tests/dummy/config",
     "demoURL": "http://www.ember.theater/learn/director",
     "after": [
-      "ember-theater"
+      "affinity-engine"
     ]
   }
 }

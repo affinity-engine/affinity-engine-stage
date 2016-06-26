@@ -1,0 +1,12 @@
+@import "stage/backdrop";
+@import "stage/character";
+@import "stage/menu";
+@import "stage/scene-window";
+@import "stage/text";
+@import "stage/code-challange";
+
+.et-stage {
+  @extend .et-full-screen;
+
+  perspective: $et-stage-perspective;
+}

@@ -4,8 +4,8 @@ import hbs from 'htmlbars-inline-precompile';
 import { $hook, initialize as initializeHook } from 'ember-hook';
 import { initialize as initializeMultitons } from 'ember-multiton-service';
 import { initializeQUnitAssertions } from 'ember-message-bus';
-import { deepStub } from 'ember-theater';
-import { initialize as initializeDirector } from 'ember-theater-director';
+import { deepStub } from 'affinity-engine';
+import { initialize as initializestage } from 'affinity-engine-stage';
 
 const {
   getOwner,
@@ -13,7 +13,7 @@ const {
   set
 } = Ember;
 
-moduleForComponent('ember-theater-director-scene-window', 'Integration | Component | ember theater director scene window', {
+moduleForComponent('affinity-engine-stage-scene-window', 'Integration | Component | ember theater stage scene window', {
   integration: true,
 
   beforeEach() {
@@ -22,14 +22,14 @@ moduleForComponent('ember-theater-director-scene-window', 'Integration | Compone
     initializeHook();
     initializeMultitons(appInstance);
     initializeQUnitAssertions(appInstance);
-    initializeDirector(appInstance);
+    initializestage(appInstance);
   }
 });
 
 const configurationTiers = [
   'directable.attrs',
-  'config.attrs.director.scene',
-  'config.attrs.director',
+  'config.attrs.stage.scene',
+  'config.attrs.stage',
   'config.attrs.globals'
 ];
 
@@ -41,9 +41,9 @@ configurationTiers.forEach((priority) => {
 
     this.setProperties(getProperties(stub, 'config', 'directable'));
 
-    this.render(hbs`{{ember-theater-director-scene-window config=config directable=directable}}`);
+    this.render(hbs`{{affinity-engine-stage-scene-window config=config directable=directable}}`);
 
-    assert.ok($hook('ember_theater_director_scene_window_main').hasClass('foo'), 'has class');
+    assert.ok($hook('ember_theater_stage_scene_window_main').hasClass('foo'), 'has class');
   });
 
   test(`applies a z-index based on ${priority}`, function(assert) {
@@ -53,9 +53,9 @@ configurationTiers.forEach((priority) => {
 
     this.setProperties(getProperties(stub, 'config', 'directable'));
 
-    this.render(hbs`{{ember-theater-director-scene-window config=config directable=directable}}`);
+    this.render(hbs`{{affinity-engine-stage-scene-window config=config directable=directable}}`);
 
-    assert.equal($hook('ember_theater_director_scene_window_main').attr('style'), 'z-index: 5000;', 'style is correct');
+    assert.equal($hook('ember_theater_stage_scene_window_main').attr('style'), 'z-index: 5000;', 'style is correct');
   });
 
   test(`applies the screen based on ${priority}`, function(assert) {
@@ -65,9 +65,9 @@ configurationTiers.forEach((priority) => {
 
     this.setProperties(getProperties(stub, 'config', 'directable'));
 
-    this.render(hbs`{{ember-theater-director-scene-window config=config directable=directable}}`);
+    this.render(hbs`{{affinity-engine-stage-scene-window config=config directable=directable}}`);
 
-    assert.ok($hook('ember_theater_director_scene_window_screen').length > 0, 'screen is visible');
+    assert.ok($hook('ember_theater_stage_scene_window_screen').length > 0, 'screen is visible');
   });
 
   test(`gives the screen a priority based on ${priority}`, function(assert) {
@@ -79,26 +79,26 @@ configurationTiers.forEach((priority) => {
 
     this.setProperties(getProperties(stub, 'config', 'directable'));
 
-    this.render(hbs`{{ember-theater-director-scene-window config=config directable=directable}}`);
+    this.render(hbs`{{affinity-engine-stage-scene-window config=config directable=directable}}`);
 
-    assert.ok($hook('ember_theater_director_scene_window_screen').attr('style'), 'z-index: 5000;', 'style is correct');
+    assert.ok($hook('ember_theater_stage_scene_window_screen').attr('style'), 'z-index: 5000;', 'style is correct');
   });
 });
 
-test('it renders a child director', function(assert) {
+test('it renders a child stage', function(assert) {
   assert.expect(1);
 
-  this.render(hbs`{{ember-theater-director-scene-window}}`);
+  this.render(hbs`{{affinity-engine-stage-scene-window}}`);
 
-  assert.ok($hook('ember_theater_director').length > 0, 'director is rendered');
+  assert.ok($hook('ember_theater_stage').length > 0, 'stage is rendered');
 });
 
 test('hides the screen by default', function(assert) {
   assert.expect(1);
 
-  this.render(hbs`{{ember-theater-director-scene-window}}`);
+  this.render(hbs`{{affinity-engine-stage-scene-window}}`);
 
-  assert.ok($hook('ember_theater_director_scene_window_screen').length === 0, 'screen is hidden');
+  assert.ok($hook('ember_theater_stage_scene_window_screen').length === 0, 'screen is hidden');
 });
 
 test('sets data scene-window-id', function(assert) {
@@ -108,7 +108,7 @@ test('sets data scene-window-id', function(assert) {
 
   this.set('sceneWindowId', sceneWindowId);
 
-  this.render(hbs`{{ember-theater-director-scene-window sceneWindowId=sceneWindowId}}`);
+  this.render(hbs`{{affinity-engine-stage-scene-window sceneWindowId=sceneWindowId}}`);
 
-  assert.ok($hook('ember_theater_director_scene_window').data('scene-window-id'), 'foo', 'data set correctly');
+  assert.ok($hook('ember_theater_stage_scene_window').data('scene-window-id'), 'foo', 'data set correctly');
 });

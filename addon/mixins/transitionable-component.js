@@ -1,5 +1,5 @@
 import Ember from 'ember';
-import { animate } from 'ember-theater';
+import { animate } from 'affinity-engine';
 
 const {
   Mixin,
