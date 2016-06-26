@@ -5,7 +5,7 @@ import { $hook, initialize as initializeHook } from 'ember-hook';
 import { initialize as initializeMultitons } from 'ember-multiton-service';
 import { initializeQUnitAssertions } from 'ember-message-bus';
 import { deepStub } from 'affinity-engine';
-import { initialize as initializestage } from 'affinity-engine-stage';
+import { initialize as initializeStage } from 'affinity-engine-stage';
 
 const {
   getOwner,
@@ -22,7 +22,7 @@ moduleForComponent('affinity-engine-stage-scene-window', 'Integration | Componen
     initializeHook();
     initializeMultitons(appInstance);
     initializeQUnitAssertions(appInstance);
-    initializestage(appInstance);
+    initializeStage(appInstance);
   }
 });
 

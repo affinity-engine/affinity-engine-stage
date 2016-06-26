@@ -4,7 +4,7 @@ import hbs from 'htmlbars-inline-precompile';
 import { $hook, hook, initialize as initializeHook } from 'ember-hook';
 import { initialize as initializeMultitons } from 'ember-multiton-service';
 import { initializeQUnitAssertions } from 'ember-message-bus';
-import { initialize as initializestage } from 'affinity-engine-stage';
+import { initialize as initializeStage } from 'affinity-engine-stage';
 
 const {
   get,
@@ -20,7 +20,7 @@ moduleForComponent('affinity-engine-stage-layer', 'Integration | Component | emb
     initializeHook();
     initializeMultitons(appInstance);
     initializeQUnitAssertions(appInstance);
-    initializestage(appInstance);
+    initializeStage(appInstance);
   }
 });
 
