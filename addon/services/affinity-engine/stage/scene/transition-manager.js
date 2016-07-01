@@ -1,10 +1,10 @@
 import Ember from 'ember';
-import { MultitonService } from 'ember-multiton-service';
 import multiton from 'ember-multiton-service';
 import { BusPublisherMixin } from 'ember-message-bus';
 import { MultitonIdsMixin, animate, deepConfigurable } from 'affinity-engine';
 
 const {
+  Service,
   get,
   getOwner,
   getProperties,
@@ -21,7 +21,7 @@ const configurationTiers = [
   'config.attrs.globals'
 ];
 
-export default MultitonService.extend(BusPublisherMixin, MultitonIdsMixin, {
+export default Service.extend(BusPublisherMixin, MultitonIdsMixin, {
   config: multiton('affinity-engine/config', 'engineId'),
   autosaveManager: multiton('affinity-engine/autosave-manager', 'engineId'),
   sceneManager: multiton('affinity-engine/stage/scene-manager', 'engineId', 'windowId'),

@@ -1,17 +1,17 @@
 import Ember from 'ember';
-import { MultitonService } from 'ember-multiton-service';
 import multiton from 'ember-multiton-service';
 import { BusPublisherMixin, BusSubscriberMixin } from 'ember-message-bus';
 import { MultitonIdsMixin } from 'affinity-engine';
 
 const {
+  Service,
   get,
   getProperties,
   isPresent,
   on
 } = Ember;
 
-export default MultitonService.extend(BusPublisherMixin, BusSubscriberMixin, MultitonIdsMixin, {
+export default Service.extend(BusPublisherMixin, BusSubscriberMixin, MultitonIdsMixin, {
   saveStateManager: multiton('affinity-engine/save-state-manager', 'engineId'),
   sceneManager: multiton('affinity-engine/stage/scene-manager', 'engineId', 'windowId'),
 

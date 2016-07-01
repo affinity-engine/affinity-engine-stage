@@ -2,7 +2,6 @@ import Ember from 'ember';
 import { moduleForComponent, test } from 'ember-qunit';
 import hbs from 'htmlbars-inline-precompile';
 import { $hook, initialize as initializeHook } from 'ember-hook';
-import { initialize as initializeMultitons } from 'ember-multiton-service';
 import { initializeQUnitAssertions } from 'ember-message-bus';
 import { initialize as initializeStage } from 'affinity-engine-stage';
 
@@ -17,7 +16,6 @@ moduleForComponent('affinity-engine-stage', 'Integration | Component | ember eng
     const appInstance = getOwner(this);
 
     initializeHook();
-    initializeMultitons(appInstance);
     initializeQUnitAssertions(appInstance);
     initializeStage(appInstance);
   }

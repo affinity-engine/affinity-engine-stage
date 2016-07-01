@@ -1,16 +1,16 @@
 import Ember from 'ember';
-import { MultitonService } from 'ember-multiton-service';
 import { BusSubscriberMixin } from 'ember-message-bus';
 import { MultitonIdsMixin } from 'affinity-engine';
 
 const {
   Evented,
+  Service,
   getProperties,
   on,
   set
 } = Ember;
 
-export default MultitonService.extend(BusSubscriberMixin, Evented, MultitonIdsMixin, {
+export default Service.extend(BusSubscriberMixin, Evented, MultitonIdsMixin, {
   setupEvents: on('init', function() {
     const { engineId, windowId } = getProperties(this, 'engineId', 'windowId');
 

@@ -20,7 +20,6 @@ export default Component.extend(BusPublisherMixin, {
   classNames: ['et-stage'],
   windowId: 'main',
 
-  producer: multiton('affinity-engine/producer', 'engineId'),
   layerManager: multiton('affinity-engine/stage/layer-manager', 'engineId', 'windowId'),
   sceneManager: multiton('affinity-engine/stage/scene-manager', 'engineId', 'windowId'),
   stageManager: multiton('affinity-engine/stage/stage-manager', 'engineId', 'windowId'),

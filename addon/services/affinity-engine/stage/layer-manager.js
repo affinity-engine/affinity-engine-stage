@@ -1,11 +1,11 @@
 import Ember from 'ember';
-import { MultitonService } from 'ember-multiton-service';
 import { MultitonIdsMixin } from 'affinity-engine';
 import { BusSubscriberMixin } from 'ember-message-bus';
 import { DirectableManagerMixin, layerName } from 'affinity-engine-stage';
 
 const {
   Evented,
+  Service,
   computed,
   generateGuid,
   get,
@@ -19,7 +19,7 @@ const {
 const { run: { later } } = Ember;
 const { inject: { service } } = Ember;
 
-export default MultitonService.extend(BusSubscriberMixin, DirectableManagerMixin, Evented, MultitonIdsMixin, {
+export default Service.extend(BusSubscriberMixin, DirectableManagerMixin, Evented, MultitonIdsMixin, {
   dynamicStylesheet: service(),
 
   filters: computed(() => Ember.A()),
