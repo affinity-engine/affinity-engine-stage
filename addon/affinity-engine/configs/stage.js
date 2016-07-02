@@ -3,6 +3,14 @@ export default {
   globals: {
     classNames: ['et-paper', 'et-block'],
     transitionDuration: 200,
+    cps: 25,
+    tweenEffect: {
+      opacity: {
+        from: 0,
+        to: 1
+      }
+    },
+    tweenRate: 25,
     transition: {
       duration: 250,
       effect: { opacity: 1 }
@@ -16,7 +24,7 @@ export default {
       effect: { opacity: 0 }
     },
     keys: {
-      accept: [' ', 'Enter'],
+      accept: ['Space', 'Enter'],
       cancel: ['Escape'],
       moveDown: ['ArrowDown', 's'],
       moveUp: ['ArrowUp', 'w']
