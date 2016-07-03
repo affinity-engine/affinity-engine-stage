@@ -6,16 +6,17 @@ const {
   Evented,
   Service,
   getProperties,
-  on,
   set
 } = Ember;
 
 export default Service.extend(BusSubscriberMixin, Evented, MultitonIdsMixin, {
-  setupEvents: on('init', function() {
+  init(...args) {
+    this._super(...args);
+
     const { engineId, windowId } = getProperties(this, 'engineId', 'windowId');
 
     this.on(`et:${engineId}:${windowId}:directionCompleted`, this, this._update);
-  }),
+  },
 
   setRecord(sceneRecord = {}) {
     return set(this, 'sceneRecord', sceneRecord);

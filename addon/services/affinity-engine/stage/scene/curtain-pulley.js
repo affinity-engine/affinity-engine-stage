@@ -7,20 +7,21 @@ const {
   Service,
   get,
   getProperties,
-  isPresent,
-  on
+  isPresent
 } = Ember;
 
 export default Service.extend(BusPublisherMixin, BusSubscriberMixin, MultitonIdsMixin, {
   saveStateManager: multiton('affinity-engine/save-state-manager', 'engineId'),
   sceneManager: multiton('affinity-engine/stage/scene-manager', 'engineId', 'windowId'),
 
-  setupEvents: on('init', function() {
+  init(...args) {
+    this._super(...args);
+
     const engineId = get(this, 'engineId');
 
     this.on(`et:${engineId}:gameIsResetting`, this, this.toInitialScene);
     this.on(`et:${engineId}:saveIsLoading`, this, this.loadScene);
-  }),
+  },
 
   loadLatestScene() {
     const saveStateManager = get(this, 'saveStateManager');

@@ -7,7 +7,6 @@ const {
   getProperties,
   isBlank,
   isPresent,
-  on,
   set
 } = Ember;
 
@@ -16,13 +15,15 @@ const { computed: { alias } } = Ember;
 export default Mixin.create(BusPublisherMixin, {
   priorSceneRecord: alias('directable.priorSceneRecord'),
 
-  associateDirectable: on('didInitAttrs', function() {
+  init(...args) {
+    this._super(...args);
+
     const directable = get(this, 'directable');
 
     if (isBlank(directable)) { return; }
 
     set(directable, 'component', this);
-  }),
+  },
 
   resolveAndDestroy() {
     this.removeDirectable();

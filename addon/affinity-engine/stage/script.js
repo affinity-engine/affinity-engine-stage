@@ -7,7 +7,6 @@ const {
   get,
   getOwner,
   getProperties,
-  on,
   set,
   typeOf
 } = Ember;
@@ -17,11 +16,13 @@ export default Ember.Object.extend(BusPublisherMixin, BusSubscriberMixin, Evente
 
   stage: multiton('affinity-engine/stage/stage', 'engineId', 'windowId'),
 
-  _setupEvents: on('init', function() {
+  init(...args) {
+    this._super(...args);
+
     const { engineId, windowId } = getProperties(this, 'engineId', 'windowId');
 
     this.on(`et:${engineId}:${windowId}:scriptsMustAbort`, this, this._abort);
-  }),
+  },
 
   _executeDirection(directionName, args) {
     const factory = getOwner(this).lookup(`affinity-engine/stage/direction:${directionName}`);

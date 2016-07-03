@@ -10,7 +10,6 @@ const {
   generateGuid,
   get,
   getProperties,
-  on,
   set,
   setProperties,
   typeOf
@@ -25,14 +24,16 @@ export default Service.extend(BusSubscriberMixin, DirectableManagerMixin, Evente
   filters: computed(() => Ember.A()),
   layers: computed(() => Ember.A()),
 
-  setupEvents: on('init', function() {
+  init(...args) {
+    this._super(...args);
+
     const { engineId, windowId } = getProperties(this, 'engineId', 'windowId');
 
     this.on(`et:${engineId}:${windowId}:filterQueued`, this, this.addFilter);
     this.on(`et:${engineId}:${windowId}:layerAdded`, this, this.registerLayer);
     this.on(`et:${engineId}:${windowId}:layerRemoved`, this, this.unregisterLayer);
     this.on(`et:${engineId}:${windowId}:stageIsClearing`, this, this.clearFilters);
-  }),
+  },
 
   registerLayer(layer) {
     get(this, 'layers').pushObject(layer);
