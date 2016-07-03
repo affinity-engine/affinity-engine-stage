@@ -74,5 +74,5 @@ test('it renders an `affinity-engine-stage-layer`', function(assert) {
   const $layer = $hook('affinity_engine_stage_layer');
 
   assert.equal($layer.length, 1, 'renders a single layer');
-  assert.ok($layer.hasClass('et-layer-'), 'layer has correct name');
+  assert.ok($layer.hasClass('ae-stage-layer-'), 'layer has correct name');
 });

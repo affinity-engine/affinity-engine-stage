@@ -28,7 +28,7 @@ export default Component.extend(BusSubscriberMixin, DirectableComponentMixin, Tr
   hook: 'affinity_engine_stage_scene_window',
 
   attributeBindings: ['sceneWindowId:data-scene-window-id'],
-  classNames: ['et-scene-window'],
+  classNames: ['ae-stage-scene-window'],
 
   config: multiton('affinity-engine/config', 'engineId'),
 

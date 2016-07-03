@@ -1,0 +1,23 @@
+$ae-stage-scene-window-light: #fff !default;
+$ae-stage-scene-window-dark: #000 !default;
+
+$ae-stage-scene-window-screen-opacity: 0.3 !default;
+$ae-stage-scene-window-screen-dark-background: $ae-stage-scene-window-dark !default;
+$ae-stage-scene-window-screen-light-background: $ae-stage-scene-window-light !default;
+
+$ae-stage-scene-window-main-center-percentage: 19% !default;
+$ae-stage-scene-window-main-center-percentage-top: $ae-stage-scene-window-main-center-percentage !default;
+$ae-stage-scene-window-main-center-percentage-right: $ae-stage-scene-window-main-center-percentage !default;
+$ae-stage-scene-window-main-center-percentage-bottom: $ae-stage-scene-window-main-center-percentage !default;
+$ae-stage-scene-window-main-center-percentage-left: $ae-stage-scene-window-main-center-percentage !default;
+
+$ae-stage-scene-window-main-center-large-percentage: 9.5% !default;
+$ae-stage-scene-window-main-center-large-percentage-top: $ae-stage-scene-window-main-center-large-percentage !default;
+$ae-stage-scene-window-main-center-large-percentage-right: $ae-stage-scene-window-main-center-large-percentage !default;
+$ae-stage-scene-window-main-center-large-percentage-bottom: $ae-stage-scene-window-main-center-large-percentage !default;
+$ae-stage-scene-window-main-center-large-percentage-left: $ae-stage-scene-window-main-center-large-percentage !default;
+
+$ae-stage-scene-window-main-background-dark: $ae-stage-scene-window-dark !default;
+$ae-stage-scene-window-main-background-light: $ae-stage-scene-window-lght !default;
+$ae-stage-scene-window-main-shadow-dark: 0 0 100px $ae-stage-scene-window-dark !default;
+$ae-stage-scene-window-main-shadow-light: 0 0 100px $ae-stage-scene-window-light !default;

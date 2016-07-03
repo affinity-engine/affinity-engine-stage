@@ -100,11 +100,11 @@ test('class name is bound to layer name', function(assert) {
     name=name
   }}`);
 
-  assert.ok($hook('affinity_engine_stage_layer').hasClass('et-layer-'), 'has correct class when name is blank');
+  assert.ok($hook('affinity_engine_stage_layer').hasClass('ae-stage-layer-'), 'has correct class when name is blank');
 
   this.set('name', 'foo');
 
-  assert.ok($hook('affinity_engine_stage_layer').hasClass('et-layer-foo'), 'has correct class when name is foo');
+  assert.ok($hook('affinity_engine_stage_layer').hasClass('ae-stage-layer-foo'), 'has correct class when name is foo');
 });
 
 test('class name is bound to layer name', function(assert) {
@@ -116,11 +116,11 @@ test('class name is bound to layer name', function(assert) {
     name=name
   }}`);
 
-  assert.ok($hook('affinity_engine_stage_layer').hasClass('et-layer-'), 'has correct class when name is blank');
+  assert.ok($hook('affinity_engine_stage_layer').hasClass('ae-stage-layer-'), 'has correct class when name is blank');
 
   this.set('name', 'foo');
 
-  assert.ok($hook('affinity_engine_stage_layer').hasClass('et-layer-foo'), 'has correct class when name is foo');
+  assert.ok($hook('affinity_engine_stage_layer').hasClass('ae-stage-layer-foo'), 'has correct class when name is foo');
 });
 
 test('renders a filtered list of directables', function(assert) {
@@ -226,24 +226,24 @@ test('renders child layers based on the layer names of its directables', functio
   assert.equal(fooLayerDirectables.length, 1, 'foo layer directables rendered');
   assert.equal(fooLayerDirectables.first().text().trim(), 'foo', 'correct foo layer filter');
 
-  const fooBarLayer = fooLayer.children('.et-layer-foo-bar');
+  const fooBarLayer = fooLayer.children('.ae-stage-layer-foo-bar');
   const fooBarLayerDirectables = fooBarLayer.children(hook('simple_directable'));
   assert.equal(fooBarLayer.length, 1, 'foo-bar layer rendered');
   assert.equal(fooBarLayerDirectables.length, 1, 'foo-bar layer directables rendered');
   assert.equal(fooBarLayerDirectables.first().text().trim(), 'foo.bar', 'correct foo-bar layer filter');
 
-  const fooBarBazLayer = fooBarLayer.children('.et-layer-foo-bar-baz');
+  const fooBarBazLayer = fooBarLayer.children('.ae-stage-layer-foo-bar-baz');
   const fooBarBazLayerDirectables = fooBarBazLayer.children(hook('simple_directable'));
   assert.equal(fooBarBazLayer.length, 1, 'foo-bar-baz layer rendered');
   assert.equal(fooBarBazLayerDirectables.length, 1, 'foo-bar-baz layer directables rendered');
   assert.equal(fooBarBazLayerDirectables.first().text().trim(), 'foo.bar.baz', 'correct foo-bar-baz layer filter');
 
-  const fooBazLayer = fooLayer.children('.et-layer-foo-baz');
+  const fooBazLayer = fooLayer.children('.ae-stage-layer-foo-baz');
   const fooBazLayerDirectables = fooBazLayer.children(hook('simple_directable'));
   assert.equal(fooBazLayer.length, 1, 'foo-baz layer rendered');
   assert.equal(fooBazLayerDirectables.length, 0, 'foo-bar layer directables rendered');
 
-  const fooBazFooLayer = fooBazLayer.children('.et-layer-foo-baz-foo');
+  const fooBazFooLayer = fooBazLayer.children('.ae-stage-layer-foo-baz-foo');
   const fooBazFooLayerDirectables = fooBazFooLayer.children(hook('simple_directable'));
   assert.equal(fooBazFooLayer.length, 1, 'foo-baz-foo layer rendered');
   assert.equal(fooBazFooLayerDirectables.length, 1, 'foo-baz-foo layer directables rendered');

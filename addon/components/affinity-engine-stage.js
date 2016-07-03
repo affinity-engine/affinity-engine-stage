@@ -17,7 +17,7 @@ export default Component.extend(BusPublisherMixin, {
 
   hook: 'affinity_engine_stage',
 
-  classNames: ['et-stage'],
+  classNames: ['ae-stage'],
   windowId: 'main',
 
   layerManager: multiton('affinity-engine/stage/layer-manager', 'engineId', 'windowId'),

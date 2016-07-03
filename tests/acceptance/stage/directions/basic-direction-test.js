@@ -10,11 +10,11 @@ test('Affinity Engine | stage | Directions | BasicDirection', function(assert) {
 
   visit('/affinity-engine/test-scenarios/stage/directions/basic-direction').then(() => {
     assert.ok(Ember.$(`
-      .et-stage
-      .et-layer-
-      .et-layer-engine
-      .et-layer-engine-meta
-      .et-layer-engine-meta-basic
+      .ae-stage
+      .ae-stage-layer-
+      .ae-stage-layer-engine
+      .ae-stage-layer-engine-meta
+      .ae-stage-layer-engine-meta-basic
       ${hook('basic_direction')}
     `).length > 0, 'basic direction is rendered in correct layer');
     assert.equal($hook('basic_direction_header').text().trim(), 'First Basic Header', 'first header is initialized correctly');

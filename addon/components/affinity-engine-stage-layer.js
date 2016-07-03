@@ -32,7 +32,7 @@ export default Component.extend(BusPublisherMixin, DirectableComponentMixin, Tra
   hook: 'affinity_engine_stage_layer',
 
   attributeBindings: ['animationName:animation-name'],
-  classNames: ['et-layer'],
+  classNames: ['ae-stage-layer'],
   classNameBindings: ['layerName'],
 
   directables: computed(() => Ember.A()),

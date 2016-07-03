@@ -1,0 +1,62 @@
+.ae-stage-scene-window {
+  .ae-stage-scene-window-screen {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    opacity: $ae-stage-scene-window-screen-opacity;
+
+    &.ae-dark {
+      background: $ae-stage-scene-window-screen-dark-background;
+    }
+
+    &.ae-light {
+      background: $ae-stage-scene-window-screen-light-background;
+    }
+  }
+
+  .ae-stage-scene-window-main {
+    overflow: hidden;
+
+    &.ae-center {
+      position: absolute;
+      top: $ae-stage-scene-window-main-center-percentage-top;
+      left: $ae-stage-scene-window-main-center-percentage-left;
+      bottom: $ae-stage-scene-window-main-center-percentage-bottom;
+      right: $ae-stage-scene-window-main-center-percentage-right;
+    }
+
+    &.ae-center-large {
+      position: absolute;
+      top: $ae-stage-scene-window-main-center-large-percentage-top;
+      left: $ae-stage-scene-window-main-center-large-percentage-left;
+      bottom: $ae-stage-scene-window-main-center-large-percentage-bottom;
+      right: $ae-stage-scene-window-main-center-large-percentage-right;
+    }
+
+    &.ae-full {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+    }
+
+    &.ae-background-dark {
+      background: $ae-stage-scene-window-main-background-dark;
+    }
+
+    &.ae-background-light {
+      background: $ae-stage-scene-window-main-background-light;
+    }
+
+    &.ae-shadow-dark {
+      box-shadow: $ae-stage-scene-window-main-shadow-dark;
+    }
+
+    &.ae-shadow-light {
+      box-shadow: $ae-stage-scene-window-main-shadow-light;
+    }
+  }
+}

@@ -1,0 +1,8 @@
+@import "stage/variables";
+@import "stage/components";
+
+.ae-stage {
+  @extend .et-full;
+
+  perspective: $ae-stage-perspective;
+}
