@@ -2,7 +2,7 @@
 @import "stage/components";
 
 .ae-stage {
-  @extend .et-full;
+  @extend .ae-full-size;
 
   perspective: $ae-stage-perspective;
 }
