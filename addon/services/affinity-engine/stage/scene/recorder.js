@@ -15,7 +15,7 @@ export default Service.extend(BusSubscriberMixin, Evented, MultitonIdsMixin, {
 
     const { engineId, windowId } = getProperties(this, 'engineId', 'windowId');
 
-    this.on(`et:${engineId}:${windowId}:directionCompleted`, this, this._update);
+    this.on(`ae:${engineId}:${windowId}:directionCompleted`, this, this._update);
   },
 
   setRecord(sceneRecord = {}) {

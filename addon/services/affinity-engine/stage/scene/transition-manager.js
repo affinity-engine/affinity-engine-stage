@@ -23,7 +23,6 @@ const configurationTiers = [
 
 export default Service.extend(BusPublisherMixin, MultitonIdsMixin, {
   config: multiton('affinity-engine/config', 'engineId'),
-  autosaveManager: multiton('affinity-engine/autosave-manager', 'engineId'),
   sceneManager: multiton('affinity-engine/stage/scene-manager', 'engineId', 'windowId'),
 
   transitionOut: deepConfigurable(configurationTiers, 'transitionOut'),
@@ -36,7 +35,7 @@ export default Service.extend(BusPublisherMixin, MultitonIdsMixin, {
     const duration = get(options, 'transitionOut.duration') || get(transitionOut, 'duration');
     const effect = get(options, 'transitionOut.effect') || get(transitionOut, 'effect');
 
-    this.publish(`et:${engineId}:${windowId}:scriptsMustAbort`);
+    this.publish(`ae:${engineId}:${windowId}:scriptsMustAbort`);
 
     animate($stage, effect, { duration });
 
@@ -97,7 +96,7 @@ export default Service.extend(BusPublisherMixin, MultitonIdsMixin, {
   _clearStage() {
     const { engineId, windowId } = getProperties(this, 'engineId', 'windowId');
 
-    this.publish(`et:${engineId}:${windowId}:stageIsClearing`);
+    this.publish(`ae:${engineId}:${windowId}:stageIsClearing`);
   },
 
   _setSceneManager(options) {
@@ -112,15 +111,12 @@ export default Service.extend(BusPublisherMixin, MultitonIdsMixin, {
 
     const engineId = get(this, 'engineId');
 
-    get(this, 'autosaveManager'); // initialize the autosave-manager
-
-    this.publish(`et:${engineId}:deletingStateValue`, '_sceneRecord');
-
-    this.publish(`et:${engineId}:appendingActiveState`, {
+    this.publish(`ae:${engineId}:deletingStateValue`, '_sceneRecord');
+    this.publish(`ae:${engineId}:settingStateValues`, {
       sceneId,
       sceneName
     });
-
-    this.publish(`et:${engineId}:writingAutosave`);
+    this.publish(`ae:${engineId}:shouldFileActiveState`);
+    this.publish(`ae:${engineId}:shouldWriteAutosave`);
   }
 });

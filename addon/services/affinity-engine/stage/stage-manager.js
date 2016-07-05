@@ -17,8 +17,8 @@ export default Service.extend(BusSubscriberMixin, DirectableManagerMixin, Evente
   init() {
     const { engineId, windowId } = getProperties(this, 'engineId', 'windowId');
 
-    this.on(`et:${engineId}:${windowId}:stageIsClearing`, this, this.clearDirectables);
-    this.on(`et:${engineId}:${windowId}:removingDirectable`, this, this.removeDirectable);
+    this.on(`ae:${engineId}:${windowId}:stageIsClearing`, this, this.clearDirectables);
+    this.on(`ae:${engineId}:${windowId}:removingDirectable`, this, this.removeDirectable);
 
     this._super();
   },

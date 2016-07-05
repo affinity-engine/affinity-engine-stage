@@ -70,7 +70,7 @@ export default Component.extend(BusSubscriberMixin, DirectableComponentMixin, Tr
     const engineId = get(this, 'engineId');
     const sceneWindowId = get(this, 'sceneWindowId');
 
-    this.on(`et:${engineId}:${sceneWindowId}:closingWindow`, this, this.close);
+    this.on(`ae:${engineId}:${sceneWindowId}:closingWindow`, this, this.close);
 
     this._super();
   },

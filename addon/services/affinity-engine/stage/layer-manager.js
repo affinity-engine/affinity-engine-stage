@@ -29,10 +29,10 @@ export default Service.extend(BusSubscriberMixin, DirectableManagerMixin, Evente
 
     const { engineId, windowId } = getProperties(this, 'engineId', 'windowId');
 
-    this.on(`et:${engineId}:${windowId}:filterQueued`, this, this.addFilter);
-    this.on(`et:${engineId}:${windowId}:layerAdded`, this, this.registerLayer);
-    this.on(`et:${engineId}:${windowId}:layerRemoved`, this, this.unregisterLayer);
-    this.on(`et:${engineId}:${windowId}:stageIsClearing`, this, this.clearFilters);
+    this.on(`ae:${engineId}:${windowId}:filterQueued`, this, this.addFilter);
+    this.on(`ae:${engineId}:${windowId}:layerAdded`, this, this.registerLayer);
+    this.on(`ae:${engineId}:${windowId}:layerRemoved`, this, this.unregisterLayer);
+    this.on(`ae:${engineId}:${windowId}:stageIsClearing`, this, this.clearFilters);
   },
 
   registerLayer(layer) {

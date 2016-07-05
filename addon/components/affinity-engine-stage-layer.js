@@ -45,7 +45,7 @@ export default Component.extend(BusPublisherMixin, DirectableComponentMixin, Tra
   init() {
     const { engineId, windowId } = getProperties(this, 'engineId', 'windowId');
 
-    this.publish(`et:${engineId}:${windowId}:layerAdded`, this);
+    this.publish(`ae:${engineId}:${windowId}:layerAdded`, this);
 
     this._super();
   },
@@ -59,7 +59,7 @@ export default Component.extend(BusPublisherMixin, DirectableComponentMixin, Tra
   willDestroyElement() {
     const { engineId, windowId } = getProperties(this, 'engineId', 'windowId');
 
-    this.publish(`et:${engineId}:${windowId}:layerRemoved`, this);
+    this.publish(`ae:${engineId}:${windowId}:layerRemoved`, this);
 
     this._super();
   },
@@ -69,7 +69,7 @@ export default Component.extend(BusPublisherMixin, DirectableComponentMixin, Tra
       run(() => {
         const { engineId, windowId } = getProperties(this, 'engineId', 'windowId');
 
-        this.publish(`et:${engineId}:${windowId}:filterQueued`, resolve, get(transition, 'effect'), transition, get(this, 'layerName'));
+        this.publish(`ae:${engineId}:${windowId}:filterQueued`, resolve, get(transition, 'effect'), transition, get(this, 'layerName'));
       });
     });
   },

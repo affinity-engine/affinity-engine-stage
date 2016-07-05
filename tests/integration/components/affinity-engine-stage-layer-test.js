@@ -30,7 +30,7 @@ test('`didInsertElement` publishes `layerAdded`', function(assert) {
   const name = 'baz';
 
   assert.willPublish(
-    `et:${engineId}:${windowId}:layerAdded`,
+    `ae:${engineId}:${windowId}:layerAdded`,
     (layer) => get(layer, 'name') === name,
     '`layerAdded` is published with `layer`'
   );
@@ -83,7 +83,7 @@ test('`willDestroyElement` publishes `layerRemoved`', function(assert) {
   }}`);
 
   assert.willPublish(
-    `et:${engineId}:${windowId}:layerRemoved`,
+    `ae:${engineId}:${windowId}:layerRemoved`,
     (layer) => get(layer, 'name') === name,
     '`layerRemoved` is published with `layer`'
   );

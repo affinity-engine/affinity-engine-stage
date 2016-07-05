@@ -1,17 +1,18 @@
 import Ember from 'ember';
 import multiton from 'ember-multiton-service';
 import { BusPublisherMixin, BusSubscriberMixin } from 'ember-message-bus';
-import { MultitonIdsMixin } from 'affinity-engine';
+import { MultitonIdsMixin, registrant } from 'affinity-engine';
 
 const {
   Service,
   get,
   getProperties,
+  isNone,
   isPresent
 } = Ember;
 
 export default Service.extend(BusPublisherMixin, BusSubscriberMixin, MultitonIdsMixin, {
-  saveStateManager: multiton('affinity-engine/save-state-manager', 'engineId'),
+  saveStateManager: registrant('saveStateManager'),
   sceneManager: multiton('affinity-engine/stage/scene-manager', 'engineId', 'windowId'),
 
   init(...args) {
@@ -19,13 +20,17 @@ export default Service.extend(BusPublisherMixin, BusSubscriberMixin, MultitonIds
 
     const engineId = get(this, 'engineId');
 
-    this.on(`et:${engineId}:gameIsResetting`, this, this.toInitialScene);
-    this.on(`et:${engineId}:saveIsLoading`, this, this.loadScene);
+    this.on(`ae:${engineId}:shouldResetEngine`, this, this.toInitialScene);
+    this.on(`ae:${engineId}:saveIsLoading`, this, this.loadScene);
   },
 
   loadLatestScene() {
     const saveStateManager = get(this, 'saveStateManager');
     const options = { autosave: false };
+
+    if (isNone(saveStateManager) || get(saveStateManager, 'isPlaceholder')) {
+      return this.toInitialScene();
+    }
 
     saveStateManager.get('mostRecentSave').then((save) => {
       if (isPresent(save)) {
@@ -51,9 +56,8 @@ export default Service.extend(BusPublisherMixin, BusSubscriberMixin, MultitonIds
       engineId
     } = getProperties(this, 'saveStateManager', 'sceneManager', 'engineId');
 
-    saveStateManager.loadRecord(save);
-
-    this.publish(`et:${engineId}:reseting`);
+    this.publish(`ae:${engineId}:loadingRecord`, save);
+    this.publish(`ae:${engineId}:reseting`);
 
     options.sceneRecord = saveStateManager.getStateValue('_sceneRecord') || {};
 

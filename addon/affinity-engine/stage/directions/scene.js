@@ -77,7 +77,7 @@ export default Direction.extend(BusPublisherMixin, {
     const engineId = get(this, 'engineId');
     const sceneWindowId = get(this, 'attrs.sceneWindowId');
 
-    this.publish(`et:${engineId}:${sceneWindowId}:closingWindow`);
+    this.publish(`ae:${engineId}:${sceneWindowId}:closingWindow`);
 
     return this;
   },
@@ -107,7 +107,7 @@ export default Direction.extend(BusPublisherMixin, {
     } else if (isPresent(get(attrs, 'sceneId'))) {
       const sceneId = get(attrs, 'sceneId');
 
-      this.publish(`et:${engineId}:${windowId}:sceneIsChanging`, sceneId, attrs);
+      this.publish(`ae:${engineId}:${windowId}:sceneIsChanging`, sceneId, attrs);
     }
   }
 });

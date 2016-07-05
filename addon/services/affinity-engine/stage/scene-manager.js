@@ -33,9 +33,9 @@ export default Service.extend(BusSubscriberMixin, MultitonIdsMixin, {
   _setupEvents() {
     const { engineId, windowId } = getProperties(this, 'engineId', 'windowId');
 
-    this.on(`et:${engineId}:gameIsRewinding`, this, this.rewindToScene);
-    this.on(`et:${engineId}:gameIsInitializing`, this, this.intializeGame);
-    this.on(`et:${engineId}:${windowId}:sceneIsChanging`, this, this.toScene);
+    this.on(`ae:${engineId}:shouldLoadLatestStatePoint`, this, this.rewindToScene);
+    this.on(`ae:${engineId}:gameIsInitializing`, this, this.intializeGame);
+    this.on(`ae:${engineId}:${windowId}:sceneIsChanging`, this, this.toScene);
   },
 
   intializeGame(initialScene) {

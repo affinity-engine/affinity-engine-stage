@@ -27,7 +27,7 @@ test('when no `windowId` is provided, it publishes `gameIsInitializing`', functi
   const initialScene = 'foo';
   const engineId = 'bar';
 
-  assert.willPublish('et:bar:gameIsInitializing', [initialScene], '`gameIsInitializing` is passed the `initialScene`');
+  assert.willPublish('ae:bar:gameIsInitializing', [initialScene], '`gameIsInitializing` is passed the `initialScene`');
 
   this.setProperties({ initialScene, engineId });
 
@@ -46,8 +46,8 @@ test('when a `windowId` is provided, it publishes `sceneIsChanging`', function(a
   const windowArg = {};
   const windowId = 'baz';
 
-  assert.willNotPublish(`et:${engineId}:gameIsInitializing`, '`gameIsInitializing` is not triggered');
-  assert.willPublish(`et:${engineId}:${windowId}:sceneIsChanging`, [initialScene, { autosave: false, sceneRecord, window: windowArg }], '`sceneIsChanging` is triggered');
+  assert.willNotPublish(`ae:${engineId}:gameIsInitializing`, '`gameIsInitializing` is not triggered');
+  assert.willPublish(`ae:${engineId}:${windowId}:sceneIsChanging`, [initialScene, { autosave: false, sceneRecord, window: windowArg }], '`sceneIsChanging` is triggered');
 
   this.setProperties({
     initialScene,

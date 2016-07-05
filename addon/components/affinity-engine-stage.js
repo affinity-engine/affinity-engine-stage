@@ -37,11 +37,11 @@ export default Component.extend(BusPublisherMixin, {
     this._initializeServices();
 
     if (windowId === 'main') {
-      this.publish(`et:${engineId}:gameIsInitializing`, initialScene);
+      this.publish(`ae:${engineId}:gameIsInitializing`, initialScene);
     } else {
       const sceneRecord = get(this, 'sceneRecord');
 
-      this.publish(`et:${engineId}:${windowId}:sceneIsChanging`, initialScene, {
+      this.publish(`ae:${engineId}:${windowId}:sceneIsChanging`, initialScene, {
         autosave: false,
         sceneRecord,
         window

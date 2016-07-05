@@ -21,7 +21,7 @@ export default Ember.Object.extend(BusPublisherMixin, BusSubscriberMixin, Evente
 
     const { engineId, windowId } = getProperties(this, 'engineId', 'windowId');
 
-    this.on(`et:${engineId}:${windowId}:scriptsMustAbort`, this, this._abort);
+    this.on(`ae:${engineId}:${windowId}:scriptsMustAbort`, this, this._abort);
   },
 
   _executeDirection(directionName, args) {
@@ -55,7 +55,7 @@ export default Ember.Object.extend(BusPublisherMixin, BusSubscriberMixin, Evente
       const isDirection = typeOf(direction) === 'instance' && get(direction, '_isDirection');
       const value = isDirection ? get(direction, 'result') || '_RESOLVED' : direction;
 
-      this.publish(`et:${engineId}:${get(this, 'windowId')}:directionCompleted`, sceneRecordIndex, value);
+      this.publish(`ae:${engineId}:${get(this, 'windowId')}:directionCompleted`, sceneRecordIndex, value);
     });
   }
 });
