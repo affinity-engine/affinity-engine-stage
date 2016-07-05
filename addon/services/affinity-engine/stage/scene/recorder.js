@@ -1,6 +1,5 @@
 import Ember from 'ember';
 import { BusSubscriberMixin } from 'ember-message-bus';
-import { MultitonIdsMixin } from 'affinity-engine';
 
 const {
   Evented,
@@ -9,7 +8,7 @@ const {
   set
 } = Ember;
 
-export default Service.extend(BusSubscriberMixin, Evented, MultitonIdsMixin, {
+export default Service.extend(BusSubscriberMixin, Evented, {
   init(...args) {
     this._super(...args);
 

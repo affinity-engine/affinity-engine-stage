@@ -1,7 +1,6 @@
 import Ember from 'ember';
 import multiton from 'ember-multiton-service';
 import { BusSubscriberMixin } from 'ember-message-bus';
-import { MultitonIdsMixin } from 'affinity-engine';
 
 const {
   Service,
@@ -12,7 +11,7 @@ const {
 
 const { computed: { alias } } = Ember;
 
-export default Service.extend(BusSubscriberMixin, MultitonIdsMixin, {
+export default Service.extend(BusSubscriberMixin, {
   curtainPulley: multiton('affinity-engine/stage/scene/curtain-pulley', 'engineId', 'windowId'),
   recorder: multiton('affinity-engine/stage/scene/recorder', 'engineId', 'windowId'),
   transitionManager: multiton('affinity-engine/stage/scene/transition-manager', 'engineId', 'windowId'),

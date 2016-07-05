@@ -1,5 +1,4 @@
 import Ember from 'ember';
-import { MultitonIdsMixin } from 'affinity-engine';
 
 const {
   Service,
@@ -9,7 +8,7 @@ const {
 
 const { RSVP: { resolve } } = Ember;
 
-export default Service.extend(MultitonIdsMixin, {
+export default Service.extend({
   direct(script, factory, predecessors, args) {
     if (get(script, 'isAborted')) { return resolve(); }
 

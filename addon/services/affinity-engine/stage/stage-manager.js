@@ -1,5 +1,4 @@
 import Ember from 'ember';
-import { MultitonIdsMixin } from 'affinity-engine';
 import { BusSubscriberMixin } from 'ember-message-bus';
 import { DirectableManagerMixin } from 'affinity-engine-stage';
 
@@ -11,7 +10,7 @@ const {
   getProperties
 } = Ember;
 
-export default Service.extend(BusSubscriberMixin, DirectableManagerMixin, Evented, MultitonIdsMixin, {
+export default Service.extend(BusSubscriberMixin, DirectableManagerMixin, Evented, {
   directables: computed(() => Ember.A()),
 
   init() {

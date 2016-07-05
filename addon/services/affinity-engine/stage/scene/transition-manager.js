@@ -1,7 +1,7 @@
 import Ember from 'ember';
 import multiton from 'ember-multiton-service';
 import { BusPublisherMixin } from 'ember-message-bus';
-import { MultitonIdsMixin, animate, deepConfigurable } from 'affinity-engine';
+import { animate, deepConfigurable } from 'affinity-engine';
 
 const {
   Service,
@@ -21,7 +21,7 @@ const configurationTiers = [
   'config.attrs.globals'
 ];
 
-export default Service.extend(BusPublisherMixin, MultitonIdsMixin, {
+export default Service.extend(BusPublisherMixin, {
   config: multiton('affinity-engine/config', 'engineId'),
   sceneManager: multiton('affinity-engine/stage/scene-manager', 'engineId', 'windowId'),
 
