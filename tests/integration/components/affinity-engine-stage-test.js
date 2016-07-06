@@ -69,7 +69,7 @@ test('when a `windowId` is provided, it publishes `sceneIsChanging`', function(a
 test('it renders an `affinity-engine-stage-layer`', function(assert) {
   assert.expect(2);
 
-  this.render(hbs`{{affinity-engine-stage}}`);
+  this.render(hbs`{{affinity-engine-stage  engineId="foo"}}`);
 
   const $layer = $hook('affinity_engine_stage_layer');
 

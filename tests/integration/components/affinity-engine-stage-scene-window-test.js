@@ -39,7 +39,7 @@ configurationTiers.forEach((priority) => {
 
     this.setProperties(getProperties(stub, 'config', 'directable'));
 
-    this.render(hbs`{{affinity-engine-stage-scene-window config=config directable=directable}}`);
+    this.render(hbs`{{affinity-engine-stage-scene-window config=config directable=directable engineId="foo" sceneWindowId="bar"}}`);
 
     assert.ok($hook('affinity_engine_stage_scene_window_main').hasClass('foo'), 'has class');
   });
@@ -51,7 +51,7 @@ configurationTiers.forEach((priority) => {
 
     this.setProperties(getProperties(stub, 'config', 'directable'));
 
-    this.render(hbs`{{affinity-engine-stage-scene-window config=config directable=directable}}`);
+    this.render(hbs`{{affinity-engine-stage-scene-window config=config directable=directable engineId="foo" sceneWindowId="bar"}}`);
 
     assert.equal($hook('affinity_engine_stage_scene_window_main').attr('style'), 'z-index: 5000;', 'style is correct');
   });
@@ -63,7 +63,7 @@ configurationTiers.forEach((priority) => {
 
     this.setProperties(getProperties(stub, 'config', 'directable'));
 
-    this.render(hbs`{{affinity-engine-stage-scene-window config=config directable=directable}}`);
+    this.render(hbs`{{affinity-engine-stage-scene-window config=config directable=directable engineId="foo" sceneWindowId="bar"}}`);
 
     assert.ok($hook('affinity_engine_stage_scene_window_screen').length > 0, 'screen is visible');
   });
@@ -77,7 +77,7 @@ configurationTiers.forEach((priority) => {
 
     this.setProperties(getProperties(stub, 'config', 'directable'));
 
-    this.render(hbs`{{affinity-engine-stage-scene-window config=config directable=directable}}`);
+    this.render(hbs`{{affinity-engine-stage-scene-window config=config directable=directable engineId="foo" sceneWindowId="bar"}}`);
 
     assert.ok($hook('affinity_engine_stage_scene_window_screen').attr('style'), 'z-index: 5000;', 'style is correct');
   });
@@ -86,7 +86,7 @@ configurationTiers.forEach((priority) => {
 test('it renders a child stage', function(assert) {
   assert.expect(1);
 
-  this.render(hbs`{{affinity-engine-stage-scene-window}}`);
+  this.render(hbs`{{affinity-engine-stage-scene-window engineId="foo" sceneWindowId="bar"}}`);
 
   assert.ok($hook('affinity_engine_stage').length > 0, 'stage is rendered');
 });
@@ -94,7 +94,7 @@ test('it renders a child stage', function(assert) {
 test('hides the screen by default', function(assert) {
   assert.expect(1);
 
-  this.render(hbs`{{affinity-engine-stage-scene-window}}`);
+  this.render(hbs`{{affinity-engine-stage-scene-window engineId="foo" sceneWindowId="bar"}}`);
 
   assert.ok($hook('affinity_engine_stage_scene_window_screen').length === 0, 'screen is hidden');
 });
@@ -106,7 +106,7 @@ test('sets data scene-window-id', function(assert) {
 
   this.set('sceneWindowId', sceneWindowId);
 
-  this.render(hbs`{{affinity-engine-stage-scene-window sceneWindowId=sceneWindowId}}`);
+  this.render(hbs`{{affinity-engine-stage-scene-window  engineId="foo" sceneWindowId=sceneWindowId}}`);
 
   assert.ok($hook('affinity_engine_stage_scene_window').data('scene-window-id'), 'foo', 'data set correctly');
 });

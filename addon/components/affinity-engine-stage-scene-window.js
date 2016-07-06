@@ -66,16 +66,11 @@ export default Component.extend(BusSubscriberMixin, DirectableComponentMixin, Tr
     }
   }).readOnly(),
 
-  init() {
+  init(...args) {
+    this._super(...args);
+
     const engineId = get(this, 'engineId');
     const sceneWindowId = get(this, 'sceneWindowId');
-
-    this.on(`ae:${engineId}:${sceneWindowId}:closingWindow`, this, this.close);
-
-    this._super();
-  },
-
-  didReceiveAttrs() {
     const sceneRecord = get(this, 'priorSceneRecord') || {};
     const direction = get(this, 'directable.direction');
 
@@ -84,17 +79,17 @@ export default Component.extend(BusSubscriberMixin, DirectableComponentMixin, Tr
       set(direction, 'result', sceneRecord);
     }
 
-    this._super();
+    this.on(`ae:${engineId}:${sceneWindowId}:closingWindow`, this, this.close);
   },
 
-  didInsertElement() {
+  didInsertElement(...args) {
+    this._super(...args);
+
     this.executeTransitionIn().then(() => {
       run(() => {
         this.resolve();
       });
     });
-
-    this._super();
   },
 
   close() {

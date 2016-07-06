@@ -42,26 +42,25 @@ export default Component.extend(BusPublisherMixin, DirectableComponentMixin, Tra
   animationName: alias('layerFilter.animationName'),
   transitions: deepArrayConfigurable(configurationTiers, 'directable.attrs.transitions', 'transition'),
 
-  init() {
+  init(...args) {
+    this._super(...args);
+
     const { engineId, windowId } = getProperties(this, 'engineId', 'windowId');
 
     this.publish(`ae:${engineId}:${windowId}:layerAdded`, this);
-
-    this._super();
   },
 
-  didInsertElement() {
+  didInsertElement(...args) {
+    this._super(...args);
     this._setupAnimationEnd();
-
-    this._super();
   },
 
-  willDestroyElement() {
+  willDestroyElement(...args) {
+    this._super(...args);
+
     const { engineId, windowId } = getProperties(this, 'engineId', 'windowId');
 
     this.publish(`ae:${engineId}:${windowId}:layerRemoved`, this);
-
-    this._super();
   },
 
   addFilter(transition) {

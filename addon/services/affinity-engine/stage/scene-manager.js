@@ -18,11 +18,11 @@ export default Service.extend(BusSubscriberMixin, {
 
   sceneRecord: alias('recorder.sceneRecord'),
 
-  init() {
+  init(...args) {
+    this._super(...args);
+
     this._initializeServices();
     this._setupEvents();
-
-    this._super();
   },
 
   _initializeServices() {

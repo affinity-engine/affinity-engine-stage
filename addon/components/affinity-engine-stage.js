@@ -26,7 +26,9 @@ export default Component.extend(BusPublisherMixin, {
 
   directables: alias('stageManager.directables'),
 
-  didInsertElement() {
+  didInsertElement(...args) {
+    this._super(...args);
+
     const {
       initialScene,
       engineId,
@@ -47,8 +49,6 @@ export default Component.extend(BusPublisherMixin, {
         window
       });
     }
-
-    this._super();
   },
 
   _initializeServices() {

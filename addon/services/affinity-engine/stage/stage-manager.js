@@ -13,13 +13,13 @@ const {
 export default Service.extend(BusSubscriberMixin, DirectableManagerMixin, Evented, {
   directables: computed(() => Ember.A()),
 
-  init() {
+  init(...args) {
+    this._super(...args);
+
     const { engineId, windowId } = getProperties(this, 'engineId', 'windowId');
 
     this.on(`ae:${engineId}:${windowId}:stageIsClearing`, this, this.clearDirectables);
     this.on(`ae:${engineId}:${windowId}:removingDirectable`, this, this.removeDirectable);
-
-    this._super();
   },
 
   clearDirectables() {
