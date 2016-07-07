@@ -1,5 +1,6 @@
 import Ember from 'ember';
 import layout from '../templates/components/affinity-engine-stage';
+import { ManagedFocusMixin } from 'affinity-engine';
 import multiton from 'ember-multiton-service';
 import { BusPublisherMixin } from 'ember-message-bus';
 
@@ -12,7 +13,7 @@ const {
 
 const { alias } = computed;
 
-export default Component.extend(BusPublisherMixin, {
+export default Component.extend(BusPublisherMixin, ManagedFocusMixin, {
   layout,
 
   hook: 'affinity_engine_stage',
