@@ -69,14 +69,6 @@ export default Service.extend(BusSubscriberMixin, {
     set(this, 'script', script);
   },
 
-  advanceSceneRecord() {
-    return get(this, 'recorder').advance();
-  },
-
-  recordSceneRecordEvent(promise, script) {
-    get(this, 'recorder').record(promise, script);
-  },
-
   setSceneRecord(sceneRecord) {
     return get(this, 'recorder').setRecord(sceneRecord);
   }

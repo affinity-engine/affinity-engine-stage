@@ -1,5 +1,5 @@
 import Ember from 'ember';
-import { BusSubscriberMixin } from 'ember-message-bus';
+import { BusPublisherMixin, BusSubscriberMixin } from 'ember-message-bus';
 
 const {
   Evented,
@@ -8,7 +8,7 @@ const {
   set
 } = Ember;
 
-export default Service.extend(BusSubscriberMixin, Evented, {
+export default Service.extend(BusPublisherMixin, BusSubscriberMixin, Evented, {
   init(...args) {
     this._super(...args);
 
@@ -23,5 +23,9 @@ export default Service.extend(BusSubscriberMixin, Evented, {
 
   _update(key, value) {
     set(this, `sceneRecord.${key}`, value);
+
+    const { engineId, sceneRecord } = getProperties(this, 'engineId', 'sceneRecord');
+
+    this.publish(`ae:${engineId}:shouldSetStateValue`, '_sceneRecord', sceneRecord);
   }
 });
