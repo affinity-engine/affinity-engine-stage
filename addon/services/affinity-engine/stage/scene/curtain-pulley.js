@@ -12,7 +12,7 @@ const {
 } = Ember;
 
 export default Service.extend(BusPublisherMixin, BusSubscriberMixin, {
-  saveStateManager: registrant('saveStateManager'),
+  saveStateManager: registrant('affinity-engine/save-state-manager'),
   sceneManager: multiton('affinity-engine/stage/scene-manager', 'engineId', 'windowId'),
 
   init(...args) {

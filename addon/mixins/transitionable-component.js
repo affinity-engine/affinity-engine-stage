@@ -1,5 +1,5 @@
 import Ember from 'ember';
-import { animate } from 'affinity-engine';
+import { registrant } from 'affinity-engine';
 
 const {
   Mixin,
@@ -20,6 +20,8 @@ const { later } = run;
 
 export default Mixin.create({
   attributeBindings: ['style'],
+
+  animator: registrant('affinity-engine/animator'),
 
   style: computed('styles.[]', '_style', {
     get() {
@@ -113,7 +115,7 @@ export default Mixin.create({
       set(options, 'duration', 0);
     }
 
-    return animate(this.element, effect, options).then(() => {
+    return get(this, 'animator').animate(this.element, effect, options).then(() => {
       run(() => {
         if (isPresent(this.element)) {
           set(this, 'style', this.$().attr('style'));

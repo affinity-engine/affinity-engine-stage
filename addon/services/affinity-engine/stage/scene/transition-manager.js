@@ -1,7 +1,7 @@
 import Ember from 'ember';
 import multiton from 'ember-multiton-service';
 import { BusPublisherMixin } from 'ember-message-bus';
-import { animate, deepConfigurable } from 'affinity-engine';
+import { deepConfigurable, registrant } from 'affinity-engine';
 
 const {
   Service,
@@ -22,6 +22,7 @@ const configurationTiers = [
 ];
 
 export default Service.extend(BusPublisherMixin, {
+  animator: registrant('affinity-engine/animator'),
   config: multiton('affinity-engine/config', 'engineId'),
   sceneManager: multiton('affinity-engine/stage/scene-manager', 'engineId', 'windowId'),
 
@@ -37,7 +38,7 @@ export default Service.extend(BusPublisherMixin, {
 
     this.publish(`ae:${engineId}:${windowId}:scriptsMustAbort`);
 
-    animate($stage, effect, { duration });
+    get(this, 'animator').animate($stage, effect, { duration });
 
     later(() => {
       this._transitionScene(scene, options);
