@@ -6,7 +6,6 @@ import { $hook, hook } from 'ember-hook';
 moduleForAcceptance('Acceptance | affinity-engine/stage/directions/scene', {
   beforeEach() {
     Ember.$.Velocity.mock = true;
-    localStorage.clear();
   },
 
   afterEach() {
