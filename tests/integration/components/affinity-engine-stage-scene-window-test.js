@@ -35,7 +35,7 @@ configurationTiers.forEach((priority) => {
   test(`applies the classNames found in ${priority}`, function(assert) {
     assert.expect(1);
 
-    const stub = deepStub(priority, 'classNames', ['foo']);
+    const stub = deepStub(priority, { classNames: ['foo'] });
 
     this.setProperties(getProperties(stub, 'config', 'directable'));
 
@@ -47,7 +47,7 @@ configurationTiers.forEach((priority) => {
   test(`applies a z-index based on ${priority}`, function(assert) {
     assert.expect(1);
 
-    const stub = deepStub(priority, 'priority', 5);
+    const stub = deepStub(priority, { priority: 5 });
 
     this.setProperties(getProperties(stub, 'config', 'directable'));
 
@@ -59,7 +59,7 @@ configurationTiers.forEach((priority) => {
   test(`applies the screen based on ${priority}`, function(assert) {
     assert.expect(1);
 
-    const stub = deepStub(priority, 'screen', true);
+    const stub = deepStub(priority, { screen: true });
 
     this.setProperties(getProperties(stub, 'config', 'directable'));
 
@@ -71,7 +71,7 @@ configurationTiers.forEach((priority) => {
   test(`gives the screen a priority based on ${priority}`, function(assert) {
     assert.expect(1);
 
-    const stub = deepStub(priority, 'screen', true);
+    const stub = deepStub(priority, { screen: true });
 
     set(stub, 'priority', 5);
 
