@@ -26,9 +26,9 @@ moduleForComponent('affinity-engine-stage-scene-window', 'Integration | Componen
 
 const configurationTiers = [
   'directable.attrs',
-  'config.attrs.stage.scene',
-  'config.attrs.stage',
-  'config.attrs.globals'
+  'config.attrs.component.stage.direction.scene',
+  'config.attrs.component.stage',
+  'config.attrs'
 ];
 
 configurationTiers.forEach((priority) => {

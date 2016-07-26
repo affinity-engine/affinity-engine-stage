@@ -17,9 +17,9 @@ const {
 
 const configurationTiers = [
   'directable.attrs',
-  'config.attrs.stage.scene',
-  'config.attrs.stage',
-  'config.attrs.globals'
+  'config.attrs.component.stage.direction.scene',
+  'config.attrs.component.stage',
+  'config.attrs'
 ];
 
 export default Component.extend(BusSubscriberMixin, DirectableComponentMixin, TransitionableComponentMixin, {

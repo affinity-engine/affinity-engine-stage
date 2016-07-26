@@ -21,9 +21,9 @@ const { alias } = computed;
 
 const configurationTiers = [
   'directable.attrs',
-  'config.attrs.stage.layer',
-  'config.attrs.stage',
-  'config.attrs.globals'
+  'config.attrs.component.stage.direction.layer',
+  'config.attrs.component.stage',
+  'config.attrs'
 ];
 
 export default Component.extend(BusPublisherMixin, DirectableComponentMixin, TransitionableComponentMixin, TransitionableComponentAutoMixin, {
