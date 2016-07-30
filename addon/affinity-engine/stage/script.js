@@ -21,7 +21,7 @@ export default Ember.Object.extend(BusPublisherMixin, BusSubscriberMixin, Evente
 
     const { engineId, windowId } = getProperties(this, 'engineId', 'windowId');
 
-    this.on(`ae:${engineId}:${windowId}:scriptsMustAbort`, this, this._abort);
+    this.on(`ae:${engineId}:${windowId}:shouldAbortScripts`, this, this._abort);
   },
 
   _executeDirection(directionName, args) {

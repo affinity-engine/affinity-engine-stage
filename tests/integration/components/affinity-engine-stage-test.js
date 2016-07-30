@@ -21,13 +21,13 @@ moduleForComponent('affinity-engine-stage', 'Integration | Component | ember eng
   }
 });
 
-test('when no `windowId` is provided, it publishes `gameIsInitializing`', function(assert) {
+test('when no `windowId` is provided, it publishes `shouldInitializeGame`', function(assert) {
   assert.expect(1);
 
   const initialScene = 'foo';
   const engineId = 'bar';
 
-  assert.willPublish('ae:bar:gameIsInitializing', [initialScene], '`gameIsInitializing` is passed the `initialScene`');
+  assert.willPublish('ae:bar:shouldInitializeGame', [initialScene], '`shouldInitializeGame` is passed the `initialScene`');
 
   this.setProperties({ initialScene, engineId });
 
@@ -37,7 +37,7 @@ test('when no `windowId` is provided, it publishes `gameIsInitializing`', functi
   }}`);
 });
 
-test('when a `windowId` is provided, it publishes `sceneIsChanging`', function(assert) {
+test('when a `windowId` is provided, it publishes `shouldChangeScene`', function(assert) {
   assert.expect(1);
 
   const initialScene = 'foo';
@@ -46,8 +46,8 @@ test('when a `windowId` is provided, it publishes `sceneIsChanging`', function(a
   const windowArg = {};
   const windowId = 'baz';
 
-  assert.willNotPublish(`ae:${engineId}:gameIsInitializing`, '`gameIsInitializing` is not triggered');
-  assert.willPublish(`ae:${engineId}:${windowId}:sceneIsChanging`, [initialScene, { autosave: false, sceneRecord, window: windowArg }], '`sceneIsChanging` is triggered');
+  assert.willNotPublish(`ae:${engineId}:shouldInitializeGame`, '`shouldInitializeGame` is not triggered');
+  assert.willPublish(`ae:${engineId}:${windowId}:shouldChangeScene`, [initialScene, { autosave: false, sceneRecord, window: windowArg }], '`shouldChangeScene` is triggered');
 
   this.setProperties({
     initialScene,

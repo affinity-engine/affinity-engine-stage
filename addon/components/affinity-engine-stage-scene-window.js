@@ -79,7 +79,7 @@ export default Component.extend(BusSubscriberMixin, DirectableComponentMixin, Tr
       set(direction, 'result', sceneRecord);
     }
 
-    this.on(`ae:${engineId}:${sceneWindowId}:closingWindow`, this, this.close);
+    this.on(`ae:${engineId}:${sceneWindowId}:shouldCloseWindow`, this, this.close);
   },
 
   didInsertElement(...args) {

@@ -68,7 +68,7 @@ export default Component.extend(BusPublisherMixin, DirectableComponentMixin, Tra
       run(() => {
         const { engineId, windowId } = getProperties(this, 'engineId', 'windowId');
 
-        this.publish(`ae:${engineId}:${windowId}:filterQueued`, resolve, get(transition, 'effect'), transition, get(this, 'layerName'));
+        this.publish(`ae:${engineId}:${windowId}:shouldFilterQueued`, resolve, get(transition, 'effect'), transition, get(this, 'layerName'));
       });
     });
   },

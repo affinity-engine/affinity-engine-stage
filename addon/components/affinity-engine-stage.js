@@ -40,11 +40,11 @@ export default Component.extend(BusPublisherMixin, ManagedFocusMixin, {
     this._initializeServices();
 
     if (windowId === 'main') {
-      this.publish(`ae:${engineId}:gameIsInitializing`, initialScene);
+      this.publish(`ae:${engineId}:shouldInitializeGame`, initialScene);
     } else {
       const sceneRecord = get(this, 'sceneRecord');
 
-      this.publish(`ae:${engineId}:${windowId}:sceneIsChanging`, initialScene, {
+      this.publish(`ae:${engineId}:${windowId}:shouldChangeScene`, initialScene, {
         autosave: false,
         sceneRecord,
         window

@@ -36,7 +36,7 @@ export default Service.extend(BusPublisherMixin, {
     const duration = get(options, 'transitionOut.duration') || get(transitionOut, 'duration');
     const effect = get(options, 'transitionOut.effect') || get(transitionOut, 'effect');
 
-    this.publish(`ae:${engineId}:${windowId}:scriptsMustAbort`);
+    this.publish(`ae:${engineId}:${windowId}:shouldAbortScripts`);
 
     get(this, 'animator').animate($stage, effect, { duration });
 
@@ -97,7 +97,7 @@ export default Service.extend(BusPublisherMixin, {
   _clearStage() {
     const { engineId, windowId } = getProperties(this, 'engineId', 'windowId');
 
-    this.publish(`ae:${engineId}:${windowId}:stageIsClearing`);
+    this.publish(`ae:${engineId}:${windowId}:shouldClearStage`);
   },
 
   _setSceneManager(options) {
@@ -112,8 +112,8 @@ export default Service.extend(BusPublisherMixin, {
 
     const engineId = get(this, 'engineId');
 
-    this.publish(`ae:${engineId}:deletingStateValue`, '_sceneRecord');
-    this.publish(`ae:${engineId}:settingStateValues`, {
+    this.publish(`ae:${engineId}:shouldDeleteStateValue`, '_sceneRecord');
+    this.publish(`ae:${engineId}:shouldSetStateValues`, {
       sceneId,
       sceneName
     });
