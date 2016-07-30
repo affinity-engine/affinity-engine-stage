@@ -16,7 +16,7 @@ const {
 
 export default Ember.Object.extend(Evented, {
   _isDirection: true,
-  _shouldResetEngine: true,
+  _restartingEngine: true,
 
   attrs: computed(() => Ember.Object.create({ instance: 0 })),
 
@@ -56,7 +56,7 @@ export default Ember.Object.extend(Evented, {
   }).volatile(),
 
   _entryPoint() {
-    if (get(this, '_shouldResetEngine')) {
+    if (get(this, '_restartingEngine')) {
       this._reset();
     }
 
@@ -67,7 +67,7 @@ export default Ember.Object.extend(Evented, {
   },
 
   _reset(attrs) {
-    set(this, '_shouldResetEngine', false);
+    set(this, '_restartingEngine', false);
     set(this, '_hasDefaultTransition', false);
     set(this, 'attrs', Ember.Object.create(attrs));
     set(this, 'queue', undefined);
@@ -128,7 +128,7 @@ export default Ember.Object.extend(Evented, {
       stageManager
     } = getProperties(this, 'attrs', 'componentPath', 'id', 'layer', 'stageManager');
 
-    set(this, '_shouldResetEngine', true);
+    set(this, '_restartingEngine', true);
 
     stageManager.handleDirectable(id, { attrs, componentPath, layer, direction: this, priorSceneRecord }, resolve);
   }

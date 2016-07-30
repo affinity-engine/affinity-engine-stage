@@ -20,7 +20,7 @@ export default Service.extend(BusPublisherMixin, BusSubscriberMixin, {
 
     const engineId = get(this, 'engineId');
 
-    this.on(`ae:${engineId}:shouldResetEngine`, this, this.toInitialScene);
+    this.on(`ae:${engineId}:restartingEngine`, this, this.toInitialScene);
     this.on(`ae:${engineId}:shouldLoadScene`, this, this.loadScene);
   },
 
@@ -57,7 +57,7 @@ export default Service.extend(BusPublisherMixin, BusSubscriberMixin, {
     } = getProperties(this, 'saveStateManager', 'sceneManager', 'engineId');
 
     this.publish(`ae:${engineId}:shouldLoadSave`, save);
-    this.publish(`ae:${engineId}:shouldResetEngine`);
+    this.publish(`ae:${engineId}:refreshingFromState`);
 
     options.sceneRecord = saveStateManager.getStateValue('_sceneRecord') || {};
 

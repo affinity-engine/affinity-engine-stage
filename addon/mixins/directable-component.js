@@ -45,6 +45,6 @@ export default Mixin.create(BusPublisherMixin, {
   removeDirectable() {
     const { directable, engineId, windowId } = getProperties(this, 'directable', 'engineId', 'windowId');
 
-    this.publish(`ae:${engineId}:${windowId}:removingDirectable`, directable);
+    this.publish(`ae:${engineId}:${windowId}:shouldRemoveDirectable`, directable);
   }
 });

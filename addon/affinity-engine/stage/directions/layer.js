@@ -52,7 +52,7 @@ export default Direction.extend({
 
     const layer = get(attrs, 'layer');
 
-    set(this, '_shouldResetEngine', true);
+    set(this, '_restartingEngine', true);
 
     layerManager.handleDirectable(layer, { attrs, direction: this, priorSceneRecord }, resolve);
   }
