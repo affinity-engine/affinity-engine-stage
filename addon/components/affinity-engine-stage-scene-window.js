@@ -11,9 +11,11 @@ const {
   get,
   isPresent,
   run,
-  set
+  set,
+  setProperties
 } = Ember;
 
+const { RSVP: { Promise } } = Ember;
 const { String: { htmlSafe } } = Ember;
 
 const configurationTiers = [
@@ -78,10 +80,12 @@ export default Component.extend(BusSubscriberMixin, DirectableComponentMixin, {
   },
 
   _close() {
-    new Ember.RSVP.Promise((resolve) => {
+    new Promise((resolve) => {
       run(() => {
-        set(this, 'transitions', [get(this, 'transitionOut')]);
-        set(this, 'resolve', resolve);
+        setProperties(this, {
+          resolve,
+          transitions: [get(this, 'transitionOut')]
+        });
       });
     }).then(() => {
       run(() => {
