@@ -32,7 +32,7 @@ test('Affinity Engine | stage | Directions | BasicDirection', function(assert) {
     assert.equal(Ember.$(`${hook('basic_direction_header')}:nth(0)`).text().trim(), 'First Basic Header', 'first header is unchanged after second inserted');
     assert.equal(Ember.$(`${hook('basic_direction_text')}:nth(0)`).text().trim(), 'foo', 'first basic text unchanged after second inserted');
 
-    return step();
+    return step(10);
   }).then(() => {
     assert.equal(Ember.$(`${hook('basic_direction_header')}:nth(2)`).text().trim(), 'Third Basic Header', 'third header is correct');
     assert.equal(Ember.$(`${hook('basic_direction_text')}:nth(2)`).text().trim(), 'baz', 'third basic text set initially');

@@ -46,7 +46,7 @@ export default Service.extend(BusPublisherMixin, BusSubscriberMixin, {
   toInitialScene() {
     const sceneId = get(this, 'sceneManager.initialScene');
 
-    get(this, 'sceneManager').toScene(sceneId, { autosave: false });
+    get(this, 'sceneManager').startScene(sceneId, { autosave: false });
   },
 
   loadScene(save, sceneId, options) {

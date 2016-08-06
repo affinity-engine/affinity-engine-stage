@@ -44,7 +44,7 @@ export default Component.extend(BusPublisherMixin, ManagedFocusMixin, {
     } else {
       const sceneRecord = get(this, 'sceneRecord');
 
-      this.publish(`ae:${engineId}:${windowId}:shouldChangeScene`, initialScene, {
+      this.publish(`ae:${engineId}:${windowId}:shouldStartScene`, initialScene, {
         autosave: false,
         sceneRecord,
         window

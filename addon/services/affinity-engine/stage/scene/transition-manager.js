@@ -41,10 +41,14 @@ export default Service.extend(BusPublisherMixin, {
     get(this, 'animator').animate($stage, effect, { duration });
 
     later(() => {
-      this._transitionScene(scene, options);
+      this.startScene(scene, options);
 
       later(() => $stage.removeAttr('style'));
     }, duration);
+  },
+
+  startScene(scene, options) {
+    this._transitionScene(scene, options);
   },
 
   _transitionScene(scene, options) {

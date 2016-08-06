@@ -34,6 +34,7 @@ export default Service.extend(BusSubscriberMixin, {
 
     this.on(`ae:${engineId}:shouldLoadLatestStatePoint`, this, this.rewindToScene);
     this.on(`ae:${engineId}:shouldInitializeGame`, this, this.intializeGame);
+    this.on(`ae:${engineId}:${windowId}:shouldStartScene`, this, this.startScene);
     this.on(`ae:${engineId}:${windowId}:shouldChangeScene`, this, this.toScene);
   },
 
@@ -59,6 +60,10 @@ export default Service.extend(BusSubscriberMixin, {
     this.toScene(get(point, 'lastObject.sceneId'), {
       autosave: false
     });
+  },
+
+  startScene(id, options = {}) {
+    get(this, 'transitionManager').startScene(id, options);
   },
 
   toScene(id, options = {}) {

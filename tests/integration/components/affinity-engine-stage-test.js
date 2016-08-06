@@ -37,7 +37,7 @@ test('when no `windowId` is provided, it publishes `shouldInitializeGame`', func
   }}`);
 });
 
-test('when a `windowId` is provided, it publishes `shouldChangeScene`', function(assert) {
+test('when a `windowId` is provided, it publishes `shouldStartScene`', function(assert) {
   assert.expect(1);
 
   const initialScene = 'foo';
@@ -47,7 +47,7 @@ test('when a `windowId` is provided, it publishes `shouldChangeScene`', function
   const windowId = 'baz';
 
   assert.willNotPublish(`ae:${engineId}:shouldInitializeGame`, '`shouldInitializeGame` is not triggered');
-  assert.willPublish(`ae:${engineId}:${windowId}:shouldChangeScene`, [initialScene, { autosave: false, sceneRecord, window: windowArg }], '`shouldChangeScene` is triggered');
+  assert.willPublish(`ae:${engineId}:${windowId}:shouldStartScene`, [initialScene, { autosave: false, sceneRecord, window: windowArg }], '`shouldStartScene` is triggered');
 
   this.setProperties({
     initialScene,
