@@ -26,14 +26,6 @@ export default Direction.extend({
     return this._super({ transitions: Ember.A(), ...getProperties(attrs, 'layer') });
   },
 
-  filter(filter, duration, options = {}) {
-    this._entryPoint();
-
-    this.transition(filter, duration, options, 'filter');
-
-    return this;
-  },
-
   transition(effect, duration, options = {}, type = 'transition') {
     this._entryPoint();
 

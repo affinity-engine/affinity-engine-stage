@@ -28,18 +28,18 @@ test('Affinity Engine | stage | Directions | Layer', function(assert) {
 
       return step(25);
   }).then(() => {
-    assert.equal(Ember.$('.ae-stage-layer-engine').css('opacity'), 1, 'parent layer did not transition');
-    assert.equal(Ember.$('.ae-stage-layer-engine-meta').css('opacity'), 0.5, 'layer transitioned');
-    assert.equal(Ember.$('.ae-stage-layer-engine-meta-basic').css('opacity'), 1, 'child layer did not transition');
+    assert.equal(Ember.$(`.ae-stage-layer-engine ${hook('affinity_engine_transition_box')}`).css('opacity'), 1, 'parent layer did not transition');
+    assert.equal(Ember.$(`.ae-stage-layer-engine-meta ${hook('affinity_engine_transition_box')}`).css('opacity'), 0.5, 'layer transitioned');
+    assert.equal(Ember.$(`.ae-stage-layer-engine-meta-basic ${hook('affinity_engine_transition_box')}`).css('opacity'), 1, 'child layer did not transition');
 
     return step(25);
   }).then(() => {
-    assert.equal(Ember.$('.ae-stage-layer-engine-meta').css('opacity'), 0.5, 'layer keeps old transition');
-    assert.equal(Ember.$('.ae-stage-layer-engine-meta').css('padding'), '123px', 'layer adds new transition');
+    assert.equal(Ember.$(`.ae-stage-layer-engine-meta ${hook('affinity_engine_transition_box')}`).css('opacity'), 0.5, 'layer keeps old transition');
+    assert.equal(Ember.$(`.ae-stage-layer-engine-meta ${hook('affinity_engine_transition_box')}`).css('padding'), '123px', 'layer adds new transition');
 
     return step(75);
   }).then(() => {
-    assert.equal(Ember.$('.ae-stage-layer-engine-meta').css('padding'), '456px', 'layer can rechange attribute');
-    assert.equal(Ember.$('.ae-stage-layer-engine-meta').css('margin'), '555px', 'layer can undergo full transition queues');
+    assert.equal(Ember.$(`.ae-stage-layer-engine-meta ${hook('affinity_engine_transition_box')}`).css('padding'), '456px', 'layer can rechange attribute');
+    assert.equal(Ember.$(`.ae-stage-layer-engine-meta ${hook('affinity_engine_transition_box')}`).css('margin'), '555px', 'layer can undergo full transition queues');
   });
 });

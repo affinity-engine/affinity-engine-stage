@@ -1,23 +1,15 @@
 import Ember from 'ember';
 import layout from '../templates/components/affinity-engine-stage-layer';
 import { deepArrayConfigurable } from 'affinity-engine';
-import { DirectableComponentMixin, TransitionableComponentMixin, TransitionableComponentAutoMixin, layerName } from 'affinity-engine-stage';
+import { DirectableComponentMixin, layerName } from 'affinity-engine-stage';
 import { BusPublisherMixin } from 'ember-message-bus';
 
 const {
   Component,
   computed,
   get,
-  getProperties,
-  isPresent,
-  observer,
-  run,
-  set
+  getProperties
 } = Ember;
-
-const { RSVP: { Promise } } = Ember;
-
-const { alias } = computed;
 
 const configurationTiers = [
   'directable.attrs',
@@ -26,20 +18,17 @@ const configurationTiers = [
   'config.attrs'
 ];
 
-export default Component.extend(BusPublisherMixin, DirectableComponentMixin, TransitionableComponentMixin, TransitionableComponentAutoMixin, {
+export default Component.extend(BusPublisherMixin, DirectableComponentMixin, {
   layout,
 
   hook: 'affinity_engine_stage_layer',
 
-  attributeBindings: ['animationName:animation-name'],
   classNames: ['ae-stage-layer'],
   classNameBindings: ['layerName'],
 
   directables: computed(() => Ember.A()),
   name: '',
 
-  animation: alias('layerFilter.animation'),
-  animationName: alias('layerFilter.animationName'),
   transitions: deepArrayConfigurable(configurationTiers, 'directable.attrs.transitions', 'transition'),
 
   init(...args) {
@@ -50,11 +39,6 @@ export default Component.extend(BusPublisherMixin, DirectableComponentMixin, Tra
     this.publish(`ae:${engineId}:${windowId}:layerAdded`, this);
   },
 
-  didInsertElement(...args) {
-    this._super(...args);
-    this._setupAnimationEnd();
-  },
-
   willDestroyElement(...args) {
     this._super(...args);
 
@@ -62,60 +46,6 @@ export default Component.extend(BusPublisherMixin, DirectableComponentMixin, Tra
 
     this.publish(`ae:${engineId}:${windowId}:layerRemoved`, this);
   },
-
-  addFilter(transition) {
-    return new Promise((resolve) => {
-      run(() => {
-        const { engineId, windowId } = getProperties(this, 'engineId', 'windowId');
-
-        this.publish(`ae:${engineId}:${windowId}:shouldFilterQueued`, resolve, get(transition, 'effect'), transition, get(this, 'layerName'));
-      });
-    });
-  },
-
-  _setupAnimationEnd() {
-    this.$().on('animationend', () => {
-      run(() => {
-        const {
-          layerFilter: {
-            effect,
-            resolve
-          }
-        } = getProperties(this, 'layerFilter');
-
-        // there's a brief moment after an animation ends before which Ember changes the css through
-        // `set(this, 'filter', effect)`. To get around this, we manually set the `filter` with jquery,
-        // knowing that Ember will overwrite our changes with `attributeBindings: ['style']`.
-        this.$().css({ filter: effect, '-webkit-filter': effect });
-        set(this, 'filter', effect);
-
-        if (isPresent(resolve)) { resolve(); }
-      });
-    });
-  },
-
-  _resetFilter: observer('layerFilter.effect', function() {
-    // we need to manually reset the filter whenever the effect changes, or else the new effect will
-    // not display
-    set(this, 'filter', null);
-  }),
-
-  styles: computed('animation', 'keyframeName', 'filter', {
-    get() {
-      const {
-        animation,
-        animationName,
-        filter
-      } = getProperties(this, 'animation', 'animationName', 'filter');
-
-      return [`
-        animation: ${animation};
-        animation-name: ${animationName};
-        filter: ${filter};
-        -webkit-filter: ${filter};
-      `.replace(/\n|\s{2}/g, '')];
-    }
-  }),
 
   layerDirectables: computed('directables.@each.layer', 'name', {
     get() {
