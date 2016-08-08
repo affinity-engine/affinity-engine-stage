@@ -1,4 +1,4 @@
-{{#affinity-engine-transition-box transitions=transitions resolve=(action resolve)}}
+{{#ember-animation-box transitions=transitions resolve=(action resolve)}}
   {{#each layerDirectables as |directable|}}
     {{component directable.componentPath
       directable=directable
@@ -17,4 +17,4 @@
       windowId=windowId
     }}
   {{/each-in}}
-{{/affinity-engine-transition-box}}
+{{/ember-animation-box}}

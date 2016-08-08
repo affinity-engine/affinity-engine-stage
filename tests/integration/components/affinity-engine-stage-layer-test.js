@@ -128,7 +128,7 @@ test('renders a filtered list of directables', function(assert) {
     hook="parent_layer"
   }}`);
 
-  const parentLayer = this.$(`${hook('parent_layer')} ${hook('affinity_engine_transition_box')}`).first();
+  const parentLayer = this.$(`${hook('parent_layer')} .ember-animation-box-active-instance`).first();
   const parentLayerDirectables = parentLayer.children(hook('simple_directable'));
 
   assert.equal(parentLayerDirectables.length, 2, 'list is filtered');
@@ -163,7 +163,7 @@ test('renders a filtered list of directables', function(assert) {
     hook="parent_layer"
   }}`);
 
-  const parentLayer = this.$(`${hook('parent_layer')} ${hook('affinity_engine_transition_box')}`).first();
+  const parentLayer = this.$(`${hook('parent_layer')} .ember-animation-box-active-instance`).first();
   const parentLayerDirectables = parentLayer.children(hook('simple_directable'));
 
   assert.equal(parentLayerDirectables.length, 2, 'list is filtered');
@@ -198,29 +198,29 @@ test('renders child layers based on the layer names of its directables', functio
     hook="parent_layer"
   }}`);
 
-  const fooLayer = this.$(`${hook('parent_layer')} ${hook('affinity_engine_transition_box')}`).first();
+  const fooLayer = this.$(`${hook('parent_layer')} .ember-animation-box-active-instance`).first();
   const fooLayerDirectables = fooLayer.children(hook('simple_directable'));
   assert.equal(fooLayerDirectables.length, 1, 'foo layer directables rendered');
   assert.equal(fooLayerDirectables.first().text().trim(), 'foo', 'correct foo layer filter');
 
-  const fooBarLayer = fooLayer.children('.ae-stage-layer-foo-bar').children(hook('affinity_engine_transition_box')).first();
+  const fooBarLayer = fooLayer.children('.ae-stage-layer-foo-bar').children(hook('ember_animation_box')).children('.ember-animation-box-active-instance').first();
   const fooBarLayerDirectables = fooBarLayer.children(hook('simple_directable'));
   assert.equal(fooBarLayer.length, 1, 'foo-bar layer rendered');
   assert.equal(fooBarLayerDirectables.length, 1, 'foo-bar layer directables rendered');
   assert.equal(fooBarLayerDirectables.first().text().trim(), 'foo.bar', 'correct foo-bar layer filter');
 
-  const fooBarBazLayer = fooBarLayer.children('.ae-stage-layer-foo-bar-baz').children(hook('affinity_engine_transition_box')).first();
+  const fooBarBazLayer = fooBarLayer.children('.ae-stage-layer-foo-bar-baz').children(hook('ember_animation_box')).children('.ember-animation-box-active-instance').first();
   const fooBarBazLayerDirectables = fooBarBazLayer.children(hook('simple_directable'));
   assert.equal(fooBarBazLayer.length, 1, 'foo-bar-baz layer rendered');
   assert.equal(fooBarBazLayerDirectables.length, 1, 'foo-bar-baz layer directables rendered');
   assert.equal(fooBarBazLayerDirectables.first().text().trim(), 'foo.bar.baz', 'correct foo-bar-baz layer filter');
 
-  const fooBazLayer = fooLayer.children('.ae-stage-layer-foo-baz').children(hook('affinity_engine_transition_box')).first();
+  const fooBazLayer = fooLayer.children('.ae-stage-layer-foo-baz').children(hook('ember_animation_box')).children('.ember-animation-box-active-instance').first();
   const fooBazLayerDirectables = fooBazLayer.children(hook('simple_directable'));
   assert.equal(fooBazLayer.length, 1, 'foo-baz layer rendered');
   assert.equal(fooBazLayerDirectables.length, 0, 'foo-bar layer directables rendered');
 
-  const fooBazFooLayer = fooBazLayer.children('.ae-stage-layer-foo-baz-foo').children(hook('affinity_engine_transition_box')).first();
+  const fooBazFooLayer = fooBazLayer.children('.ae-stage-layer-foo-baz-foo').children(hook('ember_animation_box')).children('.ember-animation-box-active-instance').first();
   const fooBazFooLayerDirectables = fooBazFooLayer.children(hook('simple_directable'));
   assert.equal(fooBazFooLayer.length, 1, 'foo-baz-foo layer rendered');
   assert.equal(fooBazFooLayerDirectables.length, 1, 'foo-baz-foo layer directables rendered');
