@@ -5,9 +5,11 @@ const { RSVP: { Promise } } = Ember;
 
 export default function() {
   return new Promise((resolve) => {
-    Ember.$(document).on('affinity-engine-test-direction-step', () => {
+    Ember.$(document).one('keyup.ae-step', (event) => {
       run(() => {
-        resolve();
+        if (event.which === 32 && event.ctrlKey && event.altKey && event.shiftKey) {
+          resolve();
+        }
       });
     });
   });
