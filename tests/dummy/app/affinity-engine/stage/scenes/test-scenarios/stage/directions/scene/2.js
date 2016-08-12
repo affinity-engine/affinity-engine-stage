@@ -8,7 +8,7 @@ export default Scene.extend({
 
     await step();
 
-    script.scene('test-scenarios/stage/directions/scene/3').window('simple-window');
-    script.scene('test-scenarios/stage/directions/scene/4').window('window-with-screen').screen('foo');
+    script.scene('test-scenarios/stage/directions/scene/3').window('simple-window').classNames('ae-center').priority(2);
+    script.scene('test-scenarios/stage/directions/scene/4').window('window-with-screen').classNames('ae-center').screen('foo').priority(1);
   }
 });

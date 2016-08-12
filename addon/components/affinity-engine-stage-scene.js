@@ -1,6 +1,8 @@
 import Ember from 'ember';
 import layout from '../templates/components/affinity-engine-stage-scene';
+import { deepConfigurable } from 'affinity-engine';
 import { BusPublisherMixin, BusSubscriberMixin } from 'ember-message-bus';
+import multiton from 'ember-multiton-service';
 
 const {
   Component,
@@ -12,10 +14,24 @@ const {
   typeOf
 } = Ember;
 
+const { computed: { alias } } = Ember;
 const { Logger: { warn } } = Ember;
+
+const configurationTiers = [
+  'sceneOptions',
+  'config.attrs.component.stage.scene',
+  'config.attrs.component.stage',
+  'config.attrs'
+];
 
 export default Component.extend(BusPublisherMixin, BusSubscriberMixin, {
   layout,
+
+  config: multiton('affinity-engine/config', 'engineId'),
+
+  transitionIn: deepConfigurable(configurationTiers, 'transitionIn'),
+  transitionOut: deepConfigurable(configurationTiers, 'transitionOut'),
+  animationAdapter: alias('config.attrs.affinity-engine.animator.name'),
 
   init(...args) {
     this._super(...args);
@@ -39,7 +55,9 @@ export default Component.extend(BusPublisherMixin, BusSubscriberMixin, {
   },
 
   _startScene() {
-    const { sceneId: scene, sceneOptions } = getProperties(this, 'sceneId', 'sceneOptions');
+    const { sceneId: scene, sceneOptions, transitionIn } = getProperties(this, 'sceneId', 'sceneOptions', 'transitionIn');
+
+    set(this, 'transitions', [transitionIn]);
 
     set(this, 'sceneRecord', get(sceneOptions, 'sceneRecord') || {});
 

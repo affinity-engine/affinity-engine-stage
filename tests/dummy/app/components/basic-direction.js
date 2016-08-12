@@ -19,6 +19,8 @@ const configurationTiers = [
 export default Component.extend(DirectableComponentMixin, {
   hook: 'basic_direction',
 
+  classNames: ['basic-direction'],
+
   config: multiton('affinity-engine/config', 'engineId'),
 
   header: configurable(configurationTiers, 'header'),

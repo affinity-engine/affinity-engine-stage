@@ -1,6 +1,9 @@
-{{affinity-engine-stage-layer
-  directables=directables
-  isFocused=isFocused
-  engineId=engineId
-  windowId=windowId
-}}
+{{#ember-animation-box transitions=transitions animationAdapter=animationAdapter classNames="ae-hidden"}}
+  {{affinity-engine-stage-layer
+    animationAdapter=animationAdapter
+    directables=directables
+    isFocused=isFocused
+    engineId=engineId
+    windowId=windowId
+  }}
+{{/ember-animation-box}}
