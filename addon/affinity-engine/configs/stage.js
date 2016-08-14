@@ -5,7 +5,7 @@ export default {
       direction: {
         scene: {
           transitionIn: {
-            effect: { opacity: [0.5, 0] },
+            effect: { opacity: [1, 0] },
             duration: 250
           },
           transitionOut: {

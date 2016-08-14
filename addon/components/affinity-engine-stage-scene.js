@@ -27,6 +27,8 @@ const configurationTiers = [
 export default Component.extend(BusPublisherMixin, BusSubscriberMixin, {
   layout,
 
+  classNames: ['ae-stage-scene'],
+
   config: multiton('affinity-engine/config', 'engineId'),
 
   transitionIn: deepConfigurable(configurationTiers, 'transitionIn'),
@@ -55,9 +57,9 @@ export default Component.extend(BusPublisherMixin, BusSubscriberMixin, {
   },
 
   _startScene() {
-    const { sceneId: scene, sceneOptions, transitionIn } = getProperties(this, 'sceneId', 'sceneOptions', 'transitionIn');
+    const { sceneId: scene, sceneOptions, transitionIn, transitionOut } = getProperties(this, 'sceneId', 'sceneOptions', 'transitionIn', 'transitionOut');
 
-    set(this, 'transitions', [transitionIn]);
+    set(this, 'transitions', [{ crossFade: { in: transitionIn, out: transitionOut } }]);
 
     set(this, 'sceneRecord', get(sceneOptions, 'sceneRecord') || {});
 
