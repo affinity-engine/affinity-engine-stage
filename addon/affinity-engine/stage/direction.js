@@ -1,6 +1,7 @@
 import Ember from 'ember';
 import multiton from 'ember-multiton-service';
 import DirectionQueue from './direction-queue';
+import { BusPublisherMixin } from 'ember-message-bus';
 
 const {
   Evented,
@@ -14,7 +15,7 @@ const {
   setProperties
 } = Ember;
 
-export default Ember.Object.extend(Evented, {
+export default Ember.Object.extend(Evented, BusPublisherMixin, {
   _isDirection: true,
   _restartingEngine: true,
 
@@ -125,11 +126,12 @@ export default Ember.Object.extend(Evented, {
       componentPath,
       id,
       layer,
-      stageManager
-    } = getProperties(this, 'attrs', 'componentPath', 'id', 'layer', 'stageManager');
+      engineId,
+      windowId
+    } = getProperties(this, 'attrs', 'componentPath', 'id', 'layer', 'stageManager', 'engineId', 'windowId');
 
     set(this, '_restartingEngine', true);
 
-    stageManager.handleDirectable(id, { attrs, componentPath, layer, direction: this, priorSceneRecord }, resolve);
+    this.publish(`ae:${engineId}:${windowId}:shouldHandleDirectable`, id, { attrs, componentPath, layer, direction: this, priorSceneRecord }, resolve);
   }
 });

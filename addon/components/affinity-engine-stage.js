@@ -6,14 +6,11 @@ import { BusPublisherMixin, BusSubscriberMixin } from 'ember-message-bus';
 
 const {
   Component,
-  computed,
   get,
   getProperties,
   isPresent,
   setProperties
 } = Ember;
-
-const { alias } = computed;
 
 export default Component.extend(BusPublisherMixin, BusSubscriberMixin, ManagedFocusMixin, {
   layout,
@@ -25,9 +22,6 @@ export default Component.extend(BusPublisherMixin, BusSubscriberMixin, ManagedFo
 
   layerManager: multiton('affinity-engine/stage/layer-manager', 'engineId', 'windowId'),
   saveStateManager: registrant('affinity-engine/save-state-manager'),
-  stageManager: multiton('affinity-engine/stage/stage-manager', 'engineId', 'windowId'),
-
-  directables: alias('stageManager.directables'),
 
   init(...args) {
     this._super(...args);

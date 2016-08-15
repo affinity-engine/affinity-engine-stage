@@ -6,11 +6,15 @@ import multiton from 'ember-multiton-service';
 
 const {
   Component,
+  computed,
   get,
   getOwner,
   getProperties,
+  isBlank,
   isNone,
+  merge,
   set,
+  setProperties,
   typeOf
 } = Ember;
 
@@ -31,6 +35,8 @@ export default Component.extend(BusPublisherMixin, BusSubscriberMixin, {
 
   config: multiton('affinity-engine/config', 'engineId'),
 
+  directables: computed(() => Ember.A()),
+
   transitionIn: deepConfigurable(configurationTiers, 'transitionIn'),
   transitionOut: deepConfigurable(configurationTiers, 'transitionOut'),
   animationAdapter: alias('config.attrs.affinity-engine.animator.name'),
@@ -41,6 +47,9 @@ export default Component.extend(BusPublisherMixin, BusSubscriberMixin, {
     const { engineId, windowId } = getProperties(this, 'engineId', 'windowId');
 
     this.on(`ae:${engineId}:${windowId}:directionCompleted`, this, this._update);
+    this.on(`ae:${engineId}:${windowId}:shouldClearStage`, this, this._clearDirectables);
+    this.on(`ae:${engineId}:${windowId}:shouldRemoveDirectable`, this, this._removeDirectable);
+    this.on(`ae:${engineId}:${windowId}:shouldHandleDirectable`, this, this._handleDirectable);
 
     set(this, 'currentSceneId', get(this, 'sceneId'));
     this._startScene();
@@ -54,6 +63,40 @@ export default Component.extend(BusPublisherMixin, BusSubscriberMixin, {
       this.rerender();
       this._startScene();
     }
+  },
+
+  _handleDirectable(id, properties, resolve) {
+    const directable = get(properties, 'direction.directable');
+
+    if (isBlank(directable)) {
+      this._addDirectable(merge(properties, { id, resolve }));
+    } else {
+      this._updateDirectable(directable, properties, resolve);
+    }
+  },
+
+  _addDirectable(properties) {
+    const Directable = getOwner(this).lookup('affinity-engine/stage:directable');
+    const directable = Directable.create(properties);
+
+    set(get(properties, 'direction'), 'directable', directable);
+
+    get(this, 'directables').pushObject(directable);
+  },
+
+  _updateDirectable(directable, properties, resolve) {
+    const attrs = Ember.$.extend({}, get(directable, 'attrs'), get(properties, 'attrs'));
+
+    setProperties(directable, merge(properties, { resolve, attrs }));
+  },
+
+  _clearDirectables() {
+    get(this, 'directables').clear();
+  },
+
+  _removeDirectable(directable) {
+    get(this, 'directables').removeObject(directable);
+    directable.destroy();
   },
 
   _startScene() {
