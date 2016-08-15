@@ -1,4 +1,4 @@
-{{#ember-animation-box transitions=transitions resolve=(action resolve)}}
+{{#ember-animation-box animationAdapter=animationAdapter transitions=transitions resolve=(action resolve)}}
   {{#each layerDirectables as |directable|}}
     {{component directable.componentPath
       directable=directable

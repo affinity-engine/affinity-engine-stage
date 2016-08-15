@@ -1,6 +1,6 @@
 import Ember from 'ember';
 import layout from '../templates/components/affinity-engine-stage-scene';
-import { deepConfigurable } from 'affinity-engine';
+import { configurable, deepConfigurable } from 'affinity-engine';
 import { BusPublisherMixin, BusSubscriberMixin } from 'ember-message-bus';
 import multiton from 'ember-multiton-service';
 
@@ -18,7 +18,6 @@ const {
   typeOf
 } = Ember;
 
-const { computed: { alias } } = Ember;
 const { Logger: { warn } } = Ember;
 
 const configurationTiers = [
@@ -39,7 +38,7 @@ export default Component.extend(BusPublisherMixin, BusSubscriberMixin, {
 
   transitionIn: deepConfigurable(configurationTiers, 'transitionIn'),
   transitionOut: deepConfigurable(configurationTiers, 'transitionOut'),
-  animationAdapter: alias('config.attrs.affinity-engine.animator.name'),
+  animationAdapter: configurable(configurationTiers, 'animationLibrary'),
 
   init(...args) {
     this._super(...args);

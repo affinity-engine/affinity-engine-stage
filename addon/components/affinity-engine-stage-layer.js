@@ -1,6 +1,6 @@
 import Ember from 'ember';
 import layout from '../templates/components/affinity-engine-stage-layer';
-import { deepArrayConfigurable } from 'affinity-engine';
+import { configurable, deepArrayConfigurable } from 'affinity-engine';
 import { DirectableComponentMixin, layerName } from 'affinity-engine-stage';
 import { BusPublisherMixin, BusSubscriberMixin } from 'ember-message-bus';
 
@@ -30,6 +30,7 @@ export default Component.extend(BusPublisherMixin, BusSubscriberMixin, Directabl
   directables: computed(() => Ember.A()),
   name: '',
 
+  animationAdapter: configurable(configurationTiers, 'animationLibrary'),
   transitions: deepArrayConfigurable(configurationTiers, 'directable.attrs.transitions', 'transition'),
 
   init(...args) {
