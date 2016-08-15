@@ -1,5 +1,4 @@
 import Ember from 'ember';
-import multiton from 'ember-multiton-service';
 import { BusPublisherMixin, BusSubscriberMixin } from 'ember-message-bus';
 
 const {
@@ -11,10 +10,10 @@ const {
   typeOf
 } = Ember;
 
+const { RSVP: { resolve } } = Ember;
+
 export default Ember.Object.extend(BusPublisherMixin, BusSubscriberMixin, Evented, {
   _sceneRecordIndex: -1,
-
-  stage: multiton('affinity-engine/stage/stage', 'engineId', 'windowId'),
 
   init(...args) {
     this._super(...args);
@@ -28,7 +27,14 @@ export default Ember.Object.extend(BusPublisherMixin, BusSubscriberMixin, Evente
     const factory = getOwner(this).lookup(`affinity-engine/stage/direction:${directionName}`);
     const predecessors = get(args[0], 'arePredecessors') ? args.shift() : Ember.A();
 
-    return get(this, 'stage').direct(this, factory, predecessors, args);
+    if (get(this, 'isAborted')) { return resolve(); }
+
+    const { engineId, windowId } = getProperties(this, 'engineId', 'windowId');
+    const direction = factory.create({ script: this, engineId, windowId });
+
+    direction.trigger('directionReady', predecessors);
+
+    return direction._setup(...args);
   },
 
   _abort() {
