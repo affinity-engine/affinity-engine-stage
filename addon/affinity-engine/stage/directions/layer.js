@@ -1,6 +1,6 @@
 import Ember from 'ember';
 import { Direction } from 'affinity-engine-stage';
-import multiton from 'ember-multiton-service';
+import { BusPublisherMixin } from 'ember-message-bus';
 
 const {
   get,
@@ -9,9 +9,7 @@ const {
   set
 } = Ember;
 
-export default Direction.extend({
-  layerManager: multiton('affinity-engine/stage/layer-manager', 'engineId', 'windowId'),
-
+export default Direction.extend(BusPublisherMixin, {
   _setup(layer) {
     this._entryPoint();
 
@@ -39,13 +37,14 @@ export default Direction.extend({
   _perform(priorSceneRecord, resolve) {
     const {
       attrs,
-      layerManager
-    } = getProperties(this, 'attrs', 'layerManager');
+      engineId,
+      windowId
+    } = getProperties(this, 'attrs', 'engineId', 'windowId');
 
     const layer = get(attrs, 'layer');
 
     set(this, '_restartingEngine', true);
 
-    layerManager.handleDirectable(layer, { attrs, direction: this, priorSceneRecord }, resolve);
+    this.publish(`ae:${engineId}:${windowId}:${layer}:shouldDirectLayer`, { attrs, direction: this, priorSceneRecord, resolve });
   }
 });

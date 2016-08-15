@@ -1,7 +1,6 @@
 import Ember from 'ember';
 import layout from '../templates/components/affinity-engine-stage';
 import { ManagedFocusMixin, registrant } from 'affinity-engine';
-import multiton from 'ember-multiton-service';
 import { BusPublisherMixin, BusSubscriberMixin } from 'ember-message-bus';
 
 const {
@@ -20,7 +19,6 @@ export default Component.extend(BusPublisherMixin, BusSubscriberMixin, ManagedFo
   classNames: ['ae-stage'],
   windowId: 'main',
 
-  layerManager: multiton('affinity-engine/stage/layer-manager', 'engineId', 'windowId'),
   saveStateManager: registrant('affinity-engine/save-state-manager'),
 
   init(...args) {
@@ -38,8 +36,6 @@ export default Component.extend(BusPublisherMixin, BusSubscriberMixin, ManagedFo
     this.on(`ae:${engineId}:${windowId}:shouldLoadScene`, this, this._loadScene);
     this.on(`ae:${engineId}:${windowId}:shouldChangeScene`, this, this._changeScene);
 
-    this._initializeServices();
-
     if (windowId === 'main') {
       this._loadLatestScene();
     } else {
@@ -51,10 +47,6 @@ export default Component.extend(BusPublisherMixin, BusSubscriberMixin, ManagedFo
         window
       });
     }
-  },
-
-  _initializeServices() {
-    getProperties(this, 'layerManager', 'stageManager');
   },
 
   _rewindToScene(point) {

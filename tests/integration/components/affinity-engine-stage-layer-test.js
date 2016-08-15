@@ -6,7 +6,6 @@ import { initializeQUnitAssertions } from 'ember-message-bus';
 import { initialize as initializeStage } from 'affinity-engine-stage';
 
 const {
-  get,
   getOwner
 } = Ember;
 
@@ -20,52 +19,6 @@ moduleForComponent('affinity-engine-stage-layer', 'Integration | Component | emb
     initializeQUnitAssertions(appInstance);
     initializeStage(appInstance);
   }
-});
-
-test('`didInsertElement` publishes `layerAdded`', function(assert) {
-  assert.expect(1);
-
-  const engineId = 'foo';
-  const windowId = 'bar';
-  const name = 'baz';
-
-  assert.willPublish(
-    `ae:${engineId}:${windowId}:layerAdded`,
-    (layer) => get(layer, 'name') === name,
-    '`layerAdded` is published with `layer`'
-  );
-
-  this.setProperties({ engineId, windowId, name });
-
-  this.render(hbs`{{affinity-engine-stage-layer
-    engineId=engineId
-    windowId=windowId
-    name=name
-  }}`);
-});
-
-test('`willDestroyElement` publishes `layerRemoved`', function(assert) {
-  assert.expect(1);
-
-  const engineId = 'foo';
-  const windowId = 'bar';
-  const name = 'baz';
-
-  this.setProperties({ engineId, windowId, name });
-
-  this.render(hbs`{{affinity-engine-stage-layer
-    engineId=engineId
-    windowId=windowId
-    name=name
-  }}`);
-
-  assert.willPublish(
-    `ae:${engineId}:${windowId}:layerRemoved`,
-    (layer) => get(layer, 'name') === name,
-    '`layerRemoved` is published with `layer`'
-  );
-
-  this.clearRender();
 });
 
 test('class name is bound to layer name', function(assert) {

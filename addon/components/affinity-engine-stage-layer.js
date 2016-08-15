@@ -2,13 +2,14 @@ import Ember from 'ember';
 import layout from '../templates/components/affinity-engine-stage-layer';
 import { deepArrayConfigurable } from 'affinity-engine';
 import { DirectableComponentMixin, layerName } from 'affinity-engine-stage';
-import { BusPublisherMixin } from 'ember-message-bus';
+import { BusPublisherMixin, BusSubscriberMixin } from 'ember-message-bus';
 
 const {
   Component,
   computed,
   get,
-  getProperties
+  getProperties,
+  setProperties
 } = Ember;
 
 const configurationTiers = [
@@ -18,7 +19,7 @@ const configurationTiers = [
   'config.attrs'
 ];
 
-export default Component.extend(BusPublisherMixin, DirectableComponentMixin, {
+export default Component.extend(BusPublisherMixin, BusSubscriberMixin, DirectableComponentMixin, {
   layout,
 
   hook: 'affinity_engine_stage_layer',
@@ -34,17 +35,13 @@ export default Component.extend(BusPublisherMixin, DirectableComponentMixin, {
   init(...args) {
     this._super(...args);
 
-    const { engineId, windowId } = getProperties(this, 'engineId', 'windowId');
+    const { engineId, name, windowId } = getProperties(this, 'engineId', 'name', 'windowId');
 
-    this.publish(`ae:${engineId}:${windowId}:layerAdded`, this);
+    this.on(`ae:${engineId}:${windowId}:${name}:shouldDirectLayer`, this, this._shouldDirect);
   },
 
-  willDestroyElement(...args) {
-    this._super(...args);
-
-    const { engineId, windowId } = getProperties(this, 'engineId', 'windowId');
-
-    this.publish(`ae:${engineId}:${windowId}:layerRemoved`, this);
+  _shouldDirect(directable) {
+    setProperties(this, { directable });
   },
 
   layerDirectables: computed('directables.@each.layer', 'name', {

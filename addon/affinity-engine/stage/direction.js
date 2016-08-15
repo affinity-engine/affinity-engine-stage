@@ -1,5 +1,4 @@
 import Ember from 'ember';
-import multiton from 'ember-multiton-service';
 import DirectionQueue from './direction-queue';
 import { BusPublisherMixin } from 'ember-message-bus';
 
@@ -20,9 +19,6 @@ export default Ember.Object.extend(Evented, BusPublisherMixin, {
   _restartingEngine: true,
 
   attrs: computed(() => Ember.Object.create({ instance: 0 })),
-
-  sceneManager: multiton('affinity-engine/stage/scene-manager', 'engineId', 'windowId'),
-  stageManager: multiton('affinity-engine/stage/stage-manager', 'engineId', 'windowId'),
 
   prepareForChaining: on('directionReady', function(predecessors) {
     set(this, 'predecessors', predecessors);
@@ -106,7 +102,6 @@ export default Ember.Object.extend(Evented, BusPublisherMixin, {
   _addToQueue() {
     const queue = get(this, 'queue') || set(this, 'queue', DirectionQueue.create({
       script: get(this, 'script'),
-      sceneManager: get(this, 'sceneManager'),
       priorSceneRecord: get(this, 'priorSceneRecord')
     }));
 
@@ -128,7 +123,7 @@ export default Ember.Object.extend(Evented, BusPublisherMixin, {
       layer,
       engineId,
       windowId
-    } = getProperties(this, 'attrs', 'componentPath', 'id', 'layer', 'stageManager', 'engineId', 'windowId');
+    } = getProperties(this, 'attrs', 'componentPath', 'id', 'layer', 'engineId', 'windowId');
 
     set(this, '_restartingEngine', true);
 
