@@ -35,6 +35,7 @@ export default Component.extend(BusPublisherMixin, BusSubscriberMixin, {
   config: multiton('affinity-engine/config', 'engineId'),
 
   directables: computed(() => Ember.A()),
+  transitions: computed(() => Ember.A()),
 
   transitionIn: deepConfigurable(configurationTiers, 'transitionIn'),
   transitionOut: deepConfigurable(configurationTiers, 'transitionOut'),
@@ -64,29 +65,29 @@ export default Component.extend(BusPublisherMixin, BusSubscriberMixin, {
     }
   },
 
-  _handleDirectable(id, properties, resolve) {
+  _handleDirectable(id, properties, attrs) {
     const directable = get(properties, 'direction.directable');
 
     if (isBlank(directable)) {
-      this._addDirectable(merge(properties, { id, resolve }));
+      this._addDirectable(merge(properties, { id }), attrs);
     } else {
-      this._updateDirectable(directable, properties, resolve);
+      this._updateDirectable(directable, properties);
     }
   },
 
-  _addDirectable(properties) {
+  _addDirectable(properties, attrs = {}) {
     const Directable = getOwner(this).lookup('affinity-engine/stage:directable');
-    const directable = Directable.create(properties);
+    const directable = Directable.extend(attrs).create(properties);
 
     set(get(properties, 'direction'), 'directable', directable);
 
     get(this, 'directables').pushObject(directable);
   },
 
-  _updateDirectable(directable, properties, resolve) {
-    const attrs = Ember.$.extend({}, get(directable, 'attrs'), get(properties, 'attrs'));
+  _updateDirectable(directable, properties) {
+    const _attrs = Ember.$.extend({}, get(directable, '_attrs'), get(properties, '_attrs'));
 
-    setProperties(directable, merge(properties, { resolve, attrs }));
+    setProperties(directable, merge(properties, { _attrs }));
   },
 
   _clearDirectables() {
@@ -101,7 +102,7 @@ export default Component.extend(BusPublisherMixin, BusSubscriberMixin, {
   _startScene() {
     const { sceneId: scene, sceneOptions, transitionIn, transitionOut } = getProperties(this, 'sceneId', 'sceneOptions', 'transitionIn', 'transitionOut');
 
-    set(this, 'transitions', [{ crossFade: { in: transitionIn, out: transitionOut } }]);
+    get(this, 'transitions').pushObject({ crossFade: { in: transitionIn, out: transitionOut } });
 
     set(this, 'sceneRecord', get(sceneOptions, 'sceneRecord') || {});
 

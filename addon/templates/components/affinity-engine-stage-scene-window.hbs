@@ -1,4 +1,4 @@
-{{#ember-animation-box animationAdapter=animationAdapter transitions=transitions resolve=(action resolve)}}
+{{#ember-animation-box animationAdapter=animationAdapter transitions=transitions resolve=(action "resolve")}}
   {{#if screen}}
     <div class="ae-stage-scene-window-screen {{screenClassNames}}" style={{childStyle}} data-test={{hook "affinity_engine_stage_scene_window_screen"}}></div>
   {{/if}}

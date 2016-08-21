@@ -1,6 +1,5 @@
 import Ember from 'ember';
 import layout from '../templates/components/affinity-engine-stage-layer';
-import { configurable, deepArrayConfigurable } from 'affinity-engine';
 import { DirectableComponentMixin, layerName } from 'affinity-engine-stage';
 import { BusPublisherMixin, BusSubscriberMixin } from 'ember-message-bus';
 
@@ -8,16 +7,11 @@ const {
   Component,
   computed,
   get,
+  getOwner,
   getProperties,
+  set,
   setProperties
 } = Ember;
-
-const configurationTiers = [
-  'directable.attrs',
-  'config.attrs.component.stage.direction.layer',
-  'config.attrs.component.stage',
-  'config.attrs'
-];
 
 export default Component.extend(BusPublisherMixin, BusSubscriberMixin, DirectableComponentMixin, {
   layout,
@@ -27,11 +21,9 @@ export default Component.extend(BusPublisherMixin, BusSubscriberMixin, Directabl
   classNames: ['ae-stage-layer'],
   classNameBindings: ['layerName'],
 
+
   directables: computed(() => Ember.A()),
   name: '',
-
-  animationAdapter: configurable(configurationTiers, 'animationLibrary'),
-  transitions: deepArrayConfigurable(configurationTiers, 'directable.attrs.transitions', 'transition'),
 
   init(...args) {
     this._super(...args);
@@ -41,9 +33,29 @@ export default Component.extend(BusPublisherMixin, BusSubscriberMixin, Directabl
     this.on(`ae:${engineId}:${windowId}:${name}:shouldDirectLayer`, this, this._shouldDirect);
   },
 
-  _shouldDirect(directable) {
-    setProperties(this, { directable });
+  _shouldDirect(properties, attrs) {
+    const directable = get(this, 'directable') || set(this, 'directable', this._createDirectable(attrs));
+
+    setProperties(directable, properties);
   },
+
+  _createDirectable(attrs) {
+    const Directable = getOwner(this).lookup('affinity-engine/stage:directable');
+
+    return Directable.extend(attrs).create();
+  },
+
+  animationAdapter: computed('directable.animationAdapter', {
+    get() {
+      return get(this, 'directable.animationAdapter') || '';
+    }
+  }),
+
+  transitions: computed('directable.transitions', {
+    get() {
+      return get(this, 'directable.transitions') || Ember.A();
+    }
+  }),
 
   layerDirectables: computed('directables.@each.layer', 'name', {
     get() {

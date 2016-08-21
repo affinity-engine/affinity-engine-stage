@@ -3,13 +3,10 @@ import { moduleForComponent, test } from 'ember-qunit';
 import hbs from 'htmlbars-inline-precompile';
 import { $hook, initialize as initializeHook } from 'ember-hook';
 import { initializeQUnitAssertions } from 'ember-message-bus';
-import { deepStub } from 'affinity-engine';
 import { initialize as initializeStage } from 'affinity-engine-stage';
 
 const {
-  getOwner,
-  getProperties,
-  set
+  getOwner
 } = Ember;
 
 moduleForComponent('affinity-engine-stage-scene-window', 'Integration | Component | ember engine stage scene window', {
@@ -24,63 +21,44 @@ moduleForComponent('affinity-engine-stage-scene-window', 'Integration | Componen
   }
 });
 
-const configurationTiers = [
-  'directable.attrs',
-  'config.attrs.component.stage.direction.scene',
-  'config.attrs.component.stage',
-  'config.attrs'
-];
+test('it applies `directable.windowClassNames`', function(assert) {
+  assert.expect(1);
 
-configurationTiers.forEach((priority) => {
-  test(`applies the classNames found in ${priority}`, function(assert) {
-    assert.expect(1);
+  this.set('directable', { windowClassNames: ['foo'] });
 
-    const stub = deepStub(priority, { classNames: ['foo'] });
+  this.render(hbs`{{affinity-engine-stage-scene-window directable=directable engineId="foo" sceneWindowId="bar"}}`);
 
-    this.setProperties(getProperties(stub, 'config', 'directable'));
+  assert.ok($hook('affinity_engine_stage_scene_window_main').hasClass('foo'), 'has class');
+});
 
-    this.render(hbs`{{affinity-engine-stage-scene-window config=config directable=directable engineId="foo" sceneWindowId="bar"}}`);
+test('it applies a z-index based on `directable.priority``', function(assert) {
+  assert.expect(1);
 
-    assert.ok($hook('affinity_engine_stage_scene_window_main').hasClass('foo'), 'has class');
-  });
+  this.set('directable', { priority: 5 });
 
-  test(`applies a z-index based on ${priority}`, function(assert) {
-    assert.expect(1);
+  this.render(hbs`{{affinity-engine-stage-scene-window directable=directable engineId="foo" sceneWindowId="bar"}}`);
 
-    const stub = deepStub(priority, { priority: 5 });
+  assert.equal($hook('affinity_engine_stage_scene_window_main').attr('style'), 'z-index: 5000;', 'style is correct');
+});
 
-    this.setProperties(getProperties(stub, 'config', 'directable'));
+test('it applies the screen based on `directable.screen`', function(assert) {
+  assert.expect(1);
 
-    this.render(hbs`{{affinity-engine-stage-scene-window config=config directable=directable engineId="foo" sceneWindowId="bar"}}`);
+  this.set('directable', { screen: true });
 
-    assert.equal($hook('affinity_engine_stage_scene_window_main').attr('style'), 'z-index: 5000;', 'style is correct');
-  });
+  this.render(hbs`{{affinity-engine-stage-scene-window directable=directable engineId="foo" sceneWindowId="bar"}}`);
 
-  test(`applies the screen based on ${priority}`, function(assert) {
-    assert.expect(1);
+  assert.ok($hook('affinity_engine_stage_scene_window_screen').length > 0, 'screen is visible');
+});
 
-    const stub = deepStub(priority, { screen: true });
+test('it gives the screen a priority based on `directable.priority`', function(assert) {
+  assert.expect(1);
 
-    this.setProperties(getProperties(stub, 'config', 'directable'));
+  this.set('directable', { screen: true, priority: 5 });
 
-    this.render(hbs`{{affinity-engine-stage-scene-window config=config directable=directable engineId="foo" sceneWindowId="bar"}}`);
+  this.render(hbs`{{affinity-engine-stage-scene-window directable=directable engineId="foo" sceneWindowId="bar"}}`);
 
-    assert.ok($hook('affinity_engine_stage_scene_window_screen').length > 0, 'screen is visible');
-  });
-
-  test(`gives the screen a priority based on ${priority}`, function(assert) {
-    assert.expect(1);
-
-    const stub = deepStub(priority, { screen: true });
-
-    set(stub, 'priority', 5);
-
-    this.setProperties(getProperties(stub, 'config', 'directable'));
-
-    this.render(hbs`{{affinity-engine-stage-scene-window config=config directable=directable engineId="foo" sceneWindowId="bar"}}`);
-
-    assert.ok($hook('affinity_engine_stage_scene_window_screen').attr('style'), 'z-index: 5000;', 'style is correct');
-  });
+  assert.ok($hook('affinity_engine_stage_scene_window_screen').attr('style'), 'z-index: 5000;', 'style is correct');
 });
 
 test('it renders a child stage', function(assert) {
@@ -106,7 +84,7 @@ test('sets data scene-window-id', function(assert) {
 
   this.set('sceneWindowId', sceneWindowId);
 
-  this.render(hbs`{{affinity-engine-stage-scene-window  engineId="foo" sceneWindowId=sceneWindowId}}`);
+  this.render(hbs`{{affinity-engine-stage-scene-window engineId="foo" sceneWindowId=sceneWindowId}}`);
 
   assert.ok($hook('affinity_engine_stage_scene_window').data('scene-window-id'), 'foo', 'data set correctly');
 });

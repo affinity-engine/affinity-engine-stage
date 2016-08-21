@@ -1,50 +1,45 @@
 import Ember from 'ember';
 import layout from '../templates/components/affinity-engine-stage-scene-window';
 import { BusSubscriberMixin } from 'ember-message-bus';
-import { classNamesConfigurable, configurable, deepConfigurable } from 'affinity-engine';
 import { DirectableComponentMixin } from 'affinity-engine-stage';
 import multiton from 'ember-multiton-service';
 
 const {
   Component,
+  K,
   computed,
   get,
   isPresent,
   run,
-  set,
-  setProperties
+  set
 } = Ember;
 
 const { RSVP: { Promise } } = Ember;
 const { String: { htmlSafe } } = Ember;
-
-const configurationTiers = [
-  'directable.attrs',
-  'config.attrs.component.stage.direction.scene',
-  'config.attrs.component.stage',
-  'config.attrs'
-];
+const { alias } = computed;
 
 export default Component.extend(BusSubscriberMixin, DirectableComponentMixin, {
   layout,
 
-  hook: 'affinity_engine_stage_scene_window',
+  directable: computed(() => Ember.Object.create()),
 
+  hook: 'affinity_engine_stage_scene_window',
   attributeBindings: ['sceneWindowId:data-scene-window-id'],
   classNames: ['ae-stage-scene-window'],
 
   config: multiton('affinity-engine/config', 'engineId'),
 
-  animationAdapter: configurable(configurationTiers, 'animationLibrary'),
-  windowClassNames: classNamesConfigurable(configurationTiers, 'classNames'),
-  priority: configurable(configurationTiers, 'priority'),
-  sceneId: configurable(configurationTiers, 'sceneId'),
-  sceneWindowId: configurable(configurationTiers, 'sceneWindowId'),
-  screen: configurable(configurationTiers, 'screen'),
-  screenClassNames: classNamesConfigurable(configurationTiers, 'screen'),
-  transitionIn: deepConfigurable(configurationTiers, 'transitionIn'),
-  transitionOut: deepConfigurable(configurationTiers, 'transitionOut'),
-  window: configurable(configurationTiers, 'window'),
+  transitions: computed(() => Ember.A()),
+  animationAdapter: alias('directable.animationAdapter'),
+  windowClassNames: alias('directable.windowClassNames'),
+  priority: alias('directable.priority'),
+  sceneId: alias('directable.sceneId'),
+  sceneWindowId: alias('directable.sceneWindowId'),
+  screen: alias('directable.screen'),
+  screenClassNames: alias('directable.screenClassNames'),
+  transitionIn: alias('directable.transitionIn'),
+  transitionOut: alias('directable.transitionOut'),
+  window: alias('directable.window'),
 
   childStyle: computed('priority', {
     get() {
@@ -59,8 +54,15 @@ export default Component.extend(BusSubscriberMixin, DirectableComponentMixin, {
     this._super(...args);
     this._setupEventListeners();
     this._setupSceneRecord();
+    this._startTransitionIn();
+  },
 
-    set(this, 'transitions', [get(this, 'transitionIn')]);
+  _startTransitionIn() {
+    const transitionIn = get(this, 'transitionIn');
+
+    if (isPresent(transitionIn)) {
+      get(this, 'transitions').pushObject(transitionIn);
+    }
   },
 
   _setupEventListeners() {
@@ -83,15 +85,19 @@ export default Component.extend(BusSubscriberMixin, DirectableComponentMixin, {
   _close() {
     new Promise((resolve) => {
       run(() => {
-        setProperties(this, {
-          resolve,
-          transitions: [get(this, 'transitionOut')]
-        });
+        set(this, '_resolve', resolve);
+        get(this, 'transitions').pushObject(get(this, 'transitionOut'));
       });
     }).then(() => {
       run(() => {
         this.removeDirectable();
       });
     });
+  },
+
+  actions: {
+    resolve() {
+      (get(this, '_resolve') || K)();
+    }
   }
 });
