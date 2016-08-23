@@ -33,16 +33,16 @@ export default Component.extend(BusPublisherMixin, BusSubscriberMixin, Directabl
     this.on(`ae:${engineId}:${windowId}:${name}:shouldDirectLayer`, this, this._shouldDirect);
   },
 
-  _shouldDirect(properties, attrs) {
-    const directable = get(this, 'directable') || set(this, 'directable', this._createDirectable(attrs));
+  _shouldDirect(properties, directableDefinition) {
+    const directable = get(this, 'directable') || set(this, 'directable', this._createDirectable(directableDefinition));
 
     setProperties(directable, properties);
   },
 
-  _createDirectable(attrs) {
+  _createDirectable(directableDefinition) {
     const Directable = getOwner(this).lookup('affinity-engine/stage:directable');
 
-    return Directable.extend(attrs).create();
+    return Directable.extend(directableDefinition).create();
   },
 
   animationAdapter: computed('directable.animationAdapter', {

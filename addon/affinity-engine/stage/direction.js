@@ -18,8 +18,7 @@ export default Ember.Object.extend(Evented, BusPublisherMixin, {
   _isDirection: true,
   _restartingEngine: true,
 
-  attrs: {},
-  _attrs: computed(() => Ember.Object.create()),
+  attrs: computed(() => Ember.Object.create()),
 
   prepareForChaining: on('directionReady', function(predecessors) {
     set(this, 'predecessors', predecessors);
@@ -67,7 +66,7 @@ export default Ember.Object.extend(Evented, BusPublisherMixin, {
   _reset(attrs) {
     set(this, '_restartingEngine', false);
     set(this, '_hasDefaultTransition', false);
-    set(this, '_attrs', Ember.Object.create(attrs));
+    set(this, 'attrs', Ember.Object.create(attrs));
     set(this, 'queue', undefined);
   },
 
@@ -106,17 +105,17 @@ export default Ember.Object.extend(Evented, BusPublisherMixin, {
 
   _perform(priorSceneRecord, resolve) {
     const {
-      _attrs,
+      _directableDefinition,
       attrs,
       componentPath,
       id,
       layer,
       engineId,
       windowId
-    } = getProperties(this, '_attrs', 'attrs', 'componentPath', 'id', 'layer', 'engineId', 'windowId');
+    } = getProperties(this, '_directableDefinition', 'attrs', 'componentPath', 'id', 'layer', 'engineId', 'windowId');
 
     set(this, '_restartingEngine', true);
 
-    this.publish(`ae:${engineId}:${windowId}:shouldHandleDirectable`, id, { _attrs, componentPath, direction: this, layer, priorSceneRecord, resolve, engineId, windowId }, attrs);
+    this.publish(`ae:${engineId}:${windowId}:shouldHandleDirectable`, id, { attrs, componentPath, direction: this, layer, priorSceneRecord, resolve, engineId, windowId }, _directableDefinition);
   }
 });

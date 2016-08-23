@@ -65,19 +65,19 @@ export default Component.extend(BusPublisherMixin, BusSubscriberMixin, {
     }
   },
 
-  _handleDirectable(id, properties, attrs) {
+  _handleDirectable(id, properties, directableDefinition) {
     const directable = get(properties, 'direction.directable');
 
     if (isBlank(directable)) {
-      this._addDirectable(merge(properties, { id }), attrs);
+      this._addDirectable(merge(properties, { id }), directableDefinition);
     } else {
       this._updateDirectable(directable, properties);
     }
   },
 
-  _addDirectable(properties, attrs = {}) {
+  _addDirectable(properties, directableDefinition = {}) {
     const Directable = getOwner(this).lookup('affinity-engine/stage:directable');
-    const directable = Directable.extend(attrs).create(properties);
+    const directable = Directable.extend(directableDefinition).create(properties);
 
     set(get(properties, 'direction'), 'directable', directable);
 

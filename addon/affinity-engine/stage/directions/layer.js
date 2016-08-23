@@ -12,18 +12,25 @@ const {
   set
 } = Ember;
 
-const configurationTiers = [
-  '_attrs',
-  'config.attrs.component.stage.direction.layer',
-  'config.attrs.component.stage',
-  'config.attrs'
-];
-
 export default Direction.extend(BusPublisherMixin, {
-  attrs: computed(() => new Object({
-    animationAdapter: configurable(configurationTiers, 'animationLibrary'),
-    transitions: deepArrayConfigurable(configurationTiers, '_attrs.transitions', 'transition')
-  })),
+  _configurationTiers: [
+    'attrs',
+    'config.attrs.component.stage.direction.layer',
+    'config.attrs.component.stage',
+    'config.attrs'
+  ],
+
+  _directableDefinition: computed('_configurationTiers', {
+    get() {
+      const configurationTiers = get(this, '_configurationTiers');
+
+      return {
+        animationAdapter: configurable(configurationTiers, 'animationLibrary'),
+        layer: configurable(configurationTiers, 'layer'),
+        transitions: deepArrayConfigurable(configurationTiers, 'attrs.transitions', 'transition')
+      }
+    }
+  }),
 
   config: multiton('affinity-engine/config', 'engineId'),
 
@@ -36,15 +43,15 @@ export default Direction.extend(BusPublisherMixin, {
   },
 
   _reset() {
-    const _attrs = get(this, '_attrs');
+    const attrs = get(this, 'attrs');
 
-    return this._super({ transitions: Ember.A(), ...getProperties(_attrs, 'layer') });
+    return this._super({ transitions: Ember.A(), ...getProperties(attrs, 'layer') });
   },
 
   transition(effect, duration, options = {}, type = 'transition') {
     this._entryPoint();
 
-    const transitions = get(this, '_attrs.transitions');
+    const transitions = get(this, 'attrs.transitions');
 
     transitions.pushObject(merge({ duration, effect, type, queue: 'main' }, options));
 
@@ -53,16 +60,16 @@ export default Direction.extend(BusPublisherMixin, {
 
   _perform(priorSceneRecord, resolve) {
     const {
-      _attrs,
+      _directableDefinition,
       attrs,
       engineId,
       windowId
-    } = getProperties(this, '_attrs', 'attrs', 'engineId', 'windowId');
+    } = getProperties(this, '_directableDefinition', 'attrs', 'engineId', 'windowId');
 
     const layer = get(attrs, 'layer');
 
     set(this, '_restartingEngine', true);
 
-    this.publish(`ae:${engineId}:${windowId}:${layer}:shouldDirectLayer`, { _attrs, direction: this, priorSceneRecord, resolve, engineId, windowId }, attrs);
+    this.publish(`ae:${engineId}:${windowId}:${layer}:shouldDirectLayer`, { attrs, direction: this, priorSceneRecord, resolve, engineId, windowId }, _directableDefinition);
   }
 });
