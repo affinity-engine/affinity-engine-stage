@@ -13,6 +13,12 @@ const {
 } = Ember;
 
 export default Direction.extend(BusPublisherMixin, {
+  config: multiton('affinity-engine/config', 'engineId'),
+
+  attrs: computed(() => Ember.Object.create({
+    transitions: Ember.A()
+  })),
+
   _configurationTiers: [
     'attrs',
     'config.attrs.component.stage.direction.layer',
@@ -32,8 +38,6 @@ export default Direction.extend(BusPublisherMixin, {
     }
   }),
 
-  config: multiton('affinity-engine/config', 'engineId'),
-
   _setup(layer) {
     this._entryPoint();
 
@@ -43,9 +47,9 @@ export default Direction.extend(BusPublisherMixin, {
   },
 
   _reset() {
-    const attrs = get(this, 'attrs');
+    this._super();
 
-    return this._super({ transitions: Ember.A(), ...getProperties(attrs, 'layer') });
+    get(this, 'attrs.transitions').clear();
   },
 
   transition(effect, duration, options = {}, type = 'transition') {

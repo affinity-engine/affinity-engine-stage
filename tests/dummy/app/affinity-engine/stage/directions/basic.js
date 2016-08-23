@@ -5,7 +5,6 @@ import { Direction } from 'affinity-engine-stage';
 const {
   computed,
   get,
-  getProperties,
   set
 } = Ember;
 
@@ -40,12 +39,6 @@ export default Direction.extend({
     set(this, 'attrs.appender', get(this, 'predecessors').findBy('directionName', 'appender'));
 
     return this;
-  },
-
-  _reset() {
-    const attrs = get(this, 'attrs');
-
-    return this._super(getProperties(attrs, 'header', 'footer'));
   },
 
   text(textContent) {

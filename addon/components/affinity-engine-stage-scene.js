@@ -85,9 +85,7 @@ export default Component.extend(BusPublisherMixin, BusSubscriberMixin, {
   },
 
   _updateDirectable(directable, properties) {
-    const _attrs = Ember.$.extend({}, get(directable, '_attrs'), get(properties, '_attrs'));
-
-    setProperties(directable, merge(properties, { _attrs }));
+    setProperties(directable, properties);
   },
 
   _clearDirectables() {

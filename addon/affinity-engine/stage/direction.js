@@ -4,6 +4,7 @@ import { BusPublisherMixin } from 'ember-message-bus';
 
 const {
   Evented,
+  assign,
   computed,
   get,
   getOwner,
@@ -63,11 +64,12 @@ export default Ember.Object.extend(Evented, BusPublisherMixin, {
     return this;
   },
 
-  _reset(attrs) {
+  _reset() {
     set(this, '_restartingEngine', false);
     set(this, '_hasDefaultTransition', false);
-    set(this, 'attrs', Ember.Object.create(attrs));
     set(this, 'queue', undefined);
+    // TODO: figure out why attrs need to be cloned to prevent a runloop error
+    set(this, 'attrs', Ember.Object.create(assign({}, get(this, 'attrs'))));
   },
 
   _convertToPromise() {

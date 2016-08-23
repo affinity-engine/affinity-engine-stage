@@ -56,12 +56,6 @@ export default Direction.extend(BusPublisherMixin, {
     return this;
   },
 
-  _reset() {
-    const attrs = get(this, 'attrs');
-
-    return this._super(getProperties(attrs, 'sceneWindowId', 'window'));
-  },
-
   autosave(autosave = true) {
     this._entryPoint();
 
