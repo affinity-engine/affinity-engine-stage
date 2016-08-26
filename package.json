@@ -50,7 +50,6 @@
     "affinity-engine-stage"
   ],
   "dependencies": {
-    "ember-animation-box": "git+https://github.com/null-null-null/ember-animation-box.git",
     "ember-cli-babel": "^5.1.6",
     "ember-cli-htmlbars": "^1.0.3"
   },

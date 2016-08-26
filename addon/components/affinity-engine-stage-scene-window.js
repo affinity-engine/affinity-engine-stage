@@ -6,7 +6,6 @@ import multiton from 'ember-multiton-service';
 
 const {
   Component,
-  K,
   computed,
   get,
   isPresent,
@@ -14,7 +13,6 @@ const {
   set
 } = Ember;
 
-const { RSVP: { Promise } } = Ember;
 const { String: { htmlSafe } } = Ember;
 const { alias } = computed;
 
@@ -29,7 +27,6 @@ export default Component.extend(BusSubscriberMixin, DirectableComponentMixin, {
 
   config: multiton('affinity-engine/config', 'engineId'),
 
-  transitions: computed(() => Ember.A()),
   animationAdapter: alias('directable.animationAdapter'),
   windowClassNames: alias('directable.windowClassNames'),
   priority: alias('directable.priority'),
@@ -54,15 +51,6 @@ export default Component.extend(BusSubscriberMixin, DirectableComponentMixin, {
     this._super(...args);
     this._setupEventListeners();
     this._setupSceneRecord();
-    this._startTransitionIn();
-  },
-
-  _startTransitionIn() {
-    const transitionIn = get(this, 'transitionIn');
-
-    if (isPresent(transitionIn)) {
-      get(this, 'transitions').pushObject(transitionIn);
-    }
   },
 
   _setupEventListeners() {
@@ -83,21 +71,14 @@ export default Component.extend(BusSubscriberMixin, DirectableComponentMixin, {
   },
 
   _close() {
-    new Promise((resolve) => {
-      run(() => {
-        set(this, '_resolve', resolve);
-        get(this, 'transitions').pushObject(get(this, 'transitionOut'));
-      });
-    }).then(() => {
-      run(() => {
-        this.removeDirectable();
-      });
+    run(() => {
+      set(this, 'willTransitionOut', true);
     });
   },
 
   actions: {
-    resolve() {
-      (get(this, '_resolve') || K)();
+    didTransitionOut() {
+      this.removeDirectable();
     }
   }
 });

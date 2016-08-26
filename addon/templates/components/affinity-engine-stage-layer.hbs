@@ -1,4 +1,4 @@
-{{#ember-animation-box animationAdapter=animationAdapter transitions=transitions resolve=(action resolve)}}
+{{#affinity-engine-animation-box-wrapper animationAdapter=animationAdapter transitions=transitions didCompleteQueue=(action resolve)}}
   {{#each layerDirectables as |directable|}}
     {{component directable.componentPath
       directable=directable
@@ -17,4 +17,4 @@
       windowId=windowId
     }}
   {{/each-in}}
-{{/ember-animation-box}}
+{{/affinity-engine-animation-box-wrapper}}
