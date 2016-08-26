@@ -1,15 +1,24 @@
 import Ember from 'ember';
 import layout from '../templates/components/affinity-engine-stage';
-import { ManagedFocusMixin, registrant } from 'affinity-engine';
+import { ManagedFocusMixin, configurable, deepConfigurable, registrant } from 'affinity-engine';
 import { BusPublisherMixin, BusSubscriberMixin } from 'ember-message-bus';
+import multiton from 'ember-multiton-service';
 
 const {
   Component,
+  computed,
   get,
   getProperties,
   isPresent,
-  setProperties
+  set
 } = Ember;
+
+const configurationTiers = [
+  'sceneOptions',
+  'config.attrs.component.stage.scene',
+  'config.attrs.component.stage',
+  'config.attrs'
+];
 
 export default Component.extend(BusPublisherMixin, BusSubscriberMixin, ManagedFocusMixin, {
   layout,
@@ -19,7 +28,15 @@ export default Component.extend(BusPublisherMixin, BusSubscriberMixin, ManagedFo
   classNames: ['ae-stage'],
   windowId: 'main',
 
+  config: multiton('affinity-engine/config', 'engineId'),
   saveStateManager: registrant('affinity-engine/save-state-manager'),
+
+  animationAdapter: configurable(configurationTiers, 'animationLibrary'),
+  shouldAutosave: configurable(configurationTiers, 'autosave'),
+  transitionIn: deepConfigurable(configurationTiers, 'transitionIn'),
+  transitionOut: deepConfigurable(configurationTiers, 'transitionOut'),
+
+  transitions: computed(() => Ember.A()),
 
   init(...args) {
     this._super(...args);
@@ -99,9 +116,18 @@ export default Component.extend(BusPublisherMixin, BusSubscriberMixin, ManagedFo
   },
 
   _startScene(sceneId, sceneOptions) {
-    setProperties(this, {
-      sceneId,
-      sceneOptions
+    set(this, 'sceneOptions', sceneOptions);
+
+    const { transitionIn, transitionOut } = getProperties(this, 'transitionIn', 'transitionOut');
+
+    get(this, 'transitions').pushObject({
+      crossFade: {
+        in: transitionIn,
+        out: transitionOut,
+        cb: () => {
+          set(this, 'sceneId', sceneId);
+        }
+      }
     });
   }
 });
