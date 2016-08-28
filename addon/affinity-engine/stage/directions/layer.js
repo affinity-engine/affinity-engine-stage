@@ -1,5 +1,5 @@
 import Ember from 'ember';
-import { configurable, deepArrayConfigurable } from 'affinity-engine';
+import { configurable } from 'affinity-engine';
 import { Direction } from 'affinity-engine-stage';
 import { BusPublisherMixin } from 'ember-message-bus';
 import multiton from 'ember-multiton-service';
@@ -33,7 +33,7 @@ export default Direction.extend(BusPublisherMixin, {
       return {
         animationAdapter: configurable(configurationTiers, 'animationLibrary'),
         layer: configurable(configurationTiers, 'layer'),
-        transitions: deepArrayConfigurable(configurationTiers, 'attrs.transitions', 'transition')
+        transitions: configurable(configurationTiers, 'transitions')
       }
     }
   }),
