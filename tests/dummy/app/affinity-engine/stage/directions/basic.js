@@ -1,6 +1,6 @@
 import Ember from 'ember';
 import { configurable } from 'affinity-engine';
-import { Direction } from 'affinity-engine-stage';
+import { Direction, cmd } from 'affinity-engine-stage';
 
 const {
   computed,
@@ -32,20 +32,16 @@ export default Direction.extend({
     }
   }),
 
-  _setup(header) {
+  _setup: cmd(function(header) {
     this._entryPoint();
 
     set(this, 'attrs.header', header);
     set(this, 'attrs.appender', get(this, 'predecessors').findBy('directionName', 'appender'));
+  }),
 
-    return this;
-  },
-
-  text(textContent) {
+  text: cmd(function(textContent) {
     this._entryPoint();
 
     set(this, 'attrs.textContent', textContent);
-
-    return this;
-  }
+  })
 });

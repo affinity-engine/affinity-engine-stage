@@ -1,5 +1,5 @@
 // import { configurable } from 'affinity-engine';
-import { Direction } from 'affinity-engine-stage';
+import { Direction, cmd } from 'affinity-engine-stage';
 import multiton from 'ember-multiton-service';
 
 export default Direction.extend({
@@ -20,7 +20,7 @@ export default Direction.extend({
     }
   }),
 
-  _setup() {
+  _setup: cmd(function() {
 
-  }
+  })
 });

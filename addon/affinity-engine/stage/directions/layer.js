@@ -50,12 +50,12 @@ export default Direction.extend(BusPublisherMixin, {
     get(this, 'attrs.transitions').clear();
   },
 
-  transition: cmd(function(effect, duration, options = {}, type = 'transition') {
+  transition: cmd(function(effect, duration, options = {}) {
     this._entryPoint();
 
     const transitions = get(this, 'attrs.transitions');
 
-    transitions.pushObject(merge({ duration, effect, type, queue: 'main' }, options));
+    transitions.pushObject(merge({ duration, effect }, options));
   }),
 
   _perform(priorSceneRecord, resolve) {

@@ -1,5 +1,5 @@
 import Ember from 'ember';
-import { Direction } from 'affinity-engine-stage';
+import { Direction, cmd } from 'affinity-engine-stage';
 
 const {
   on,
@@ -7,19 +7,15 @@ const {
 } = Ember;
 
 export default Direction.extend({
-  _setup(footer) {
+  _setup: cmd(function(footer) {
     this._entryPoint();
 
     set(this, 'attrs.footerText', footer);
+  }),
 
-    return this;
-  },
-
-  secondary(secondary) {
+  secondary: cmd(function(secondary) {
     set(this, 'attrs.footerSecondary', secondary);
-
-    return this;
-  },
+  }),
 
   removeFromQueue: on('willChainDirection', function(name) {
     if (name === 'basic') {
