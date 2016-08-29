@@ -12,6 +12,7 @@ import TransitionableComponentAutoMixin from 'affinity-engine-stage/mixins/trans
 
 import step from 'affinity-engine-stage/affinity-engine/stage/test-support/step';
 
+import cmd from 'affinity-engine-stage/utils/affinity-engine/stage/cmd';
 import layerName from 'affinity-engine-stage/utils/affinity-engine/stage/layer-name';
 
 import { initialize as registerDirectable } from 'affinity-engine-stage/instance-initializers/affinity-engine/stage/register-directable';
@@ -39,5 +40,6 @@ export {
   TransitionableComponentAutoMixin,
   initialize,
   step,
+  cmd,
   layerName
 };

@@ -1,6 +1,6 @@
 import Ember from 'ember';
 import { configurable, deepArrayConfigurable } from 'affinity-engine';
-import { Direction } from 'affinity-engine-stage';
+import { Direction, cmd } from 'affinity-engine-stage';
 import { BusPublisherMixin } from 'ember-message-bus';
 import multiton from 'ember-multiton-service';
 
@@ -38,13 +38,11 @@ export default Direction.extend(BusPublisherMixin, {
     }
   }),
 
-  _setup(layer) {
+  _setup: cmd(function(layer) {
     this._entryPoint();
 
     set(this, 'attrs.layer', layer);
-
-    return this;
-  },
+  }),
 
   _reset() {
     this._super();
@@ -52,15 +50,13 @@ export default Direction.extend(BusPublisherMixin, {
     get(this, 'attrs.transitions').clear();
   },
 
-  transition(effect, duration, options = {}, type = 'transition') {
+  transition: cmd(function(effect, duration, options = {}, type = 'transition') {
     this._entryPoint();
 
     const transitions = get(this, 'attrs.transitions');
 
     transitions.pushObject(merge({ duration, effect, type, queue: 'main' }, options));
-
-    return this;
-  },
+  }),
 
   _perform(priorSceneRecord, resolve) {
     const {

@@ -1,6 +1,6 @@
 import Ember from 'ember';
 import { classNamesConfigurable, configurable, deepConfigurable } from 'affinity-engine';
-import { Direction } from 'affinity-engine-stage';
+import { Direction, cmd } from 'affinity-engine-stage';
 import { BusPublisherMixin } from 'ember-message-bus';
 
 const {
@@ -42,7 +42,7 @@ export default Direction.extend(BusPublisherMixin, {
     }
   }),
 
-  _setup(sceneId) {
+  _setup: cmd(function(sceneId) {
     this._entryPoint();
 
     set(this, 'attrs.sceneId', sceneId);
@@ -52,73 +52,55 @@ export default Direction.extend(BusPublisherMixin, {
     if (windowId !== 'main') {
       this.window(windowId);
     }
+  }),
 
-    return this;
-  },
-
-  autosave(autosave = true) {
+  autosave: cmd(function(autosave = true) {
     this._entryPoint();
 
     set(this, 'attrs.autosave', autosave);
+  }),
 
-    return this;
-  },
-
-  transitionIn(effect, duration, options = {}) {
+  transitionIn: cmd(function(effect, duration, options = {}) {
     this._entryPoint();
 
     set(this, 'attrs.transitionIn', merge({ duration, effect }, options));
+  }),
 
-    return this;
-  },
-
-  transitionOut(effect, duration, options = {}) {
+  transitionOut: cmd(function(effect, duration, options = {}) {
     this._entryPoint();
 
     set(this, 'attrs.transitionOut', merge({ duration, effect }, options));
+  }),
 
-    return this;
-  },
-
-  window(sceneWindowId) {
+  window: cmd(function(sceneWindowId) {
     set(this, 'attrs.window', this);
     set(this, 'attrs.sceneWindowId', sceneWindowId);
+  }),
 
-    return this;
-  },
-
-  classNames(classNames) {
+  classNames: cmd(function(classNames) {
     this._entryPoint();
 
     set(this, 'attrs.classNames', classNames);
+  }),
 
-    return this;
-  },
-
-  close() {
+  close: cmd(function() {
     const engineId = get(this, 'engineId');
     const sceneWindowId = get(this, 'attrs.sceneWindowId');
 
     this.publish(`ae:${engineId}:${sceneWindowId}:shouldCloseWindow`);
+  }),
 
-    return this;
-  },
-
-  priority(priority) {
+  priority: cmd(function(priority) {
     this._entryPoint();
 
     set(this, 'attrs.priority', priority);
+  }),
 
-    return this;
-  },
-
-  screen(screen = true) {
+  screen: cmd(function(screen = true) {
     this._entryPoint();
 
     set(this, 'attrs.screen', screen);
-
-    return this;
-  },
+  }),
 
   _perform(...args) {
     const { attrs, engineId, windowId } = getProperties(this, 'attrs', 'engineId', 'windowId');
