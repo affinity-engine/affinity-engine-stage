@@ -32,16 +32,12 @@ export default Direction.extend({
     }
   }),
 
-  _setup: cmd(function(header) {
-    this._entryPoint();
-
+  _setup: cmd({ directable: true }, function(header) {
     set(this, 'attrs.header', header);
     set(this, 'attrs.appender', get(this, 'predecessors').findBy('directionName', 'appender'));
   }),
 
   text: cmd(function(textContent) {
-    this._entryPoint();
-
     set(this, 'attrs.textContent', textContent);
   })
 });

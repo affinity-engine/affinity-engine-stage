@@ -14,7 +14,7 @@ moduleForAcceptance('Acceptance | affinity-engine/stage/directions/layer', {
 });
 
 test('Affinity Engine | stage | Directions | Layer', function(assert) {
-  assert.expect(8);
+  assert.expect(9);
 
   visit('/affinity-engine/test-scenarios/stage/directions/layer').then(() => {
     assert.ok(Ember.$(`
@@ -34,7 +34,11 @@ test('Affinity Engine | stage | Directions | Layer', function(assert) {
 
     return step(25);
   }).then(() => {
-    assert.equal(Ember.$(`.ae-stage-layer-engine-meta ${hook('ember_animation_box')}`).css('opacity'), 0.5, 'layer keeps old transition');
+    assert.equal(Ember.$(`.ae-stage-layer-engine-meta ${hook('ember_animation_box')}`).css('opacity'), 0.3, 'instantiated layer can transition');
+
+    return step(25);
+  }).then(() => {
+    assert.equal(Ember.$(`.ae-stage-layer-engine-meta ${hook('ember_animation_box')}`).css('opacity'), 0.3, 'layer keeps old transition');
     assert.equal(Ember.$(`.ae-stage-layer-engine-meta ${hook('ember_animation_box')}`).css('padding'), '123px', 'layer adds new transition');
 
     return step(75);

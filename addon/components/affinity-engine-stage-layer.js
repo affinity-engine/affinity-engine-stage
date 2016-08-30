@@ -13,6 +13,8 @@ const {
   setProperties
 } = Ember;
 
+const { alias } = computed;
+
 export default Component.extend(BusPublisherMixin, BusSubscriberMixin, DirectableComponentMixin, {
   layout,
 
@@ -21,9 +23,10 @@ export default Component.extend(BusPublisherMixin, BusSubscriberMixin, Directabl
   classNames: ['ae-stage-layer'],
   classNameBindings: ['layerName'],
 
-
   directables: computed(() => Ember.A()),
   name: '',
+
+  transitions: alias('directable.transitions'),
 
   init(...args) {
     this._super(...args);
@@ -48,12 +51,6 @@ export default Component.extend(BusPublisherMixin, BusSubscriberMixin, Directabl
   animationAdapter: computed('directable.animationAdapter', {
     get() {
       return get(this, 'directable.animationAdapter') || '';
-    }
-  }),
-
-  transitions: computed('directable.transitions', {
-    get() {
-      return get(this, 'directable.transitions') || Ember.A();
     }
   }),
 

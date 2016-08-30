@@ -1,5 +1,5 @@
 import Ember from 'ember';
-import { configurable, deepArrayConfigurable } from 'affinity-engine';
+import { configurable } from 'affinity-engine';
 import { Direction, cmd } from 'affinity-engine-stage';
 import { BusPublisherMixin } from 'ember-message-bus';
 import multiton from 'ember-multiton-service';
@@ -33,42 +33,32 @@ export default Direction.extend(BusPublisherMixin, {
       return {
         animationAdapter: configurable(configurationTiers, 'animationLibrary'),
         layer: configurable(configurationTiers, 'layer'),
-        transitions: deepArrayConfigurable(configurationTiers, 'attrs.transitions', 'transition')
+        transitions: configurable(configurationTiers, 'transitions')
       }
     }
   }),
 
-  _setup: cmd(function(layer) {
-    this._entryPoint();
-
+  _setup: cmd({ directable: true }, function(layer) {
     set(this, 'attrs.layer', layer);
   }),
 
-  _reset() {
-    this._super();
-
-    get(this, 'attrs.transitions').clear();
-  },
-
-  transition: cmd(function(effect, duration, options = {}) {
-    this._entryPoint();
-
+  transition: cmd({ async: true }, function(effect, duration, options = {}) {
     const transitions = get(this, 'attrs.transitions');
 
     transitions.pushObject(merge({ duration, effect }, options));
   }),
 
-  _perform(priorSceneRecord, resolve) {
+  _ensureDirectable() {
     const {
       _directableDefinition,
       attrs,
+      resolve,
       engineId,
       windowId
-    } = getProperties(this, '_directableDefinition', 'attrs', 'engineId', 'windowId');
+    } = getProperties(this, '_directableDefinition', 'attrs', 'resolve', 'engineId', 'windowId');
 
     const layer = get(attrs, 'layer');
-
-    set(this, '_restartingEngine', true);
+    const priorSceneRecord = get(this, 'script')._getPriorSceneRecord();
 
     this.publish(`ae:${engineId}:${windowId}:${layer}:shouldDirectLayer`, { attrs, direction: this, priorSceneRecord, resolve, engineId, windowId }, _directableDefinition);
   }

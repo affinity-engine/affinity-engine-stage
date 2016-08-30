@@ -1,10 +1,8 @@
 import Ember from 'ember';
-import DirectionQueue from './direction-queue';
 import { BusPublisherMixin } from 'ember-message-bus';
 
 const {
   Evented,
-  assign,
   computed,
   get,
   getOwner,
@@ -14,6 +12,8 @@ const {
   set,
   setProperties
 } = Ember;
+
+const { RSVP: { Promise } } = Ember;
 
 export default Ember.Object.extend(Evented, BusPublisherMixin, {
   _isDirection: true,
@@ -53,70 +53,27 @@ export default Ember.Object.extend(Evented, BusPublisherMixin, {
     }
   }).volatile(),
 
-  _entryPoint() {
-    if (get(this, '_restartingEngine')) {
-      this._reset();
-    }
+  _ensurePromise() {
+    const promise = new Promise((resolve) => {
+      set(this, 'resolve', resolve);
+    });
 
-    this._convertToPromise();
-    this._addToQueue();
-
-    return this;
+    this.then = promise.then;
   },
 
-  _reset() {
-    set(this, '_restartingEngine', false);
-    set(this, '_hasDefaultTransition', false);
-    set(this, 'queue', undefined);
-    // TODO: figure out why attrs need to be cloned to prevent a runloop error
-    set(this, 'attrs', Ember.Object.create(assign({}, get(this, 'attrs'))));
-  },
-
-  _convertToPromise() {
-    const that = this;
-
-    that.then = function(...args) {
-      return get(that, 'queue.allDirectionsAreLoaded').then(() => {
-        return get(that, 'queue.executionComplete').then(...args);
-      });
-    };
-
-    set(this, 'promise', { then: this.then });
-  },
-
-  // allows us to resolve the promise by returning the direction
-  _devertFromPromise() {
-    Reflect.deleteProperty(this, 'then');
-  },
-
-  _addToQueue() {
-    const queue = get(this, 'queue') || set(this, 'queue', DirectionQueue.create({
-      script: get(this, 'script'),
-      priorSceneRecord: get(this, 'priorSceneRecord')
-    }));
-
-    if (!queue.contains(this)) {
-      queue.unshiftObject(this);
-      queue.startCountdown(this);
-    }
-  },
-
-  _removeFromQueue() {
-    get(this, 'queue').removeObject(this);
-  },
-
-  _perform(priorSceneRecord, resolve) {
+  _ensureDirectable() {
     const {
       _directableDefinition,
       attrs,
       componentPath,
       id,
       layer,
+      resolve,
       engineId,
       windowId
-    } = getProperties(this, '_directableDefinition', 'attrs', 'componentPath', 'id', 'layer', 'engineId', 'windowId');
+    } = getProperties(this, '_directableDefinition', 'attrs', 'componentPath', 'id', 'layer', 'resolve', 'engineId', 'windowId');
 
-    set(this, '_restartingEngine', true);
+    const priorSceneRecord = get(this, 'script')._getPriorSceneRecord();
 
     this.publish(`ae:${engineId}:${windowId}:shouldHandleDirectable`, id, { attrs, componentPath, direction: this, layer, priorSceneRecord, resolve, engineId, windowId }, _directableDefinition);
   }

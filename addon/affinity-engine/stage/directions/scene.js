@@ -7,10 +7,13 @@ const {
   computed,
   get,
   getProperties,
+  isBlank,
   isPresent,
   merge,
   set
 } = Ember;
+
+const { run: { later } } = Ember;
 
 export default Direction.extend(BusPublisherMixin, {
   componentPath: 'affinity-engine-stage-scene-window',
@@ -43,8 +46,6 @@ export default Direction.extend(BusPublisherMixin, {
   }),
 
   _setup: cmd(function(sceneId) {
-    this._entryPoint();
-
     set(this, 'attrs.sceneId', sceneId);
 
     const windowId = get(this, 'windowId');
@@ -52,34 +53,39 @@ export default Direction.extend(BusPublisherMixin, {
     if (windowId !== 'main') {
       this.window(windowId);
     }
+
+    later(() => {
+      this._conditionallyTransition();
+    }, 25);
   }),
 
-  autosave: cmd(function(autosave = true) {
-    this._entryPoint();
+  _conditionallyTransition() {
+    const { attrs, engineId, windowId } = getProperties(this, 'attrs', 'engineId', 'windowId');
+    const { sceneId, sceneWindowId } = getProperties(attrs, 'sceneId', 'sceneWindowId');
 
+    if ((isBlank(sceneWindowId) || sceneWindowId === windowId) && isPresent(sceneId)) {
+      this.publish(`ae:${engineId}:${windowId}:shouldChangeScene`, sceneId, attrs);
+    }
+  },
+
+  autosave: cmd(function(autosave = true) {
     set(this, 'attrs.autosave', autosave);
   }),
 
   transitionIn: cmd(function(effect, duration, options = {}) {
-    this._entryPoint();
-
     set(this, 'attrs.transitionIn', merge({ duration, effect }, options));
   }),
 
   transitionOut: cmd(function(effect, duration, options = {}) {
-    this._entryPoint();
-
     set(this, 'attrs.transitionOut', merge({ duration, effect }, options));
   }),
 
-  window: cmd(function(sceneWindowId) {
+  window: cmd({ directable: true }, function(sceneWindowId) {
     set(this, 'attrs.window', this);
     set(this, 'attrs.sceneWindowId', sceneWindowId);
   }),
 
   classNames: cmd(function(classNames) {
-    this._entryPoint();
-
     set(this, 'attrs.classNames', classNames);
   }),
 
@@ -91,27 +97,10 @@ export default Direction.extend(BusPublisherMixin, {
   }),
 
   priority: cmd(function(priority) {
-    this._entryPoint();
-
     set(this, 'attrs.priority', priority);
   }),
 
   screen: cmd(function(screen = true) {
-    this._entryPoint();
-
     set(this, 'attrs.screen', screen);
-  }),
-
-  _perform(...args) {
-    const { attrs, engineId, windowId } = getProperties(this, 'attrs', 'engineId', 'windowId');
-    const sceneWindowId = get(attrs, 'sceneWindowId');
-
-    if (isPresent(sceneWindowId) && sceneWindowId !== windowId) {
-      return this._super(...args);
-    } else if (isPresent(get(this, 'attrs.sceneId'))) {
-      const sceneId = get(this, 'attrs.sceneId');
-
-      this.publish(`ae:${engineId}:${windowId}:shouldChangeScene`, sceneId, attrs);
-    }
-  }
+  })
 });

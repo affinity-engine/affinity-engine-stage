@@ -8,7 +8,11 @@ export default Scene.extend({
 
     await step();
 
-    script.layer('engine.meta').transition({ opacity: 0.5 });
+    const metaLayer = script.layer('engine.meta').transition({ opacity: 0.5 });
+
+    await step();
+
+    metaLayer.transition({ opacity: 0.3 });
 
     await step();
 
