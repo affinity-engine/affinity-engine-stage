@@ -1,6 +1,7 @@
 import Ember from 'ember';
 import { classNamesConfigurable, configurable, deepConfigurable } from 'affinity-engine';
 import { Direction, cmd } from 'affinity-engine-stage';
+import { task, timeout } from 'ember-concurrency';
 import { BusPublisherMixin } from 'ember-message-bus';
 
 const {
@@ -12,8 +13,6 @@ const {
   merge,
   set
 } = Ember;
-
-const { run: { later } } = Ember;
 
 export default Direction.extend(BusPublisherMixin, {
   componentPath: 'affinity-engine-stage-scene-window',
@@ -54,19 +53,19 @@ export default Direction.extend(BusPublisherMixin, {
       this.window(windowId);
     }
 
-    later(() => {
-      this._conditionallyTransition();
-    }, 25);
+    get(this, '_sceneChangeTask').perform();
   }),
 
-  _conditionallyTransition() {
+  _sceneChangeTask: task(function * () {
+    yield timeout(10);
+
     const { attrs, engineId, windowId } = getProperties(this, 'attrs', 'engineId', 'windowId');
     const { sceneId, sceneWindowId } = getProperties(attrs, 'sceneId', 'sceneWindowId');
 
     if ((isBlank(sceneWindowId) || sceneWindowId === windowId) && isPresent(sceneId)) {
       this.publish(`ae:${engineId}:${windowId}:shouldChangeScene`, sceneId, attrs);
     }
-  },
+  }),
 
   autosave: cmd(function(autosave = true) {
     set(this, 'attrs.autosave', autosave);
