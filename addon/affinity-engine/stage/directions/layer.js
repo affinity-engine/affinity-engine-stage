@@ -38,11 +38,11 @@ export default Direction.extend(BusPublisherMixin, {
     }
   }),
 
-  _setup: cmd({ directable: true }, function(layer) {
+  _setup: cmd(function(layer) {
     set(this, 'attrs.layer', layer);
   }),
 
-  transition: cmd({ async: true }, function(effect, duration, options = {}) {
+  transition: cmd({ async: true, directable: true }, function(effect, duration, options = {}) {
     const transitions = get(this, 'attrs.transitions');
 
     transitions.pushObject(merge({ duration, effect }, options));
@@ -52,14 +52,13 @@ export default Direction.extend(BusPublisherMixin, {
     const {
       _directableDefinition,
       attrs,
-      resolve,
       engineId,
       windowId
-    } = getProperties(this, '_directableDefinition', 'attrs', 'resolve', 'engineId', 'windowId');
+    } = getProperties(this, '_directableDefinition', 'attrs', 'engineId', 'windowId');
 
     const layer = get(attrs, 'layer');
     const priorSceneRecord = get(this, 'script')._getPriorSceneRecord();
 
-    this.publish(`ae:${engineId}:${windowId}:${layer}:shouldDirectLayer`, { attrs, direction: this, priorSceneRecord, resolve, engineId, windowId }, _directableDefinition);
+    this.publish(`ae:${engineId}:${windowId}:${layer}:shouldDirectLayer`, { attrs, direction: this, priorSceneRecord, engineId, windowId }, _directableDefinition);
   }
 });

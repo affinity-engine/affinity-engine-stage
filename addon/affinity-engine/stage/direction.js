@@ -7,6 +7,7 @@ const {
   get,
   getOwner,
   getProperties,
+  isBlank,
   isPresent,
   on,
   set,
@@ -20,6 +21,26 @@ export default Ember.Object.extend(Evented, BusPublisherMixin, {
   _restartingEngine: true,
 
   attrs: computed(() => Ember.Object.create()),
+
+  resolve() {
+    const resolve = get(this, '_resolve');
+
+    if (isPresent(resolve)) {
+      Reflect.deleteProperty(this, 'then');
+
+      resolve(this);
+    }
+  },
+
+  _ensurePromise() {
+    if (isBlank(get(this, 'then'))) {
+      const promise = new Promise((resolve) => {
+        set(this, '_resolve', resolve);
+      });
+
+      this.then = promise.then;
+    }
+  },
 
   prepareForChaining: on('directionReady', function(predecessors) {
     set(this, 'predecessors', predecessors);
@@ -53,14 +74,6 @@ export default Ember.Object.extend(Evented, BusPublisherMixin, {
     }
   }).volatile(),
 
-  _ensurePromise() {
-    const promise = new Promise((resolve) => {
-      set(this, 'resolve', resolve);
-    });
-
-    this.then = promise.then;
-  },
-
   _ensureDirectable() {
     const {
       _directableDefinition,
@@ -68,13 +81,12 @@ export default Ember.Object.extend(Evented, BusPublisherMixin, {
       componentPath,
       id,
       layer,
-      resolve,
       engineId,
       windowId
-    } = getProperties(this, '_directableDefinition', 'attrs', 'componentPath', 'id', 'layer', 'resolve', 'engineId', 'windowId');
+    } = getProperties(this, '_directableDefinition', 'attrs', 'componentPath', 'id', 'layer', 'engineId', 'windowId');
 
     const priorSceneRecord = get(this, 'script')._getPriorSceneRecord();
 
-    this.publish(`ae:${engineId}:${windowId}:shouldHandleDirectable`, id, { attrs, componentPath, direction: this, layer, priorSceneRecord, resolve, engineId, windowId }, _directableDefinition);
+    this.publish(`ae:${engineId}:${windowId}:shouldHandleDirectable`, id, { attrs, componentPath, direction: this, layer, priorSceneRecord, engineId, windowId }, _directableDefinition);
   }
 });

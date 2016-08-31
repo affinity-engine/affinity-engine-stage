@@ -1,13 +1,14 @@
 import { Scene, step } from 'affinity-engine-stage';
+import { task } from 'ember-concurrency';
 
 export default Scene.extend({
   name: 'Scene Change 5',
 
-  start: async function(script, window) {
+  start: task(function * (script, window) {
     script.basic('Scene Five');
 
-    await step();
+    yield step();
 
     window.close();
-  }
+  })
 });

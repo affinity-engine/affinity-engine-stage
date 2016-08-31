@@ -31,15 +31,9 @@ export default Mixin.create(BusPublisherMixin, {
   },
 
   resolve() {
-    const directable = get(this, 'directable');
+    const direction = get(this, 'directable.direction');
 
-    if (isBlank(directable)) { return; }
-
-    const { direction, resolve } = getProperties(directable, 'direction', 'resolve');
-
-    if (isPresent(resolve)) {
-      resolve(direction);
-    }
+    if (isPresent(direction)) { direction.resolve(); }
   },
 
   removeDirectable() {

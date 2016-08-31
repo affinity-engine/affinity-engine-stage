@@ -94,7 +94,7 @@ export default Component.extend(BusPublisherMixin, BusSubscriberMixin, {
 
     this._updateAutosave(sceneId, sceneName);
 
-    start(script, get(sceneOptions, 'window'));
+    start.perform(script, get(sceneOptions, 'window'));
   },
 
   _buildScript() {
@@ -115,10 +115,7 @@ export default Component.extend(BusPublisherMixin, BusSubscriberMixin, {
     const { engineId, windowId } = getProperties(this, 'engineId', 'windowId');
     const instance = factory.create({ engineId, windowId });
 
-    return {
-      start: instance.start,
-      sceneName: get(instance, 'name')
-    };
+    return getProperties(instance, 'name', 'start');
   },
 
   _updateAutosave(sceneId, sceneName) {

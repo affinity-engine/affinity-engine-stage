@@ -14,7 +14,7 @@ moduleForAcceptance('Acceptance | affinity-engine/stage/directions/layer', {
 });
 
 test('Affinity Engine | stage | Directions | Layer', function(assert) {
-  assert.expect(9);
+  assert.expect(10);
 
   visit('/affinity-engine/test-scenarios/stage/directions/layer').then(() => {
     assert.ok(Ember.$(`
@@ -45,5 +45,9 @@ test('Affinity Engine | stage | Directions | Layer', function(assert) {
   }).then(() => {
     assert.equal(Ember.$(`.ae-stage-layer-engine-meta ${hook('ember_animation_box')}`).css('padding'), '456px', 'layer can rechange attribute');
     assert.equal(Ember.$(`.ae-stage-layer-engine-meta ${hook('ember_animation_box')}`).css('margin'), '555px', 'layer can undergo full transition queues');
+
+    return step(75);
+  }).then(() => {
+    assert.equal(parseFloat(Ember.$(`.ae-stage-layer-engine-meta ${hook('ember_animation_box')}`).css('opacity')).toFixed(1), 0.5, 'instantiated layer can transition after non-instantiated');
   });
 });

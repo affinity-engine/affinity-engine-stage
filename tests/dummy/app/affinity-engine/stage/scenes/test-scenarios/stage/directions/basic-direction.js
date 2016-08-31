@@ -1,21 +1,30 @@
 import { Scene, step } from 'affinity-engine-stage';
+import { task } from 'ember-concurrency';
 
 export default Scene.extend({
   name: 'Basic Direction',
 
-  start: async function(script) {
-    const basic1 = script.basic('First Basic Header');
+  start: task(function * (script) {
+    const basic1 = script.basic('Syncronous Header');
 
-    await step();
+    yield step();
 
     basic1.text('foo');
 
-    await step();
+    yield step();
 
-    script.basic('Second Basic Header').text('bar');
+    const basic2 = yield script.basic('Asyncronous Header');
 
-    await step();
+    yield step();
 
-    script.appender('alpha').secondary('omega')._.basic('Third Basic Header').text('baz');
-  }
+    basic2.text('foo');
+
+    yield step();
+
+    script.basic('Uninstantiated Header').text('bar');
+
+    yield step();
+
+    script.appender('alpha').secondary('omega')._.basic('Chained Header').text('baz');
+  })
 });
