@@ -19,6 +19,12 @@ export default Component.extend(DirectableComponentMixin, {
   footerSecondary: alias('directable.footerSecondary'),
   footerText: alias('directable.footerText'),
 
+  init(...args) {
+    this._super(...args);
+
+    get(this, 'directable.direction').resolve();
+  },
+
   footer: computed('footerSecondary', 'footerText', {
     get() {
       return `${get(this, 'footerText')} ${get(this, 'footerSecondary')}`;
