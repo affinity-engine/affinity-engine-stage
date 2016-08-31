@@ -17,6 +17,10 @@ export default Scene.extend({
 
     yield step();
 
+    yield metaLayer.transition({ padding: '456px' }).transition({ opacity: 0.4 }).transition({ opacity: 0.5 });
+
+    yield step();
+
     script.layer('engine.meta').transition({ padding: '123px' });
 
     yield step();
@@ -25,6 +29,6 @@ export default Scene.extend({
 
     yield step();
 
-    metaLayer.transition({ opacity: 0.5 });
+    metaLayer.transition({ opacity: 0.3 });
   })
 });
