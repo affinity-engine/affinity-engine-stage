@@ -22,13 +22,14 @@ export default Ember.Object.extend(Evented, BusPublisherMixin, {
 
   attrs: computed(() => Ember.Object.create()),
 
-  resolve() {
+  resolve(...args) {
+    const resolutions = isPresent(args) ? args : [this];
     const resolve = get(this, '_resolve');
 
     if (isPresent(resolve)) {
       Reflect.deleteProperty(this, 'then');
 
-      resolve(this);
+      resolve(...resolutions);
     }
   },
 
