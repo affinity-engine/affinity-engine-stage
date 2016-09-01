@@ -24,7 +24,7 @@ moduleForComponent('affinity-engine-stage', 'Integration | Component | ember eng
 test('it renders an `affinity-engine-stage-layer`', function(assert) {
   assert.expect(2);
 
-  this.render(hbs`{{affinity-engine-stage  engineId="foo"}}`);
+  this.render(hbs`{{affinity-engine-stage engineId="foo" initialScene="bar"}}`);
 
   const $layer = $hook('affinity_engine_stage_layer');
 

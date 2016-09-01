@@ -2,12 +2,14 @@
   animationAdapter=animationAdapter
   transitions=transitions
 }}
-  {{affinity-engine-stage-scene
-    sceneId=sceneId
-    sceneOptions=sceneOptions
-    shouldAutosave=shouldAutosave
-    isFocused=isFocused
-    engineId=engineId
-    windowId=windowId
-  }}
+  {{#if sceneId}}
+    {{affinity-engine-stage-scene
+      sceneId=sceneId
+      sceneOptions=sceneOptions
+      shouldAutosave=shouldAutosave
+      isFocused=isFocused
+      engineId=engineId
+      windowId=windowId
+    }}
+  {{/if}}
 {{/affinity-engine-animation-box-wrapper}}
