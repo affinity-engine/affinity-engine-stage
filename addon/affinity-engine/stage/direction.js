@@ -23,11 +23,10 @@ export default Ember.Object.extend(Evented, BusPublisherMixin, {
   attrs: computed(() => Ember.Object.create()),
 
   resolve(...args) {
-    const resolutions = isPresent(args) ? args : [this];
     const resolve = get(this, '_resolve');
 
     if (isPresent(resolve)) {
-      Reflect.deleteProperty(this, 'then');
+      const resolutions = isPresent(args) ? args : [this];
 
       resolve(...resolutions);
     }
@@ -40,6 +39,8 @@ export default Ember.Object.extend(Evented, BusPublisherMixin, {
       });
 
       this.then = function(...args) {
+        Reflect.deleteProperty(this, 'then');
+
         return promise.then(...args);
       };
     }
