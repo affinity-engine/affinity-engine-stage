@@ -26,6 +26,8 @@ export default Ember.Object.extend(Evented, BusPublisherMixin, {
     const resolve = get(this, '_resolve');
 
     if (isPresent(resolve)) {
+      Reflect.deleteProperty(this, '_resolve');
+
       const resolutions = isPresent(args) ? args : [this];
 
       resolve(...resolutions);
@@ -33,7 +35,7 @@ export default Ember.Object.extend(Evented, BusPublisherMixin, {
   },
 
   _ensurePromise() {
-    if (isNone(get(this, 'then'))) {
+    if (isNone(get(this, '_resolve'))) {
       const promise = new Promise((resolve) => {
         set(this, '_resolve', resolve);
       });
