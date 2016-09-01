@@ -11,11 +11,11 @@ export default function cmd(optionsOrCb, onlyCb) {
   const options = typeOf(optionsOrCb) === 'object' ? optionsOrCb : {};
 
   return function(...args) {
-    run(() => {
-      if (get(options, 'async')) {
-        this._ensurePromise();
-      }
+    if (get(options, 'async')) {
+      this._ensurePromise();
+    }
 
+    run(() => {
       cb.apply(this, args);
 
       if (get(options, 'directable')) {

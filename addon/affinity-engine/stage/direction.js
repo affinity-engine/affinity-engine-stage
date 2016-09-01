@@ -38,7 +38,9 @@ export default Ember.Object.extend(Evented, BusPublisherMixin, {
         set(this, '_resolve', resolve);
       });
 
-      this.then = promise.then;
+      this.then = function(...args) {
+        return promise.then(...args);
+      };
     }
   },
 
