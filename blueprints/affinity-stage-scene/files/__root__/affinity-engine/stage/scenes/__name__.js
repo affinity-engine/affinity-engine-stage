@@ -1,8 +1,10 @@
 import { Scene } from 'affinity-engine-stage';
+import { task } from 'ember-concurrency';
 
 export default Scene.extend({
   name: '<%= capitalizedModuleName %>',
 
-  start: async function(script) {
-  }
+  start: task(function * (script) {
+    
+  })
 });
