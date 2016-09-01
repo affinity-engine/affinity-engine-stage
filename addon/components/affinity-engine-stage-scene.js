@@ -9,9 +9,7 @@ const {
   get,
   getOwner,
   getProperties,
-  isBlank,
   isNone,
-  merge,
   set,
   setProperties
 } = Ember;
@@ -48,26 +46,24 @@ export default Component.extend(BusPublisherMixin, BusSubscriberMixin, {
     }
   },
 
-  _handleDirectable(id, properties, directableDefinition) {
-    const directable = get(properties, 'direction.directable');
+  _handleDirectable(properties, directableDefinition) {
+    const directable = get(properties, 'directable') || set(properties, 'directable', this._addDirectable(directableDefinition));
 
-    if (isBlank(directable)) {
-      this._addDirectable(merge(properties, { id }), directableDefinition);
-    } else {
-      this._updateDirectable(directable, properties);
-    }
-  },
-
-  _addDirectable(properties, directableDefinition = {}) {
-    const Directable = getOwner(this).lookup('affinity-engine/stage:directable');
-    const directable = Directable.extend(directableDefinition).create(properties);
-
-    set(properties, 'direction.directable', directable);
-    get(this, 'directables').pushObject(directable);
-  },
-
-  _updateDirectable(directable, properties) {
     setProperties(directable, properties);
+  },
+
+  _addDirectable(directableDefinition = {}) {
+    const directable = this._createDirectable(directableDefinition);
+
+    get(this, 'directables').pushObject(directable);
+
+    return directable;
+  },
+
+  _createDirectable(directableDefinition) {
+    const Directable = getOwner(this).lookup('affinity-engine/stage:directable');
+
+    return Directable.extend(directableDefinition).create();
   },
 
   _clearDirectables() {
@@ -76,6 +72,7 @@ export default Component.extend(BusPublisherMixin, BusSubscriberMixin, {
 
   _removeDirectable(directable) {
     get(this, 'directables').removeObject(directable);
+
     directable.destroy();
   },
 

@@ -79,14 +79,13 @@ export default Ember.Object.extend(Evented, BusPublisherMixin, {
       _directableDefinition,
       attrs,
       componentPath,
-      id,
       layer,
       engineId,
       windowId
-    } = getProperties(this, '_directableDefinition', 'attrs', 'componentPath', 'id', 'layer', 'engineId', 'windowId');
+    } = getProperties(this, '_directableDefinition', 'attrs', 'componentPath', 'layer', 'engineId', 'windowId');
 
     const priorSceneRecord = get(this, 'script')._getPriorSceneRecord();
 
-    this.publish(`ae:${engineId}:${windowId}:shouldHandleDirectable`, id, { attrs, componentPath, direction: this, layer, priorSceneRecord, engineId, windowId }, _directableDefinition);
+    this.publish(`ae:${engineId}:${windowId}:shouldHandleDirectable`, { attrs, componentPath, direction: this, layer, priorSceneRecord, engineId, windowId }, _directableDefinition);
   }
 });
