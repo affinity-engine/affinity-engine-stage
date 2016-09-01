@@ -47,7 +47,7 @@ export default Component.extend(BusPublisherMixin, BusSubscriberMixin, {
   },
 
   _handleDirectable(properties, directableDefinition) {
-    const directable = get(properties, 'directable') || set(properties, 'directable', this._addDirectable(directableDefinition));
+    const directable = get(properties, 'direction.directable') || set(properties, 'direction.directable', this._addDirectable(directableDefinition));
 
     setProperties(directable, properties);
   },
