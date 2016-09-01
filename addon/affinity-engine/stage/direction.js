@@ -7,7 +7,7 @@ const {
   get,
   getOwner,
   getProperties,
-  isBlank,
+  isNone,
   isPresent,
   on,
   set,
@@ -33,7 +33,7 @@ export default Ember.Object.extend(Evented, BusPublisherMixin, {
   },
 
   _ensurePromise() {
-    if (isBlank(get(this, 'then'))) {
+    if (isNone(get(this, 'then'))) {
       const promise = new Promise((resolve) => {
         set(this, '_resolve', resolve);
       });
@@ -75,17 +75,24 @@ export default Ember.Object.extend(Evented, BusPublisherMixin, {
   }).volatile(),
 
   _ensureDirectable() {
-    const {
-      _directableDefinition,
-      attrs,
-      componentPath,
-      layer,
-      engineId,
-      windowId
-    } = getProperties(this, '_directableDefinition', 'attrs', 'componentPath', 'layer', 'engineId', 'windowId');
+    if (isNone(get(this, 'directable'))) {
+      const directable = this._createDirectable();
+      const { engineId, windowId } = getProperties(this, 'engineId', 'windowId');
 
-    const priorSceneRecord = get(this, 'script')._getPriorSceneRecord();
+      set(this, 'directable', directable);
 
-    this.publish(`ae:${engineId}:${windowId}:shouldHandleDirectable`, { attrs, componentPath, direction: this, layer, priorSceneRecord, engineId, windowId }, _directableDefinition);
+      this.publish(`ae:${engineId}:${windowId}:shouldAddDirectable`, directable);
+    }
+  },
+
+  _createDirectable() {
+    const directableDefinition = get(this, '_directableDefinition');
+    const Directable = getOwner(this).lookup('affinity-engine/stage:directable');
+
+    return Directable.extend(directableDefinition).create({
+      ...getProperties(this, 'attrs', 'componentPath', 'layer', 'engineId', 'windowId'),
+      priorSceneRecord: get(this, 'script')._getPriorSceneRecord(),
+      direction: this
+    });
   }
 });

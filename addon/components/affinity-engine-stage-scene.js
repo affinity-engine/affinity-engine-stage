@@ -32,7 +32,7 @@ export default Component.extend(BusPublisherMixin, BusSubscriberMixin, {
 
     this.on(`ae:${engineId}:${windowId}:directionCompleted`, this, this._updateSceneRecord);
     this.on(`ae:${engineId}:${windowId}:shouldRemoveDirectable`, this, this._removeDirectable);
-    this.on(`ae:${engineId}:${windowId}:shouldHandleDirectable`, this, this._handleDirectable);
+    this.on(`ae:${engineId}:${windowId}:shouldAddDirectable`, this, this._addDirectable);
 
     this._startScene();
   },
@@ -46,24 +46,8 @@ export default Component.extend(BusPublisherMixin, BusSubscriberMixin, {
     }
   },
 
-  _handleDirectable(properties, directableDefinition) {
-    const directable = get(properties, 'direction.directable') || set(properties, 'direction.directable', this._addDirectable(directableDefinition));
-
-    setProperties(directable, properties);
-  },
-
-  _addDirectable(directableDefinition = {}) {
-    const directable = this._createDirectable(directableDefinition);
-
+  _addDirectable(directable) {
     get(this, 'directables').pushObject(directable);
-
-    return directable;
-  },
-
-  _createDirectable(directableDefinition) {
-    const Directable = getOwner(this).lookup('affinity-engine/stage:directable');
-
-    return Directable.extend(directableDefinition).create();
   },
 
   _clearDirectables() {

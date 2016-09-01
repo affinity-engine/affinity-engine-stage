@@ -7,10 +7,8 @@ const {
   Component,
   computed,
   get,
-  getOwner,
   getProperties,
-  set,
-  setProperties
+  set
 } = Ember;
 
 const { alias } = computed;
@@ -33,19 +31,11 @@ export default Component.extend(BusPublisherMixin, BusSubscriberMixin, Directabl
 
     const { engineId, name, windowId } = getProperties(this, 'engineId', 'name', 'windowId');
 
-    this.on(`ae:${engineId}:${windowId}:${name}:shouldDirectLayer`, this, this._shouldDirect);
+    this.on(`ae:${engineId}:${windowId}:${name}:shouldAddDirectable`, this, this._addDirectable);
   },
 
-  _shouldDirect(properties, directableDefinition) {
-    const directable = get(this, 'directable') || set(this, 'directable', this._createDirectable(directableDefinition));
-
-    setProperties(directable, properties);
-  },
-
-  _createDirectable(directableDefinition) {
-    const Directable = getOwner(this).lookup('affinity-engine/stage:directable');
-
-    return Directable.extend(directableDefinition).create();
+  _addDirectable(directable) {
+    set(this, 'directable', directable);
   },
 
   animationAdapter: computed('directable.animationAdapter', {

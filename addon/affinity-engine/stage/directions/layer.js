@@ -49,16 +49,10 @@ export default Direction.extend(BusPublisherMixin, {
   }),
 
   _ensureDirectable() {
-    const {
-      _directableDefinition,
-      attrs,
-      engineId,
-      windowId
-    } = getProperties(this, '_directableDefinition', 'attrs', 'engineId', 'windowId');
+    const directable = get(this, 'directable') || set(this, 'directable', this._createDirectable());
+    const layer = get(this, 'attrs.layer');
+    const { engineId, windowId } = getProperties(this, 'engineId', 'windowId');
 
-    const layer = get(attrs, 'layer');
-    const priorSceneRecord = get(this, 'script')._getPriorSceneRecord();
-
-    this.publish(`ae:${engineId}:${windowId}:${layer}:shouldDirectLayer`, { attrs, direction: this, priorSceneRecord, engineId, windowId }, _directableDefinition);
+    this.publish(`ae:${engineId}:${windowId}:${layer}:shouldAddDirectable`, directable);
   }
 });
