@@ -9,8 +9,7 @@ const {
   getProperties,
   isNone,
   isPresent,
-  set,
-  setProperties
+  set
 } = Ember;
 
 const { RSVP: { Promise } } = Ember;
@@ -64,10 +63,10 @@ export default Ember.Object.extend(Evented, BusPublisherMixin, {
 
       set(links, directionName, this);
 
-      return getOwner(this).lookup('affinity-engine/stage:script-proxy').create(setProperties(this, {
+      return getOwner(this).lookup('affinity-engine/stage:script-proxy').create({
         links,
         ...getProperties(this, 'script', 'engineId', 'windowId')
-      }));
+      });
     }
   }).readOnly(),
 
