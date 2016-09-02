@@ -34,7 +34,7 @@ export default Direction.extend({
 
   _setup: cmd({ directable: true, async: true }, function(header) {
     set(this, 'attrs.header', header);
-    set(this, 'attrs.appender', get(this, 'predecessors').findBy('directionName', 'appender'));
+    set(this, 'attrs.appender', get(this, 'links.appender'));
   }),
 
   text: cmd(function(textContent) {

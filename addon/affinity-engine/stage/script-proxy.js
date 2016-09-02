@@ -1,15 +1,23 @@
 import Ember from 'ember';
+import Script from './script';
 
 const {
-  get
+  assign,
+  get,
+  getProperties
 } = Ember;
 
-export default Ember.Object.extend({
+const { RSVP: { resolve } } = Ember;
+
+export default Script.extend({
   _executeDirection(directionName, args) {
-    const predecessors = get(this, 'predecessors');
+    if (get(this, 'isAborted')) { return resolve(); }
 
-    predecessors[0].trigger('willChainDirection', directionName, args);
+    const { links, script } = getProperties(this, 'links', 'script');
+    const direction = this._createDirection(directionName, script);
 
-    return get(this, 'script')[directionName](predecessors, ...args);
+    assign(get(direction, 'links'), links);
+
+    return direction._setup(...args);
   }
 });

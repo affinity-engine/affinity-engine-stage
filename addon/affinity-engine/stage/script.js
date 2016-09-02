@@ -24,17 +24,18 @@ export default Ember.Object.extend(BusPublisherMixin, BusSubscriberMixin, Evente
   },
 
   _executeDirection(directionName, args) {
-    const factory = getOwner(this).lookup(`affinity-engine/stage/direction:${directionName}`);
-    const predecessors = get(args[0], 'arePredecessors') ? args.shift() : Ember.A();
-
     if (get(this, 'isAborted')) { return resolve(); }
 
-    const { engineId, windowId } = getProperties(this, 'engineId', 'windowId');
-    const direction = factory.create({ script: this, engineId, windowId });
-
-    direction.trigger('directionReady', predecessors);
+    const direction = this._createDirection(directionName, this);
 
     return direction._setup(...args);
+  },
+
+  _createDirection(directionName, script) {
+    const { engineId, windowId } = getProperties(this, 'engineId', 'windowId');
+    const factory = getOwner(this).lookup(`affinity-engine/stage/direction:${directionName}`);
+
+    return factory.create({ script, engineId, windowId });
   },
 
   _abort() {

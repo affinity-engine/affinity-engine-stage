@@ -9,7 +9,6 @@ const {
   getProperties,
   isNone,
   isPresent,
-  on,
   set,
   setProperties
 } = Ember;
@@ -21,6 +20,17 @@ export default Ember.Object.extend(Evented, BusPublisherMixin, {
   _restartingEngine: true,
 
   attrs: computed(() => Ember.Object.create()),
+  links: computed(() => Ember.Object.create()),
+
+  init(...args) {
+    this._super(...args);
+
+    Object.defineProperty(this, '_', {
+      get() {
+        return get(this, '_scriptProxy');
+      }
+    });
+  },
 
   resolve(...args) {
     const resolve = get(this, '_resolve');
@@ -48,26 +58,18 @@ export default Ember.Object.extend(Evented, BusPublisherMixin, {
     }
   },
 
-  prepareForChaining: on('directionReady', function(predecessors) {
-    set(this, 'predecessors', predecessors);
-
-    Object.defineProperty(this, '_', {
-      get() {
-        return get(this, '_scriptProxy');
-      }
-    });
-  }),
-
   _scriptProxy: computed({
     get() {
-      const script = get(this, 'script');
-      const predecessors = Ember.A([this]).pushObjects(get(this, 'predecessors'));
+      const { directionName, script, engineId, windowId } = getProperties(this, 'directionName', 'script', 'engineId', 'windowId');
+      const links = get(this, 'links');
 
-      set(predecessors, 'arePredecessors', true);
+      set(links, directionName, this);
 
       return getOwner(this).lookup('affinity-engine/stage:script-proxy').create(setProperties(this, {
         script,
-        predecessors
+        links,
+        engineId,
+        windowId
       }));
     }
   }).readOnly(),
