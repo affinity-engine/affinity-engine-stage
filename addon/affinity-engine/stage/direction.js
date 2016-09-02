@@ -8,6 +8,7 @@ const {
   getOwner,
   getProperties,
   isNone,
+  isBlank,
   isPresent,
   set
 } = Ember;
@@ -60,15 +61,30 @@ export default Ember.Object.extend(Evented, BusPublisherMixin, {
   _scriptProxy: computed({
     get() {
       const { directionName, links } = getProperties(this, 'directionName', 'links');
+      const linkedAttrs = this._generateLinkedAttrs();
 
       set(links, directionName, this);
 
       return getOwner(this).lookup('affinity-engine/stage:script-proxy').create({
         links,
+        linkedAttrs,
         ...getProperties(this, 'script', 'engineId', 'windowId')
       });
     }
   }).readOnly(),
+
+  _generateLinkedAttrs() {
+    const directable = get(this, 'directable') || this._createDirectable();
+    const linkedAttrs = get(this, '_linkedAttrs');
+
+    if (isBlank(linkedAttrs)) { return directable; }
+
+    return linkedAttrs.reduce((attrs, attr) => {
+      attrs[attr] = get(directable, attr);
+
+      return attrs;
+    }, Ember.Object.create());
+  },
 
   _$instance: computed({
     get() {
@@ -80,23 +96,21 @@ export default Ember.Object.extend(Evented, BusPublisherMixin, {
 
   _ensureDirectable() {
     if (isNone(get(this, 'directable'))) {
-      const directable = this._createDirectable();
       const { engineId, windowId } = getProperties(this, 'engineId', 'windowId');
 
-      set(this, 'directable', directable);
-
-      this.publish(`ae:${engineId}:${windowId}:shouldAddDirectable`, directable);
+      this.publish(`ae:${engineId}:${windowId}:shouldAddDirectable`, this._createDirectable());
     }
   },
 
   _createDirectable() {
-    const directableDefinition = get(this, '_directableDefinition');
+    const directableDefinition = get(this, '_directableDefinition') || {};
     const Directable = getOwner(this).lookup('affinity-engine/stage:directable');
-
-    return Directable.extend(directableDefinition).create({
-      ...getProperties(this, 'attrs', 'componentPath', 'layer', 'engineId', 'windowId'),
+    const directable = Directable.extend(directableDefinition).create({
+      ...getProperties(this, 'attrs', 'componentPath', 'layer', 'links', 'engineId', 'windowId'),
       priorSceneRecord: get(this, 'script')._getPriorSceneRecord(),
       direction: this
     });
+
+    return set(this, 'directable', directable);
   }
 });
