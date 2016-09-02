@@ -60,16 +60,13 @@ export default Ember.Object.extend(Evented, BusPublisherMixin, {
 
   _scriptProxy: computed({
     get() {
-      const { directionName, script, engineId, windowId } = getProperties(this, 'directionName', 'script', 'engineId', 'windowId');
-      const links = get(this, 'links');
+      const { directionName, links } = getProperties(this, 'directionName', 'links');
 
       set(links, directionName, this);
 
       return getOwner(this).lookup('affinity-engine/stage:script-proxy').create(setProperties(this, {
-        script,
         links,
-        engineId,
-        windowId
+        ...getProperties(this, 'script', 'engineId', 'windowId')
       }));
     }
   }).readOnly(),
