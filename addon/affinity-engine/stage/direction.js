@@ -1,8 +1,11 @@
 import Ember from 'ember';
+import cmd from 'affinity-engine-stage/utils/affinity-engine/stage/cmd';
 import { BusPublisherMixin } from 'ember-message-bus';
+import multiton from 'ember-multiton-service';
 
 const {
   Evented,
+  assign,
   computed,
   get,
   getOwner,
@@ -18,13 +21,15 @@ export default Ember.Object.extend(Evented, BusPublisherMixin, {
   _isDirection: true,
   _restartingEngine: true,
 
+  config: multiton('affinity-engine/config', 'engineId'),
+
   attrs: computed(() => Ember.Object.create()),
   links: computed(() => Ember.Object.create({
     attrs: Ember.Object.create(),
     fixtures: Ember.Object.create()
   })),
+  _configurationTiers: computed(() => []),
   _linkedFixtures: computed(() => Ember.A()),
-  _linkedAttrs: computed(() => Ember.A()),
 
   init(...args) {
     this._super(...args);
@@ -65,7 +70,7 @@ export default Ember.Object.extend(Evented, BusPublisherMixin, {
   _scriptProxy: computed({
     get() {
       const { directionName, links } = getProperties(this, 'directionName', 'links');
-      const linkedAttrs = this._generateLinkedAttrs();
+      const linkedAttrs = get(this, '_configuredLinkedAttrs');
 
       set(links, directionName, this);
 
@@ -78,15 +83,32 @@ export default Ember.Object.extend(Evented, BusPublisherMixin, {
     }
   }).readOnly(),
 
-  _generateLinkedAttrs() {
-    const directable = get(this, 'directable') || this._createDirectable();
+  linkedAttrs: cmd(function(linkedAttrs) {
+    set(this, 'attrs._linkedAttrs', linkedAttrs);
+  }),
 
-    return get(this, '_linkedAttrs').reduce((attrs, attr) => {
-      attrs[attr] = get(directable, attr);
+  _linkedAttrs: computed('attrs._linkedAttrs', {
+    get() {
+      return get(this, '_configurationTiers').reverse().reduce((accumulator, tier) => {
+        const nextValue = get(this, `${tier}._linkedAttrs`) || {};
 
-      return attrs;
-    }, Ember.Object.create());
-  },
+        return assign(accumulator, nextValue);
+      }, {});
+    }
+  }),
+
+  _configuredLinkedAttrs: computed({
+    get() {
+      const directable = get(this, 'directable') || this._createDirectable();
+      const linkedAttrs = get(this, '_linkedAttrs');
+
+      return Object.keys(linkedAttrs).reduce((attrs, key) => {
+        attrs[linkedAttrs[key]] = get(directable, key);
+
+        return attrs;
+      }, Ember.Object.create());
+    }
+  }).volatile(),
 
   _linkFixture(fixture) {
     get(this, '_linkedFixtures').pushObject(fixture);

@@ -12,13 +12,9 @@ export default Direction.extend({
   _configurationTiers: [
     'attrs',
     'links.attrs',
-    'config.attrs.stage',
+    'config.attrs.component.stage.direction.appender',
+    'config.attrs.component.stage',
     'config.attrs.globals'
-  ],
-
-  _linkedAttrs: [
-    'footerSecondary',
-    'footerText'
   ],
 
   _directableDefinition: computed('_configurationTiers', {
@@ -27,15 +23,13 @@ export default Direction.extend({
 
       return {
         footerSecondary: configurable(configurationTiers, 'footerSecondary'),
-        footerText: configurable(configurationTiers, 'footerText'),
         text: configurable(configurationTiers, 'text')
       }
     }
   }),
 
-  _setup: cmd(function(footer) {
-    set(this, 'attrs.footerText', footer);
-    set(this, 'attrs.text', footer);
+  _setup: cmd(function(text) {
+    set(this, 'attrs.text', text);
   }),
 
   secondary: cmd(function(secondary) {
