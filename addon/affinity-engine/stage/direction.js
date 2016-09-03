@@ -20,7 +20,11 @@ export default Ember.Object.extend(Evented, BusPublisherMixin, {
   _restartingEngine: true,
 
   attrs: computed(() => Ember.Object.create()),
-  links: computed(() => Ember.Object.create()),
+  links: computed(() => Ember.Object.create({
+    attrs: Ember.Object.create(),
+    fixtures: Ember.Object.create()
+  })),
+  _linkedFixtures: computed(() => Ember.A()),
 
   init(...args) {
     this._super(...args);
@@ -68,6 +72,7 @@ export default Ember.Object.extend(Evented, BusPublisherMixin, {
       return getOwner(this).lookup('affinity-engine/stage:script-proxy').create({
         links,
         linkedAttrs,
+        linkedFixtures: get(this, '_linkedFixtures'),
         ...getProperties(this, 'script', 'engineId', 'windowId')
       });
     }
@@ -84,6 +89,10 @@ export default Ember.Object.extend(Evented, BusPublisherMixin, {
 
       return attrs;
     }, Ember.Object.create());
+  },
+
+  _linkFixture(fixture) {
+    get(this, '_linkedFixtures').pushObject(fixture);
   },
 
   _$instance: computed({
