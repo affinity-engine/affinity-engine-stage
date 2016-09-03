@@ -8,7 +8,6 @@ const {
   getOwner,
   getProperties,
   isNone,
-  isBlank,
   isPresent,
   set
 } = Ember;
@@ -25,6 +24,7 @@ export default Ember.Object.extend(Evented, BusPublisherMixin, {
     fixtures: Ember.Object.create()
   })),
   _linkedFixtures: computed(() => Ember.A()),
+  _linkedAttrs: computed(() => Ember.A()),
 
   init(...args) {
     this._super(...args);
@@ -80,11 +80,8 @@ export default Ember.Object.extend(Evented, BusPublisherMixin, {
 
   _generateLinkedAttrs() {
     const directable = get(this, 'directable') || this._createDirectable();
-    const linkedAttrs = get(this, '_linkedAttrs');
 
-    if (isBlank(linkedAttrs)) { return directable; }
-
-    return linkedAttrs.reduce((attrs, attr) => {
+    return get(this, '_linkedAttrs').reduce((attrs, attr) => {
       attrs[attr] = get(directable, attr);
 
       return attrs;
