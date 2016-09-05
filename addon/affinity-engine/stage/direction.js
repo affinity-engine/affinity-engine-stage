@@ -19,7 +19,6 @@ const { RSVP: { Promise } } = Ember;
 
 export default Ember.Object.extend(Evented, BusPublisherMixin, {
   _isDirection: true,
-  _restartingEngine: true,
 
   config: multiton('affinity-engine/config', 'engineId'),
 
