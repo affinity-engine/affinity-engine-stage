@@ -117,6 +117,7 @@ export default Component.extend(BusPublisherMixin, BusSubscriberMixin, ManagedFo
   },
 
   _startScene(sceneId, sceneOptions) {
+    set(this, 'sceneIsChanging', true);
     set(this, 'sceneOptions', sceneOptions);
 
     const { transitionIn, transitionOut } = getProperties(this, 'transitionIn', 'transitionOut');

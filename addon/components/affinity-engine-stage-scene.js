@@ -40,9 +40,11 @@ export default Component.extend(BusPublisherMixin, BusSubscriberMixin, {
   didUpdateAttrs(...args) {
     this._super(...args);
 
-    if (get(this, 'sceneId') !== get(this, 'currentSceneId')) {
+    if (get(this, 'sceneIsChanging')) {
       this._clearDirectables();
       this._startScene();
+
+      set(this, 'sceneIsChanging', false);
     }
   },
 
