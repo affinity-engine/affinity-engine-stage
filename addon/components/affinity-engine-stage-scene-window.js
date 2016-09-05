@@ -27,7 +27,7 @@ export default Component.extend(BusSubscriberMixin, DirectableComponentMixin, {
 
   config: multiton('affinity-engine/config', 'engineId'),
 
-  animationAdapter: alias('directable.animationAdapter'),
+  animationLibrary: alias('directable.animationLibrary'),
   windowClassNames: alias('directable.windowClassNames'),
   priority: alias('directable.priority'),
   sceneId: alias('directable.sceneId'),

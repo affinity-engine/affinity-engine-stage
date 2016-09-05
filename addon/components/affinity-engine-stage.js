@@ -31,7 +31,7 @@ export default Component.extend(BusPublisherMixin, BusSubscriberMixin, ManagedFo
   config: multiton('affinity-engine/config', 'engineId'),
   saveStateManager: registrant('affinity-engine/save-state-manager'),
 
-  animationAdapter: configurable(configurationTiers, 'animationLibrary'),
+  animationLibrary: configurable(configurationTiers, 'animationLibrary'),
   shouldAutosave: configurable(configurationTiers, 'autosave'),
   transitionIn: deepConfigurable(configurationTiers, 'transitionIn'),
   transitionOut: deepConfigurable(configurationTiers, 'transitionOut'),

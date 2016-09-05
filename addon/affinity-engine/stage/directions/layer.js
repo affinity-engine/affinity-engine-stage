@@ -31,7 +31,7 @@ export default Direction.extend(BusPublisherMixin, {
       const configurationTiers = get(this, '_configurationTiers');
 
       return {
-        animationAdapter: configurable(configurationTiers, 'animationLibrary'),
+        animationLibrary: configurable(configurationTiers, 'animationLibrary'),
         layer: configurable(configurationTiers, 'layer'),
         transitions: configurable(configurationTiers, 'transitions')
       }

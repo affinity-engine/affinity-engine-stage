@@ -38,9 +38,9 @@ export default Component.extend(BusPublisherMixin, BusSubscriberMixin, Directabl
     set(this, 'directable', directable);
   },
 
-  animationAdapter: computed('directable.animationAdapter', {
+  animationLibrary: computed('directable.animationLibrary', {
     get() {
-      return get(this, 'directable.animationAdapter') || '';
+      return get(this, 'directable.animationLibrary') || '';
     }
   }),
 
