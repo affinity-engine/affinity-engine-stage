@@ -58,6 +58,11 @@ export default Ember.Object.extend(Evented, BusPublisherMixin, {
         set(this, '_resolve', resolve);
       });
 
+      const script = get(this, 'script');
+
+      script._incrementSceneRecordIndex();
+      script._record(promise);
+
       this.then = function(...args) {
         Reflect.deleteProperty(this, 'then');
 
