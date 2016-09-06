@@ -102,7 +102,7 @@ export default Component.extend(BusPublisherMixin, BusSubscriberMixin, {
   },
 
   _updateAutosave(sceneId, sceneName) {
-    if (get(this, 'sceneOptions.shouldAutosave') === false) { return; }
+    if (get(this, 'sceneOptions.autosave') === false) { return; }
 
     const engineId = get(this, 'engineId');
 
