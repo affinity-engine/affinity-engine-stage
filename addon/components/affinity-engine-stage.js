@@ -50,7 +50,7 @@ export default Component.extend(BusPublisherMixin, BusSubscriberMixin, ManagedFo
 
     this.on(`ae:${engineId}:restartingEngine`, this, this._toInitialScene);
     this.on(`ae:${engineId}:shouldLoadScene`, this, this._loadScene);
-    this.on(`ae:${engineId}:${windowId}:shouldLoadLatestStatePoint`, this, this._rewindToScene);
+    this.on(`ae:${engineId}:${windowId}:shouldLoadSceneFromPoint`, this, this._loadSceneFromPoint);
     this.on(`ae:${engineId}:${windowId}:shouldStartScene`, this, this._startScene);
     this.on(`ae:${engineId}:${windowId}:shouldChangeScene`, this, this._changeScene);
 
@@ -65,12 +65,6 @@ export default Component.extend(BusPublisherMixin, BusSubscriberMixin, ManagedFo
         window
       });
     }
-  },
-
-  _rewindToScene(point) {
-    this._startScene(get(point, 'lastObject.sceneId'), {
-      autosave: false
-    });
   },
 
   _loadLatestScene() {
@@ -110,6 +104,12 @@ export default Component.extend(BusPublisherMixin, BusSubscriberMixin, ManagedFo
     options.sceneRecord = saveStateManager.getStateValue('_sceneRecord') || {};
 
     this._startScene(sceneId, options);
+  },
+
+  _loadSceneFromPoint(point) {
+    this._startScene(get(point, 'lastObject.sceneId'), {
+      autosave: false
+    });
   },
 
   _changeScene(sceneId, sceneOptions) {
