@@ -48,8 +48,8 @@ export default Component.extend(BusPublisherMixin, BusSubscriberMixin, ManagedFo
       window
     } = getProperties(this, 'initialScene', 'engineId', 'windowId', 'window');
 
-    this.on(`ae:${engineId}:restartingEngine`, this, this._toInitialScene);
-    this.on(`ae:${engineId}:shouldLoadScene`, this, this._loadScene);
+    this.on(`ae:${engineId}:${windowId}:restartingEngine`, this, this._toInitialScene);
+    this.on(`ae:${engineId}:${windowId}:shouldLoadScene`, this, this._loadScene);
     this.on(`ae:${engineId}:${windowId}:shouldLoadSceneFromPoint`, this, this._loadSceneFromPoint);
     this.on(`ae:${engineId}:${windowId}:shouldStartScene`, this, this._startScene);
     this.on(`ae:${engineId}:${windowId}:shouldChangeScene`, this, this._changeScene);
