@@ -70,12 +70,12 @@ export default Component.extend(BusPublisherMixin, BusSubscriberMixin, {
       sceneRecord: get(sceneOptions, 'sceneRecord') || {}
     });
 
-    const { start, sceneName } = this._buildScene(sceneId);
+    const { start, _sceneName } = this._buildScene(sceneId);
     const script = this._buildScript();
 
     if (isNone(start)) { return; }
 
-    this._updateAutosave(sceneId, sceneName);
+    this._updateAutosave(sceneId, _sceneName);
 
     start.perform(script, get(sceneOptions, 'window'));
   },
@@ -96,9 +96,9 @@ export default Component.extend(BusPublisherMixin, BusSubscriberMixin, {
     }
 
     const { engineId, windowId } = getProperties(this, 'engineId', 'windowId');
-    const instance = factory.create({ engineId, windowId });
+    const instance = factory.create({ engineId, windowId, _id: id });
 
-    return getProperties(instance, 'name', 'start');
+    return getProperties(instance, '_sceneName', 'start');
   },
 
   _updateAutosave(sceneId, sceneName) {
