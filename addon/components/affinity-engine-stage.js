@@ -108,7 +108,7 @@ export default Component.extend(BusPublisherMixin, BusSubscriberMixin, ManagedFo
 
   _loadSceneFromPoint(point) {
     this._startScene(get(point, 'lastObject.sceneId'), {
-      autosave: false
+      shouldAutosave: false
     });
   },
 
