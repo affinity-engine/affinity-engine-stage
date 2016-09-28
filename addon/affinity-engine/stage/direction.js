@@ -93,7 +93,7 @@ export default Ember.Object.extend(Evented, BusPublisherMixin, {
 
   _linkedAttrs: computed('attrs._linkedAttrs', {
     get() {
-      return get(this, '_configurationTiers').reverse().reduce((accumulator, tier) => {
+      return get(this, '_configurationTiers').slice().reverse().reduce((accumulator, tier) => {
         const nextValue = get(this, `${tier}._linkedAttrs`) || {};
 
         return assign(accumulator, nextValue);
