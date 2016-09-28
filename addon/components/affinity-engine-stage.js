@@ -131,5 +131,11 @@ export default Component.extend(BusPublisherMixin, BusSubscriberMixin, ManagedFo
         }
       }
     });
+  },
+
+  actions: {
+    sceneHasChanged() {
+      set(this, 'sceneIsChanging', false);
+    }
   }
 });

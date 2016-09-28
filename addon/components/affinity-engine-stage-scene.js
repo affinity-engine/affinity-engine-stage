@@ -33,18 +33,16 @@ export default Component.extend(BusPublisherMixin, BusSubscriberMixin, {
     this.on(`ae:${engineId}:${windowId}:directionCompleted`, this, this._updateSceneRecord);
     this.on(`ae:${engineId}:${windowId}:shouldRemoveDirectable`, this, this._removeDirectable);
     this.on(`ae:${engineId}:${windowId}:shouldAddDirectable`, this, this._addDirectable);
-
-    this._startScene();
   },
 
-  didUpdateAttrs(...args) {
+  didReceiveAttrs(...args) {
     this._super(...args);
 
     if (get(this, 'sceneIsChanging')) {
       this._clearDirectables();
       this._startScene();
 
-      set(this, 'sceneIsChanging', false);
+      this.attrs.sceneHasChanged();
     }
   },
 
