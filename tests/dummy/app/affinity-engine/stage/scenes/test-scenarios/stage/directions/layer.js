@@ -25,7 +25,7 @@ export default Scene.extend({
 
     yield step();
 
-    script.layer('engine.meta').transition({ padding: '456px' }).transition({ margin: '789px' }).transition({ margin: '555px' });
+    script.layer('engine.meta').transition({ padding: '450px' }).transition({ margin: '789px' }).transition({ margin: '555px' });
 
     yield step();
 

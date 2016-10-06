@@ -1,19 +1,18 @@
 import Ember from 'ember';
 import layout from '../templates/components/affinity-engine-stage-layer';
 import { DirectableComponentMixin, layerName } from 'affinity-engine-stage';
-import { BusPublisherMixin, BusSubscriberMixin } from 'ember-message-bus';
+import { BusPublisherMixin } from 'ember-message-bus';
 
 const {
   Component,
   computed,
   get,
-  getProperties,
-  set
+  getProperties
 } = Ember;
 
 const { alias } = computed;
 
-export default Component.extend(BusPublisherMixin, BusSubscriberMixin, DirectableComponentMixin, {
+export default Component.extend(BusPublisherMixin, DirectableComponentMixin, {
   layout,
 
   hook: 'affinity_engine_stage_layer',
@@ -24,19 +23,23 @@ export default Component.extend(BusPublisherMixin, BusSubscriberMixin, Directabl
   directables: computed(() => Ember.A()),
   name: '',
 
+  directable: alias('directableObserver.value'),
   transitions: alias('directable.transitions'),
 
-  init(...args) {
-    this._super(...args);
+  directableObserver: computed('layerDirectablesMap', 'name', {
+    get() {
+      const { layerDirectablesMap, name } = getProperties(this, 'layerDirectablesMap', 'name');
+      const safeLayerName = name.replace('.', '/');
 
-    const { engineId, name, windowId } = getProperties(this, 'engineId', 'name', 'windowId');
-
-    this.on(`ae:${engineId}:${windowId}:${name}:shouldAddDirectable`, this, this._addDirectable);
-  },
-
-  _addDirectable(directable) {
-    set(this, 'directable', directable);
-  },
+      return Ember.Object.extend({
+        value: computed(`layerDirectablesMap.${safeLayerName}`, {
+          get() {
+            return get(this, `layerDirectablesMap.${safeLayerName}`);
+          }
+        })
+      }).create({ layerDirectablesMap });
+    }
+  }),
 
   animationLibrary: computed('directable.animationLibrary', {
     get() {

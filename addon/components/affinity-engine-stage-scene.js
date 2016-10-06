@@ -24,6 +24,7 @@ export default Component.extend(BusPublisherMixin, BusSubscriberMixin, {
   config: multiton('affinity-engine/config', 'engineId'),
 
   directables: computed(() => Ember.A()),
+  layersMap: computed(() => Ember.Object.create()),
 
   init(...args) {
     this._super(...args);
@@ -33,6 +34,7 @@ export default Component.extend(BusPublisherMixin, BusSubscriberMixin, {
     this.on(`ae:${engineId}:${windowId}:directionCompleted`, this, this._updateSceneRecord);
     this.on(`ae:${engineId}:${windowId}:shouldRemoveDirectable`, this, this._removeDirectable);
     this.on(`ae:${engineId}:${windowId}:shouldAddDirectable`, this, this._addDirectable);
+    this.on(`ae:${engineId}:${windowId}:shouldAddLayerDirectable`, this, this._addLayerDirectable);
   },
 
   didReceiveAttrs(...args) {
@@ -50,8 +52,13 @@ export default Component.extend(BusPublisherMixin, BusSubscriberMixin, {
     get(this, 'directables').pushObject(directable);
   },
 
+  _addLayerDirectable(layer, directable) {
+    set(this, `layerDirectablesMap.${layer.replace('.', '/')}`, directable);
+  },
+
   _clearDirectables() {
     get(this, 'directables').clear();
+    set(this, 'layerDirectablesMap', Ember.Object.create());
   },
 
   _removeDirectable(directable) {

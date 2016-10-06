@@ -13,7 +13,7 @@ const {
   set
 } = Ember;
 
-const { Handlebars: { SafeString } } = Ember;
+const { String: { htmlSafe } } = Ember;
 const { RSVP: { Promise } } = Ember;
 
 const { later } = run;
@@ -32,7 +32,7 @@ export default Mixin.create({
 
       const uniqueStyles = Ember.A(styles.join(' ').split(';').map((string) => string.trim())).uniq().join('; ');
 
-      return new SafeString(uniqueStyles);
+      return new htmlSafe(uniqueStyles);
     },
     set(attr, style) {
       return set(this, '_style', style);

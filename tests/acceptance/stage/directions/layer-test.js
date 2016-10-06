@@ -38,17 +38,17 @@ test('Affinity Engine | stage | Directions | Layer', function(assert) {
 
     return step(25);
   }).then(() => {
-    assert.equal(Ember.$(`.ae-stage-layer-engine-meta ${hook('ember_animation_box')}`).css('padding'), '456px', 'instantiate layer can change multiple attribute');
+    assert.equal(Ember.$(`.ae-stage-layer-engine-meta ${hook('ember_animation_box')}`).css('padding'), '456px', 'instantiated layer can change multiple attribute');
     assert.equal(parseFloat(Ember.$(`.ae-stage-layer-engine-meta ${hook('ember_animation_box')}`).css('opacity')).toFixed(1), 0.5, 'instantiated layer can transition a full queue');
 
-    return step(25);
+    return step(75);
   }).then(() => {
     assert.equal(parseFloat(Ember.$(`.ae-stage-layer-engine-meta ${hook('ember_animation_box')}`).css('opacity')).toFixed(1), 0.5, 'layer keeps old transition');
     assert.equal(Ember.$(`.ae-stage-layer-engine-meta ${hook('ember_animation_box')}`).css('padding'), '123px', 'layer adds new transition');
 
     return step(75);
   }).then(() => {
-    assert.equal(Ember.$(`.ae-stage-layer-engine-meta ${hook('ember_animation_box')}`).css('padding'), '456px', 'layer can rechange attribute');
+    assert.equal(Ember.$(`.ae-stage-layer-engine-meta ${hook('ember_animation_box')}`).css('padding'), '450px', 'layer can rechange attribute');
     assert.equal(Ember.$(`.ae-stage-layer-engine-meta ${hook('ember_animation_box')}`).css('margin'), '555px', 'layer can undergo full transition queues');
 
     return step(75);

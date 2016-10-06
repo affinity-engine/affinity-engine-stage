@@ -14,6 +14,7 @@ const {
 
 export default Direction.extend(BusPublisherMixin, {
   config: multiton('affinity-engine/config', 'engineId'),
+  layerManager: multiton('affinity-engine/stage/layer-manager', 'engineId', 'windowId'),
 
   attrs: computed(() => Ember.Object.create({
     transitions: Ember.A()
@@ -53,6 +54,6 @@ export default Direction.extend(BusPublisherMixin, {
     const layer = get(this, 'attrs.layer');
     const { engineId, windowId } = getProperties(this, 'engineId', 'windowId');
 
-    this.publish(`ae:${engineId}:${windowId}:${layer}:shouldAddDirectable`, directable);
+    this.publish(`ae:${engineId}:${windowId}:shouldAddLayerDirectable`, layer, directable);
   }
 });

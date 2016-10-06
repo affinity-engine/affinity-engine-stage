@@ -7,7 +7,7 @@ const {
   isEmpty
 } = Ember;
 
-const { Handlebars: { SafeString } } = Ember;
+const { String: { htmlSafe } } = Ember;
 
 export default Mixin.create({
   attributeBindings: ['style'],
@@ -22,7 +22,7 @@ export default Mixin.create({
         return `${key}: ${get(object, key)};`;
       }).join(' ');
 
-      return new SafeString(style);
+      return new htmlSafe(style);
     }
   }).readOnly()
 });

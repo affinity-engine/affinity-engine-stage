@@ -11,6 +11,7 @@
   {{#each-in childLayers as |name directables|}}
     {{affinity-engine-stage-layer
       directables=directables
+      layerDirectablesMap=layerDirectablesMap
       isFocused=isFocused
       name=name
       engineId=engineId
