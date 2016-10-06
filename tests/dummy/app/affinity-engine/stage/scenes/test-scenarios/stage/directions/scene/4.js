@@ -5,6 +5,6 @@ export default Scene.extend({
   name: 'Scene Change 4',
 
   start: task(function * (script) {
-    script.basic('Scene Four');
+    yield script.basic('Scene Four');
   })
 });
