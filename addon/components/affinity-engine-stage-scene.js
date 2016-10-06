@@ -1,5 +1,6 @@
 import Ember from 'ember';
 import layout from '../templates/components/affinity-engine-stage-scene';
+import { ManagedFocusMixin } from 'affinity-engine';
 import { BusPublisherMixin, BusSubscriberMixin } from 'ember-message-bus';
 import multiton from 'ember-multiton-service';
 
@@ -16,7 +17,7 @@ const {
 
 const { Logger: { warn } } = Ember;
 
-export default Component.extend(BusPublisherMixin, BusSubscriberMixin, {
+export default Component.extend(BusPublisherMixin, BusSubscriberMixin, ManagedFocusMixin, {
   layout,
 
   classNames: ['ae-stage-scene'],
@@ -40,12 +41,8 @@ export default Component.extend(BusPublisherMixin, BusSubscriberMixin, {
   didReceiveAttrs(...args) {
     this._super(...args);
 
-    if (get(this, 'sceneIsChanging')) {
-      this._clearDirectables();
-      this._startScene();
-
-      this.attrs.sceneHasChanged();
-    }
+    this._clearDirectables();
+    this._startScene();
   },
 
   _addDirectable(directable) {
@@ -68,7 +65,8 @@ export default Component.extend(BusPublisherMixin, BusSubscriberMixin, {
   },
 
   _startScene() {
-    const { sceneId, sceneOptions } = getProperties(this, 'sceneId', 'sceneOptions');
+    const sceneOptions = get(this, 'sceneOptions');
+    const sceneId = get(sceneOptions, 'sceneId');
 
     setProperties(this, {
       currentSceneId: sceneId,

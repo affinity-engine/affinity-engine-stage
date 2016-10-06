@@ -1,6 +1,6 @@
 import Ember from 'ember';
 import layout from '../templates/components/affinity-engine-stage';
-import { ManagedFocusMixin, configurable, deepConfigurable, registrant } from 'affinity-engine';
+import { configurable, deepConfigurable, registrant } from 'affinity-engine';
 import { BusPublisherMixin, BusSubscriberMixin } from 'ember-message-bus';
 import multiton from 'ember-multiton-service';
 
@@ -20,7 +20,7 @@ const configurationTiers = [
   'config.attrs'
 ];
 
-export default Component.extend(BusPublisherMixin, BusSubscriberMixin, ManagedFocusMixin, {
+export default Component.extend(BusPublisherMixin, BusSubscriberMixin, {
   layout,
 
   hook: 'affinity_engine_stage',
@@ -32,7 +32,6 @@ export default Component.extend(BusPublisherMixin, BusSubscriberMixin, ManagedFo
   saveStateManager: registrant('affinity-engine/save-state-manager'),
 
   animationLibrary: configurable(configurationTiers, 'animationLibrary'),
-  shouldAutosave: configurable(configurationTiers, 'autosave'),
   transitionIn: deepConfigurable(configurationTiers, 'transitionIn'),
   transitionOut: deepConfigurable(configurationTiers, 'transitionOut'),
 
@@ -117,8 +116,7 @@ export default Component.extend(BusPublisherMixin, BusSubscriberMixin, ManagedFo
   },
 
   _startScene(sceneId, sceneOptions) {
-    set(this, 'sceneIsChanging', true);
-    set(this, 'sceneOptions', sceneOptions);
+    set(sceneOptions, 'sceneId', sceneId);
 
     const { transitionIn, transitionOut } = getProperties(this, 'transitionIn', 'transitionOut');
 
@@ -127,15 +125,9 @@ export default Component.extend(BusPublisherMixin, BusSubscriberMixin, ManagedFo
         in: transitionIn,
         out: transitionOut,
         cb: () => {
-          set(this, 'sceneId', sceneId);
+          set(this, 'sceneOptions', sceneOptions);
         }
       }
     });
-  },
-
-  actions: {
-    sceneHasChanged() {
-      set(this, 'sceneIsChanging', false);
-    }
   }
 });
