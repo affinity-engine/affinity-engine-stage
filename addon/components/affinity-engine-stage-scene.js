@@ -41,8 +41,11 @@ export default Component.extend(BusPublisherMixin, BusSubscriberMixin, ManagedFo
   didReceiveAttrs(...args) {
     this._super(...args);
 
-    this._clearDirectables();
-    this._startScene();
+    if (get(this, 'sceneOptions') !== get(this, 'currentSceneOptions')) {
+      this._clearDirectables();
+      this._startScene();
+      set(this, 'currentSceneOptions', get(this, 'sceneOptions'));
+    }
   },
 
   _addDirectable(directable) {
