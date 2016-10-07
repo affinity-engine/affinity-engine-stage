@@ -11,6 +11,7 @@ const {
   getOwner,
   getProperties,
   isNone,
+  isPresent,
   set,
   setProperties
 } = Ember;
@@ -63,7 +64,7 @@ export default Component.extend(BusPublisherMixin, BusSubscriberMixin, ManagedFo
   _removeDirectable(directable) {
     get(this, 'directables').removeObject(directable);
 
-    directable.destroy();
+    if (isPresent(directable)) { directable.destroy(); }
   },
 
   _startScene() {
