@@ -41,10 +41,9 @@ export default Component.extend(BusPublisherMixin, BusSubscriberMixin, ManagedFo
   didReceiveAttrs(...args) {
     this._super(...args);
 
-    if (get(this, 'sceneOptions') !== get(this, 'currentSceneOptions')) {
+    if (get(args[0], 'newAttrs.sceneOptions.value') !== get(args[0], 'oldAttrs.sceneOptions.value')) {
       this._clearDirectables();
       this._startScene();
-      set(this, 'currentSceneOptions', get(this, 'sceneOptions'));
     }
   },
 
