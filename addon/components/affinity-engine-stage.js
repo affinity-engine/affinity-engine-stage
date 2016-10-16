@@ -29,7 +29,7 @@ export default Component.extend(BusPublisherMixin, BusSubscriberMixin, {
   windowId: 'main',
 
   config: multiton('affinity-engine/config', 'engineId'),
-  saveStateManager: registrant('affinity-engine/save-state-manager'),
+  dataManager: registrant('affinity-engine/data-manager'),
 
   animationLibrary: configurable(configurationTiers, 'animationLibrary'),
   transitionIn: deepConfigurable(configurationTiers, 'transitionIn'),
@@ -67,14 +67,14 @@ export default Component.extend(BusPublisherMixin, BusSubscriberMixin, {
   },
 
   _loadLatestScene() {
-    const saveStateManager = get(this, 'saveStateManager');
+    const dataManager = get(this, 'dataManager');
     const options = { autosave: false };
 
-    if (get(saveStateManager, 'isPlaceholder')) {
+    if (get(dataManager, 'isPlaceholder')) {
       return this._toInitialScene();
     }
 
-    saveStateManager.get('mostRecentSave').then((save) => {
+    dataManager.get('mostRecentSave').then((save) => {
       if (isPresent(save)) {
         const sceneId = get(save, 'activeState.sceneId');
 
@@ -93,14 +93,14 @@ export default Component.extend(BusPublisherMixin, BusSubscriberMixin, {
 
   _loadScene(save, sceneId, options) {
     const {
-      saveStateManager,
+      dataManager,
       engineId
-    } = getProperties(this, 'saveStateManager', 'engineId');
+    } = getProperties(this, 'dataManager', 'engineId');
 
     this.publish(`ae:${engineId}:shouldLoadSave`, save);
     this.publish(`ae:${engineId}:refreshingFromState`);
 
-    options.sceneRecord = saveStateManager.getStateValue('_sceneRecord') || {};
+    options.sceneRecord = dataManager.getStateValue('_sceneRecord') || {};
 
     this._startScene(sceneId, options);
   },
