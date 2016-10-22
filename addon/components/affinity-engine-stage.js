@@ -49,11 +49,11 @@ export default Component.extend({
       window
     } = getProperties(this, 'initialScene', 'eBus', 'esBus', 'stageId', 'window');
 
-    esBus.subscribe('shouldLoadScene', this, this._loadScene);
     esBus.subscribe('shouldStartScene', this, this._startScene);
     esBus.subscribe('shouldChangeScene', this, this._changeScene);
 
     if (stageId === 'main') {
+      eBus.subscribe('shouldLoadScene', this, this._loadScene);
       eBus.subscribe('restartingEngine', this, this._toInitialScene);
       eBus.subscribe('shouldLoadSceneFromPoint', this, this._loadSceneFromPoint);
 
