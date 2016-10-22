@@ -1,5 +1,5 @@
 import Ember from 'ember';
-import { BusPublisherMixin, BusSubscriberMixin } from 'ember-message-bus';
+import multiton from 'ember-multiton-service';
 
 const {
   Evented,
@@ -12,15 +12,15 @@ const {
 
 const { RSVP: { resolve } } = Ember;
 
-export default Ember.Object.extend(BusPublisherMixin, BusSubscriberMixin, Evented, {
+export default Ember.Object.extend(Evented, {
   _sceneRecordIndex: -1,
+
+  esBus: multiton('message-bus', 'engineId', 'stageId'),
 
   init(...args) {
     this._super(...args);
 
-    const { engineId, windowId } = getProperties(this, 'engineId', 'windowId');
-
-    this.on(`ae:${engineId}:${windowId}:shouldAbortScripts`, this, this._abort);
+    get(this, 'esBus').subscribe('shouldAbortScripts', this, this._abort);
   },
 
   _executeDirection(directionName, args) {
@@ -32,10 +32,10 @@ export default Ember.Object.extend(BusPublisherMixin, BusSubscriberMixin, Evente
   },
 
   _createDirection(directionName, script) {
-    const { engineId, windowId } = getProperties(this, 'engineId', 'windowId');
+    const { engineId, stageId } = getProperties(this, 'engineId', 'stageId');
     const factory = getOwner(this).lookup(`affinity-engine/stage/direction:${directionName}`);
 
-    return factory.create({ script, engineId, windowId });
+    return factory.create({ script, engineId, stageId });
   },
 
   _abort() {
@@ -53,7 +53,7 @@ export default Ember.Object.extend(BusPublisherMixin, BusSubscriberMixin, Evente
   },
 
   _record(promise) {
-    const engineId = get(this, 'engineId');
+    const esBus = get(this, 'esBus');
     const sceneRecordIndex = get(this, '_sceneRecordIndex');
 
     promise.then((direction) => {
@@ -62,7 +62,7 @@ export default Ember.Object.extend(BusPublisherMixin, BusSubscriberMixin, Evente
       const isDirection = typeOf(direction) === 'instance' && get(direction, '_isDirection');
       const value = isDirection ? get(direction, 'result') || '_RESOLVED' : direction;
 
-      this.publish(`ae:${engineId}:${get(this, 'windowId')}:directionCompleted`, sceneRecordIndex, value);
+      esBus.publish('directionCompleted', sceneRecordIndex, value);
     });
   }
 });

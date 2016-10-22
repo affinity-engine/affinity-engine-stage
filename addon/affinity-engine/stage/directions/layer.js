@@ -1,20 +1,19 @@
 import Ember from 'ember';
 import { configurable } from 'affinity-engine';
 import { Direction, cmd } from 'affinity-engine-stage';
-import { BusPublisherMixin } from 'ember-message-bus';
 import multiton from 'ember-multiton-service';
 
 const {
   computed,
   get,
-  getProperties,
   merge,
   set
 } = Ember;
 
-export default Direction.extend(BusPublisherMixin, {
+export default Direction.extend({
   config: multiton('affinity-engine/config', 'engineId'),
-  layerManager: multiton('affinity-engine/stage/layer-manager', 'engineId', 'windowId'),
+  esBus: multiton('message-bus', 'engineId', 'stageId'),
+  layerManager: multiton('affinity-engine/stage/layer-manager', 'engineId', 'stageId'),
 
   attrs: computed(() => Ember.Object.create({
     transitions: Ember.A()
@@ -52,8 +51,7 @@ export default Direction.extend(BusPublisherMixin, {
   _ensureDirectable() {
     const directable = get(this, 'directable') || set(this, 'directable', this._createDirectable());
     const layer = get(this, 'attrs.layer');
-    const { engineId, windowId } = getProperties(this, 'engineId', 'windowId');
 
-    this.publish(`ae:${engineId}:${windowId}:shouldAddLayerDirectable`, layer, directable);
+    get(this, 'esBus').publish('shouldAddLayerDirectable', layer, directable);
   }
 });

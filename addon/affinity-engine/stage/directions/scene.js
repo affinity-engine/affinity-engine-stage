@@ -2,7 +2,7 @@ import Ember from 'ember';
 import { classNamesConfigurable, configurable, deepConfigurable } from 'affinity-engine';
 import { Direction, cmd } from 'affinity-engine-stage';
 import { task, timeout } from 'ember-concurrency';
-import { BusPublisherMixin } from 'ember-message-bus';
+import multiton from 'ember-multiton-service';
 
 const {
   computed,
@@ -14,9 +14,12 @@ const {
   set
 } = Ember;
 
-export default Direction.extend(BusPublisherMixin, {
+export default Direction.extend({
   componentPath: 'affinity-engine-stage-scene-window',
   layer: 'windows',
+
+  esBus: multiton('message-bus', 'engineId', 'stageId'),
+  esmBus: multiton('message-bus', 'engineId', 'stageModalId'),
 
   _configurationTiers: [
     'attrs',
@@ -34,7 +37,7 @@ export default Direction.extend(BusPublisherMixin, {
         windowClassNames: classNamesConfigurable(configurationTiers, 'classNames'),
         priority: configurable(configurationTiers, 'priority'),
         sceneId: configurable(configurationTiers, 'sceneId'),
-        sceneWindowId: configurable(configurationTiers, 'sceneWindowId'),
+        stageModalId: configurable(configurationTiers, 'stageModalId'),
         screen: configurable(configurationTiers, 'screen'),
         screenClassNames: classNamesConfigurable(configurationTiers, 'screen'),
         transitionIn: deepConfigurable(configurationTiers, 'transitionIn'),
@@ -47,10 +50,10 @@ export default Direction.extend(BusPublisherMixin, {
   _setup: cmd(function(sceneId) {
     set(this, 'attrs.sceneId', sceneId);
 
-    const windowId = get(this, 'windowId');
+    const stageId = get(this, 'stageId');
 
-    if (windowId !== 'main') {
-      this.window(windowId);
+    if (stageId !== 'main') {
+      this.window(stageId);
     }
 
     get(this, '_sceneChangeTask').perform();
@@ -59,11 +62,11 @@ export default Direction.extend(BusPublisherMixin, {
   _sceneChangeTask: task(function * () {
     yield timeout(10);
 
-    const { attrs, engineId, windowId } = getProperties(this, 'attrs', 'engineId', 'windowId');
-    const { sceneId, sceneWindowId } = getProperties(attrs, 'sceneId', 'sceneWindowId');
+    const { attrs, stageId } = getProperties(this, 'attrs', 'stageId');
+    const { sceneId, stageModalId } = getProperties(attrs, 'sceneId', 'stageModalId');
 
-    if ((isBlank(sceneWindowId) || sceneWindowId === windowId) && isPresent(sceneId)) {
-      this.publish(`ae:${engineId}:${windowId}:shouldChangeScene`, sceneId, attrs);
+    if ((isBlank(stageModalId) || stageModalId === stageId) && isPresent(sceneId)) {
+      get(this, 'esBus').publish('shouldChangeScene', sceneId, attrs);
     }
   }),
 
@@ -79,9 +82,10 @@ export default Direction.extend(BusPublisherMixin, {
     set(this, 'attrs.transitionOut', merge({ duration, effect }, options));
   }),
 
-  window: cmd({ directable: true }, function(sceneWindowId) {
+  window: cmd({ directable: true }, function(stageModalId) {
     set(this, 'attrs.window', this);
-    set(this, 'attrs.sceneWindowId', sceneWindowId);
+    set(this, 'attrs.stageModalId', stageModalId);
+    set(this, 'stageModalId', stageModalId);
   }),
 
   classNames: cmd(function(classNames) {
@@ -89,10 +93,7 @@ export default Direction.extend(BusPublisherMixin, {
   }),
 
   close: cmd(function() {
-    const engineId = get(this, 'engineId');
-    const sceneWindowId = get(this, 'attrs.sceneWindowId');
-
-    this.publish(`ae:${engineId}:${sceneWindowId}:shouldCloseWindow`);
+    get(this, 'esmBus').publish('shouldCloseWindow');
   }),
 
   priority: cmd(function(priority) {

@@ -1,6 +1,5 @@
 import Ember from 'ember';
 import layout from '../templates/components/affinity-engine-stage-scene-window';
-import { BusSubscriberMixin } from 'ember-message-bus';
 import { DirectableComponentMixin } from 'affinity-engine-stage';
 import multiton from 'ember-multiton-service';
 
@@ -16,22 +15,23 @@ const {
 const { String: { htmlSafe } } = Ember;
 const { alias } = computed;
 
-export default Component.extend(BusSubscriberMixin, DirectableComponentMixin, {
+export default Component.extend(DirectableComponentMixin, {
   layout,
 
   directable: computed(() => Ember.Object.create()),
 
   hook: 'affinity_engine_stage_scene_window',
-  attributeBindings: ['sceneWindowId:data-scene-window-id'],
+  attributeBindings: ['stageModalId:data-scene-window-id'],
   classNames: ['ae-stage-scene-window'],
 
   config: multiton('affinity-engine/config', 'engineId'),
+  esmBus: multiton('message-bus', 'engineId', 'stageModalId'),
 
   animationLibrary: alias('directable.animationLibrary'),
   windowClassNames: alias('directable.windowClassNames'),
   priority: alias('directable.priority'),
   sceneId: alias('directable.sceneId'),
-  sceneWindowId: alias('directable.sceneWindowId'),
+  stageModalId: alias('directable.stageModalId'),
   screen: alias('directable.screen'),
   screenClassNames: alias('directable.screenClassNames'),
   transitionIn: alias('directable.transitionIn'),
@@ -54,10 +54,7 @@ export default Component.extend(BusSubscriberMixin, DirectableComponentMixin, {
   },
 
   _setupEventListeners() {
-    const engineId = get(this, 'engineId');
-    const sceneWindowId = get(this, 'sceneWindowId');
-
-    this.on(`ae:${engineId}:${sceneWindowId}:shouldCloseWindow`, this, this._close);
+    get(this, 'esmBus').subscribe('shouldCloseWindow', this, this._close);
   },
 
   _setupSceneRecord() {

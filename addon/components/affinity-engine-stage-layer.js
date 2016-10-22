@@ -1,7 +1,6 @@
 import Ember from 'ember';
 import layout from '../templates/components/affinity-engine-stage-layer';
 import { DirectableComponentMixin, layerName } from 'affinity-engine-stage';
-import { BusPublisherMixin } from 'ember-message-bus';
 
 const {
   Component,
@@ -12,7 +11,7 @@ const {
 
 const { alias } = computed;
 
-export default Component.extend(BusPublisherMixin, DirectableComponentMixin, {
+export default Component.extend(DirectableComponentMixin, {
   layout,
 
   hook: 'affinity_engine_stage_layer',

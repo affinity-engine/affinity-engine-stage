@@ -1,7 +1,6 @@
 import Ember from 'ember';
 import layout from '../templates/components/affinity-engine-stage';
 import { configurable, deepConfigurable, registrant } from 'affinity-engine';
-import { BusPublisherMixin, BusSubscriberMixin } from 'ember-message-bus';
 import multiton from 'ember-multiton-service';
 
 const {
@@ -20,15 +19,17 @@ const configurationTiers = [
   'config.attrs'
 ];
 
-export default Component.extend(BusPublisherMixin, BusSubscriberMixin, {
+export default Component.extend({
   layout,
 
   hook: 'affinity_engine_stage',
 
   classNames: ['ae-stage'],
-  windowId: 'main',
+  stageId: 'main',
 
   config: multiton('affinity-engine/config', 'engineId'),
+  eBus: multiton('message-bus', 'engineId'),
+  esBus: multiton('message-bus', 'engineId', 'stageId'),
   dataManager: registrant('affinity-engine/data-manager'),
 
   animationLibrary: configurable(configurationTiers, 'animationLibrary'),
@@ -42,18 +43,20 @@ export default Component.extend(BusPublisherMixin, BusSubscriberMixin, {
 
     const {
       initialScene,
-      engineId,
-      windowId,
+      eBus,
+      esBus,
+      stageId,
       window
-    } = getProperties(this, 'initialScene', 'engineId', 'windowId', 'window');
+    } = getProperties(this, 'initialScene', 'eBus', 'esBus', 'stageId', 'window');
 
-    this.on(`ae:${engineId}:${windowId}:restartingEngine`, this, this._toInitialScene);
-    this.on(`ae:${engineId}:${windowId}:shouldLoadScene`, this, this._loadScene);
-    this.on(`ae:${engineId}:${windowId}:shouldLoadSceneFromPoint`, this, this._loadSceneFromPoint);
-    this.on(`ae:${engineId}:${windowId}:shouldStartScene`, this, this._startScene);
-    this.on(`ae:${engineId}:${windowId}:shouldChangeScene`, this, this._changeScene);
+    esBus.subscribe('shouldLoadScene', this, this._loadScene);
+    esBus.subscribe('shouldStartScene', this, this._startScene);
+    esBus.subscribe('shouldChangeScene', this, this._changeScene);
 
-    if (windowId === 'main') {
+    if (stageId === 'main') {
+      eBus.subscribe('restartingEngine', this, this._toInitialScene);
+      eBus.subscribe('shouldLoadSceneFromPoint', this, this._loadSceneFromPoint);
+
       this._loadLatestScene();
     } else {
       const sceneRecord = get(this, 'sceneRecord');
@@ -94,11 +97,11 @@ export default Component.extend(BusPublisherMixin, BusSubscriberMixin, {
   _loadScene(save, sceneId, options) {
     const {
       dataManager,
-      engineId
-    } = getProperties(this, 'dataManager', 'engineId');
+      eBus
+    } = getProperties(this, 'dataManager', 'eBus');
 
-    this.publish(`ae:${engineId}:shouldLoadSave`, save);
-    this.publish(`ae:${engineId}:refreshingFromState`);
+    eBus.publish('shouldLoadSave', save);
+    eBus.publish('refreshingFromState');
 
     options.sceneRecord = dataManager.getStateValue('_sceneRecord') || {};
 

@@ -1,6 +1,5 @@
 import Ember from 'ember';
 import cmd from 'affinity-engine-stage/utils/affinity-engine/stage/cmd';
-import { BusPublisherMixin } from 'ember-message-bus';
 import multiton from 'ember-multiton-service';
 
 const {
@@ -17,10 +16,11 @@ const {
 
 const { RSVP: { Promise } } = Ember;
 
-export default Ember.Object.extend(Evented, BusPublisherMixin, {
+export default Ember.Object.extend(Evented, {
   _isDirection: true,
 
   config: multiton('affinity-engine/config', 'engineId'),
+  esBus: multiton('message-bus', 'engineId', 'stageId'),
 
   attrs: computed(() => Ember.Object.create()),
   links: computed(() => Ember.Object.create({
@@ -82,7 +82,7 @@ export default Ember.Object.extend(Evented, BusPublisherMixin, {
         links,
         linkedAttrs,
         linkedFixtures: get(this, '_linkedFixtures'),
-        ...getProperties(this, 'script', 'engineId', 'windowId')
+        ...getProperties(this, 'script', 'engineId', 'stageId')
       });
     }
   }).readOnly(),
@@ -128,9 +128,7 @@ export default Ember.Object.extend(Evented, BusPublisherMixin, {
 
   _ensureDirectable() {
     if (isNone(get(this, 'directable'))) {
-      const { engineId, windowId } = getProperties(this, 'engineId', 'windowId');
-
-      this.publish(`ae:${engineId}:${windowId}:shouldAddDirectable`, this._createDirectable());
+      get(this, 'esBus').publish('shouldAddDirectable', this._createDirectable());
     }
   },
 
@@ -138,7 +136,7 @@ export default Ember.Object.extend(Evented, BusPublisherMixin, {
     const directableDefinition = get(this, '_directableDefinition') || {};
     const Directable = getOwner(this).lookup('affinity-engine/stage:directable');
     const directable = Directable.extend(directableDefinition).create({
-      ...getProperties(this, 'attrs', 'componentPath', 'layer', 'links', 'engineId', 'windowId'),
+      ...getProperties(this, 'attrs', 'componentPath', 'layer', 'links', 'engineId', 'stageId'),
       priorSceneRecord: get(this, 'script')._getPriorSceneRecord(),
       direction: this
     });

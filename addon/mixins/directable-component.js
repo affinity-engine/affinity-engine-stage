@@ -1,10 +1,9 @@
 import Ember from 'ember';
-import { BusPublisherMixin } from 'ember-message-bus';
+import multiton from 'ember-multiton-service';
 
 const {
   Mixin,
   get,
-  getProperties,
   isBlank,
   isPresent,
   set
@@ -12,7 +11,9 @@ const {
 
 const { computed: { alias } } = Ember;
 
-export default Mixin.create(BusPublisherMixin, {
+export default Mixin.create({
+  esBus: multiton('message-bus', 'engineId', 'stageId'),
+
   priorSceneRecord: alias('directable.priorSceneRecord'),
 
   init(...args) {
@@ -37,8 +38,8 @@ export default Mixin.create(BusPublisherMixin, {
   },
 
   removeDirectable() {
-    const { directable, engineId, windowId } = getProperties(this, 'directable', 'engineId', 'windowId');
+    const directable = get(this, 'directable');
 
-    this.publish(`ae:${engineId}:${windowId}:shouldRemoveDirectable`, directable);
+    get(this, 'esBus').publish('shouldRemoveDirectable', directable);
   }
 });

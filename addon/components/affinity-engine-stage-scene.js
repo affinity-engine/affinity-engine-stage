@@ -1,7 +1,6 @@
 import Ember from 'ember';
 import layout from '../templates/components/affinity-engine-stage-scene';
 import { ManagedFocusMixin } from 'affinity-engine';
-import { BusPublisherMixin, BusSubscriberMixin } from 'ember-message-bus';
 import multiton from 'ember-multiton-service';
 
 const {
@@ -18,12 +17,14 @@ const {
 
 const { Logger: { warn } } = Ember;
 
-export default Component.extend(BusPublisherMixin, BusSubscriberMixin, ManagedFocusMixin, {
+export default Component.extend(ManagedFocusMixin, {
   layout,
 
   classNames: ['ae-stage-scene'],
 
   config: multiton('affinity-engine/config', 'engineId'),
+  eBus: multiton('message-bus', 'engineId'),
+  esBus: multiton('message-bus', 'engineId', 'stageId'),
 
   directables: computed(() => Ember.A()),
   layersMap: computed(() => Ember.Object.create()),
@@ -31,12 +32,12 @@ export default Component.extend(BusPublisherMixin, BusSubscriberMixin, ManagedFo
   init(...args) {
     this._super(...args);
 
-    const { engineId, windowId } = getProperties(this, 'engineId', 'windowId');
+    const esBus = get(this, 'esBus');
 
-    this.on(`ae:${engineId}:${windowId}:directionCompleted`, this, this._updateSceneRecord);
-    this.on(`ae:${engineId}:${windowId}:shouldRemoveDirectable`, this, this._removeDirectable);
-    this.on(`ae:${engineId}:${windowId}:shouldAddDirectable`, this, this._addDirectable);
-    this.on(`ae:${engineId}:${windowId}:shouldAddLayerDirectable`, this, this._addLayerDirectable);
+    esBus.subscribe('directionCompleted', this, this._updateSceneRecord);
+    esBus.subscribe('shouldRemoveDirectable', this, this._removeDirectable);
+    esBus.subscribe('shouldAddDirectable', this, this._addDirectable);
+    esBus.subscribe('shouldAddLayerDirectable', this, this._addLayerDirectable);
   },
 
   didReceiveAttrs(...args) {
@@ -89,7 +90,7 @@ export default Component.extend(BusPublisherMixin, BusSubscriberMixin, ManagedFo
   _buildScript() {
     const factory = getOwner(this).lookup('affinity-engine/stage:script');
 
-    return factory.create(getProperties(this, 'engineId', 'sceneRecord', 'windowId'));
+    return factory.create(getProperties(this, 'engineId', 'sceneRecord', 'stageId'));
   },
 
   _buildScene(id) {
@@ -101,8 +102,8 @@ export default Component.extend(BusPublisherMixin, BusSubscriberMixin, ManagedFo
       return {};
     }
 
-    const { engineId, windowId } = getProperties(this, 'engineId', 'windowId');
-    const instance = factory.create({ engineId, windowId, _id: id });
+    const { engineId, stageId } = getProperties(this, 'engineId', 'stageId');
+    const instance = factory.create({ engineId, stageId, _id: id });
 
     return getProperties(instance, '_sceneName', 'start');
   },
@@ -110,22 +111,22 @@ export default Component.extend(BusPublisherMixin, BusSubscriberMixin, ManagedFo
   _updateAutosave(sceneId, sceneName) {
     if (get(this, 'sceneOptions.autosave') === false) { return; }
 
-    const engineId = get(this, 'engineId');
+    const eBus = get(this, 'eBus');
 
-    this.publish(`ae:${engineId}:shouldDeleteStateValue`, '_sceneRecord');
-    this.publish(`ae:${engineId}:shouldSetStateValues`, {
+    eBus.publish('shouldDeleteStateValue', '_sceneRecord');
+    eBus.publish('shouldSetStateValues', {
       sceneId,
       sceneName
     });
-    this.publish(`ae:${engineId}:shouldFileActiveState`);
-    this.publish(`ae:${engineId}:shouldWriteAutosave`);
+    eBus.publish('shouldFileActiveState');
+    eBus.publish('shouldWriteAutosave');
   },
 
   _updateSceneRecord(key, value) {
     set(this, `sceneRecord.${key}`, value);
 
-    const { engineId, sceneRecord } = getProperties(this, 'engineId', 'sceneRecord');
+    const { eBus, sceneRecord } = getProperties(this, 'eBus', 'sceneRecord');
 
-    this.publish(`ae:${engineId}:shouldSetStateValue`, '_sceneRecord', sceneRecord);
+    eBus.publish('shouldSetStateValue', '_sceneRecord', sceneRecord);
   }
 });
