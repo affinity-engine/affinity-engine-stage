@@ -27,17 +27,21 @@ export default Mixin.create({
   },
 
   resolveAndDestroy() {
-    this.removeDirectable();
     this.resolve();
+    this.removeDirectable();
   },
 
   resolve() {
+    if (get(this, 'isDestroyed') || get(this, 'isDestroying')) { return; }
+
     const direction = get(this, 'directable.direction');
 
     if (isPresent(direction)) { direction.resolve(); }
   },
 
   removeDirectable() {
+    if (get(this, 'isDestroyed') || get(this, 'isDestroying')) { return; }
+
     const directable = get(this, 'directable');
 
     get(this, 'esBus').publish('shouldRemoveDirectable', directable);
