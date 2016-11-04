@@ -24,7 +24,6 @@ export default Component.extend(DirectableComponentMixin, {
   attributeBindings: ['stageModalId:data-scene-window-id'],
   classNames: ['ae-stage-scene-window'],
 
-  config: multiton('affinity-engine/config', 'engineId'),
   esmBus: multiton('message-bus', 'engineId', 'stageModalId'),
 
   animationLibrary: alias('directable.animationLibrary'),

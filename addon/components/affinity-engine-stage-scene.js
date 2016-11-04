@@ -22,7 +22,6 @@ export default Component.extend(ManagedFocusMixin, {
 
   classNames: ['ae-stage-scene'],
 
-  config: multiton('affinity-engine/config', 'engineId'),
   eBus: multiton('message-bus', 'engineId'),
   esBus: multiton('message-bus', 'engineId', 'stageId'),
 

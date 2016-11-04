@@ -25,7 +25,7 @@ export default Direction.extend({
     'attrs',
     'config.attrs.component.stage.direction.scene',
     'config.attrs.component.stage',
-    'config.attrs'
+    'config.attrs.global'
   ],
 
   _directableDefinition: computed('_configurationTiers', {

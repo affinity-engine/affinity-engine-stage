@@ -16,7 +16,7 @@ const configurationTiers = [
   'sceneOptions',
   'config.attrs.component.stage.scene',
   'config.attrs.component.stage',
-  'config.attrs'
+  'config.attrs.global'
 ];
 
 export default Component.extend({
