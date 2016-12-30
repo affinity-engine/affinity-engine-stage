@@ -6,7 +6,8 @@ const {
   Component,
   computed,
   get,
-  getProperties
+  getProperties,
+  isPresent
 } = Ember;
 
 const { alias } = computed;
@@ -33,7 +34,9 @@ export default Component.extend(DirectableComponentMixin, {
       return Ember.Object.extend({
         value: computed(`layerDirectablesMap.${safeLayerName}`, {
           get() {
-            return get(this, `layerDirectablesMap.${safeLayerName}`);
+            return isPresent(safeLayerName) ?
+              get(this, `layerDirectablesMap.${safeLayerName}`) :
+              {};
           }
         })
       }).create({ layerDirectablesMap });
