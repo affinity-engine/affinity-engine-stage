@@ -1,4 +1,5 @@
 import Ember from 'ember';
+import { deepMerge } from 'affinity-engine';
 import cmd from 'affinity-engine-stage/utils/affinity-engine/stage/cmd';
 import multiton from 'ember-multiton-service';
 
@@ -28,7 +29,7 @@ export default Ember.Object.extend(Evented, {
     fixtures: Ember.Object.create()
   })),
   _configurationTiers: computed(() => []),
-  _linkedFixtures: computed(() => Ember.A()),
+  _linkedFixtures: computed(() => Ember.Object.create()),
 
   init(...args) {
     this._super(...args);
@@ -115,7 +116,7 @@ export default Ember.Object.extend(Evented, {
   }).volatile(),
 
   _linkFixture(fixture) {
-    get(this, '_linkedFixtures').pushObject(fixture);
+    deepMerge(get(this, '_linkedFixtures'), fixture);
   },
 
   _$instance: computed({
