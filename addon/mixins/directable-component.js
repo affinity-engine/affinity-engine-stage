@@ -26,17 +26,17 @@ export default Mixin.create({
     set(directable, 'component', this);
   },
 
-  resolveAndDestroy() {
-    this.resolve();
+  resolveAndDestroy(...args) {
+    this.resolve(...args);
     this.removeDirectable();
   },
 
-  resolve() {
+  resolve(...args) {
     if (get(this, 'isDestroyed') || get(this, 'isDestroying')) { return; }
 
     const direction = get(this, 'directable.direction');
 
-    if (isPresent(direction)) { direction.resolve(); }
+    if (isPresent(direction)) { direction.resolve(...args); }
   },
 
   removeDirectable() {
