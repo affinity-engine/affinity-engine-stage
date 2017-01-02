@@ -113,10 +113,8 @@ export default Component.extend(ManagedFocusMixin, {
     const eBus = get(this, 'eBus');
 
     eBus.publish('shouldDeleteStateValue', '_sceneRecord');
-    eBus.publish('shouldSetStateValues', {
-      sceneId,
-      sceneName
-    });
+    eBus.publish('shouldSetStateValue', 'sceneId', sceneId);
+    eBus.publish('shouldSetStateValue', 'sceneName', sceneName);
     eBus.publish('shouldFileActiveState');
     eBus.publish('shouldWriteAutosave');
   },
