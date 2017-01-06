@@ -1,8 +1,8 @@
 import Ember from 'ember';
 import Script from './script';
+import { deepMerge } from 'affinity-engine';
 
 const {
-  assign,
   get,
   getProperties
 } = Ember;
@@ -16,9 +16,9 @@ export default Script.extend({
     const { linkedAttrs, linkedFixtures, links, script } = getProperties(this, 'linkedAttrs', 'linkedFixtures', 'links', 'script');
     const direction = this._createDirection(directionName, script);
 
-    assign(get(direction, 'links'), links);
-    assign(get(direction, 'links.attrs'), linkedAttrs);
-    assign(get(direction, 'links.fixtures'), linkedFixtures);
+    deepMerge(get(direction, 'links'), links);
+    deepMerge(get(direction, 'links.attrs'), linkedAttrs);
+    deepMerge(get(direction, 'links.fixtures'), linkedFixtures);
 
     return direction._setup(...args);
   }
