@@ -111,9 +111,10 @@ export default Component.extend(ManagedFocusMixin, {
     if (get(this, 'sceneOptions.autosave') === false) { return; }
 
     const eBus = get(this, 'eBus');
+    const data = get(this, 'dataManager.data');
 
-    eBus.publish('shouldSetStateValue', 'sceneId', sceneId);
-    eBus.publish('shouldSetStateValue', 'sceneName', sceneName);
+    setProperties(data, { sceneId, sceneName });
+
     eBus.publish('shouldFileStateBuffer');
     eBus.publish('shouldWriteAutosave');
   }
