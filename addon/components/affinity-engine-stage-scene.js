@@ -70,7 +70,6 @@ export default Component.extend(ManagedFocusMixin, {
   _startScene() {
     const sceneOptions = get(this, 'sceneOptions');
     const sceneId = get(sceneOptions, 'sceneId');
-    const data = get(this, 'dataManager.data');
 
     setProperties(this, {
       currentSceneId: sceneId
@@ -83,7 +82,7 @@ export default Component.extend(ManagedFocusMixin, {
 
     this._updateAutosave(sceneId, _sceneName);
 
-    start.perform(script, data, get(sceneOptions, 'window'));
+    start.perform(script, get(this, 'dataManager.data'), get(sceneOptions, 'window'));
   },
 
   _buildScript() {
