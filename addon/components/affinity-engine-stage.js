@@ -59,11 +59,8 @@ export default Component.extend({
 
       this._loadLatestScene();
     } else {
-      const sceneRecord = get(this, 'sceneRecord');
-
       this._startScene(initialScene, {
         autosave: false,
-        sceneRecord,
         window
       });
     }
@@ -79,7 +76,7 @@ export default Component.extend({
 
     dataManager.get('mostRecentSave').then((save) => {
       if (isPresent(save)) {
-        const sceneId = get(save, 'activeState.sceneId');
+        const sceneId = get(save, 'lastState.sceneId');
 
         this._loadScene(save, sceneId, options);
       } else {
@@ -95,15 +92,10 @@ export default Component.extend({
   },
 
   _loadScene(save, sceneId, options) {
-    const {
-      dataManager,
-      eBus
-    } = getProperties(this, 'dataManager', 'eBus');
+    const eBus = get(this, 'eBus');
 
     eBus.publish('shouldLoadSave', save);
     eBus.publish('refreshingFromState');
-
-    options.sceneRecord = dataManager.getStateValue('_sceneRecord') || {};
 
     this._startScene(sceneId, options);
   },

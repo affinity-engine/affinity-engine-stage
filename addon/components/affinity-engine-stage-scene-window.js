@@ -7,7 +7,6 @@ const {
   Component,
   computed,
   get,
-  isPresent,
   run,
   set
 } = Ember;
@@ -49,21 +48,10 @@ export default Component.extend(DirectableComponentMixin, {
   init(...args) {
     this._super(...args);
     this._setupEventListeners();
-    this._setupSceneRecord();
   },
 
   _setupEventListeners() {
     get(this, 'esmBus').subscribe('shouldCloseWindow', this, this._close);
-  },
-
-  _setupSceneRecord() {
-    const sceneRecord = get(this, 'priorSceneRecord') || {};
-    const direction = get(this, 'directable.direction');
-
-    if (isPresent(direction)) {
-      set(this, 'sceneRecord', sceneRecord);
-      set(direction, 'result', sceneRecord);
-    }
   },
 
   _close() {

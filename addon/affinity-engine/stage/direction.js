@@ -59,11 +59,6 @@ export default Ember.Object.extend(Evented, {
         set(this, '_resolve', resolve);
       });
 
-      const script = get(this, 'script');
-
-      script._incrementSceneRecordIndex();
-      script._record(promise);
-
       this.then = function(...args) {
         Reflect.deleteProperty(this, 'then');
 
@@ -138,7 +133,6 @@ export default Ember.Object.extend(Evented, {
     const Directable = getOwner(this).lookup('affinity-engine/stage:directable');
     const directable = Directable.extend(directableDefinition).create({
       ...getProperties(this, 'attrs', 'componentPath', 'layer', 'links', 'engineId', 'stageId'),
-      priorSceneRecord: get(this, 'script')._getPriorSceneRecord(),
       direction: this
     });
 

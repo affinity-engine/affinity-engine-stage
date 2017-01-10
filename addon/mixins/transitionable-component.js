@@ -111,10 +111,6 @@ export default Mixin.create({
 
     Reflect.deleteProperty(options, 'queue');
 
-    if (isPresent(get(this, 'priorSceneRecord'))) {
-      set(options, 'duration', 0);
-    }
-
     return get(this, 'animator').animate(this.element, effect, options).then(() => {
       run(() => {
         if (isPresent(this.element)) {

@@ -6,15 +6,12 @@ const {
   get,
   getOwner,
   getProperties,
-  set,
-  typeOf
+  set
 } = Ember;
 
 const { RSVP: { resolve } } = Ember;
 
 export default Ember.Object.extend(Evented, {
-  _sceneRecordIndex: -1,
-
   esBus: multiton('message-bus', 'engineId', 'stageId'),
 
   init(...args) {
@@ -40,29 +37,5 @@ export default Ember.Object.extend(Evented, {
 
   _abort() {
     set(this, 'isAborted', true);
-  },
-
-  _incrementSceneRecordIndex() {
-    this.incrementProperty('_sceneRecordIndex');
-  },
-
-  _getPriorSceneRecord() {
-    const sceneRecordIndex = get(this, '_sceneRecordIndex');
-
-    return get(this, `sceneRecord.${sceneRecordIndex}`);
-  },
-
-  _record(promise) {
-    const esBus = get(this, 'esBus');
-    const sceneRecordIndex = get(this, '_sceneRecordIndex');
-
-    promise.then((direction) => {
-      if (get(this, 'isAborted')) { return; }
-
-      const isDirection = typeOf(direction) === 'instance' && get(direction, '_isDirection');
-      const value = isDirection ? get(direction, 'result') || '_RESOLVED' : direction;
-
-      esBus.publish('directionCompleted', sceneRecordIndex, value);
-    });
   }
 });

@@ -1,6 +1,6 @@
 import Ember from 'ember';
 import layout from '../templates/components/affinity-engine-stage-scene';
-import { ManagedFocusMixin } from 'affinity-engine';
+import { ManagedFocusMixin, registrant } from 'affinity-engine';
 import multiton from 'ember-multiton-service';
 
 const {
@@ -22,6 +22,7 @@ export default Component.extend(ManagedFocusMixin, {
 
   classNames: ['ae-stage-scene'],
 
+  dataManager: registrant('affinity-engine/data-manager'),
   eBus: multiton('message-bus', 'engineId'),
   esBus: multiton('message-bus', 'engineId', 'stageId'),
 
@@ -33,7 +34,6 @@ export default Component.extend(ManagedFocusMixin, {
 
     const esBus = get(this, 'esBus');
 
-    esBus.subscribe('directionCompleted', this, this._updateSceneRecord);
     esBus.subscribe('shouldRemoveDirectable', this, this._removeDirectable);
     esBus.subscribe('shouldAddDirectable', this, this._addDirectable);
     esBus.subscribe('shouldAddLayerDirectable', this, this._addLayerDirectable);
@@ -70,10 +70,10 @@ export default Component.extend(ManagedFocusMixin, {
   _startScene() {
     const sceneOptions = get(this, 'sceneOptions');
     const sceneId = get(sceneOptions, 'sceneId');
+    const data = get(this, 'dataManager.data');
 
     setProperties(this, {
-      currentSceneId: sceneId,
-      sceneRecord: get(sceneOptions, 'sceneRecord') || {}
+      currentSceneId: sceneId
     });
 
     const { start, _sceneName } = this._buildScene(sceneId);
@@ -83,13 +83,13 @@ export default Component.extend(ManagedFocusMixin, {
 
     this._updateAutosave(sceneId, _sceneName);
 
-    start.perform(script, get(sceneOptions, 'window'));
+    start.perform(script, data, get(sceneOptions, 'window'));
   },
 
   _buildScript() {
     const factory = getOwner(this).lookup('affinity-engine/stage:script');
 
-    return factory.create(getProperties(this, 'engineId', 'sceneRecord', 'stageId'));
+    return factory.create(getProperties(this, 'engineId', 'stageId'));
   },
 
   _buildScene(id) {
@@ -112,18 +112,9 @@ export default Component.extend(ManagedFocusMixin, {
 
     const eBus = get(this, 'eBus');
 
-    eBus.publish('shouldDeleteStateValue', '_sceneRecord');
     eBus.publish('shouldSetStateValue', 'sceneId', sceneId);
     eBus.publish('shouldSetStateValue', 'sceneName', sceneName);
-    eBus.publish('shouldFileActiveState');
+    eBus.publish('shouldFileStateBuffer');
     eBus.publish('shouldWriteAutosave');
-  },
-
-  _updateSceneRecord(key, value) {
-    set(this, `sceneRecord.${key}`, value);
-
-    const { eBus, sceneRecord } = getProperties(this, 'eBus', 'sceneRecord');
-
-    eBus.publish('shouldSetStateValue', '_sceneRecord', sceneRecord);
   }
 });

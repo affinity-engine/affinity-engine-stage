@@ -9,12 +9,8 @@ const {
   set
 } = Ember;
 
-const { computed: { alias } } = Ember;
-
 export default Mixin.create({
   esBus: multiton('message-bus', 'engineId', 'stageId'),
-
-  priorSceneRecord: alias('directable.priorSceneRecord'),
 
   init(...args) {
     this._super(...args);
