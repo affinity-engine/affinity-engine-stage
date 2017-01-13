@@ -53,7 +53,7 @@
   },
   "ember-addon": {
     "configPath": "tests/dummy/config",
-    "demoURL": "http://www.affinityengine.org/components/stage",
+    "demoURL": "http://www.affinityengine.org/#/components/stage",
     "after": [
       "affinity-engine"
     ]
