@@ -53,7 +53,7 @@ export default Component.extend(ManagedFocusMixin, {
   },
 
   _addLayerDirectable(layer, directable) {
-    set(this, `layerDirectablesMap.${layer.replace('.', '/')}`, directable);
+    set(this, `layerDirectablesMap.${layer.replace(/\./g, '/')}`, directable);
   },
 
   _clearDirectables() {

@@ -29,7 +29,7 @@ export default Component.extend(DirectableComponentMixin, {
   directableObserver: computed('layerDirectablesMap', 'name', {
     get() {
       const { layerDirectablesMap, name } = getProperties(this, 'layerDirectablesMap', 'name');
-      const safeLayerName = name.replace('.', '/');
+      const safeLayerName = name.replace(/\./g, '/');
 
       return Ember.Object.extend({
         value: computed(`layerDirectablesMap.${safeLayerName}`, {
