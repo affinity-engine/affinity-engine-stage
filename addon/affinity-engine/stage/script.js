@@ -30,7 +30,7 @@ export default Ember.Object.extend(Evented, {
 
   _createDirection(directionName, script) {
     const { engineId, stageId } = getProperties(this, 'engineId', 'stageId');
-    const factory = getOwner(this).lookup(`affinity-engine/stage/direction:${directionName}`);
+    const factory = getOwner(this).factoryFor(`affinity-engine/stage/direction:${directionName}`);
 
     return factory.create({ script, engineId, stageId });
   },

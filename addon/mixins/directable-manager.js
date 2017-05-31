@@ -22,7 +22,7 @@ export default Mixin.create({
   },
 
   _addNewDirectable(properties) {
-    const Directable = getOwner(this).lookup('affinity-engine/stage:directable');
+    const Directable = getOwner(this).factoryFor('affinity-engine/stage:directable');
     const directable = Directable.create(properties);
 
     set(get(properties, 'direction'), 'directable', directable);

@@ -69,16 +69,18 @@ export default Ember.Object.extend(Evented, {
 
   _scriptProxy: computed({
     get() {
-      const { directionName, links } = getProperties(this, 'directionName', 'links');
+      const { directionName, links, script, engineId, stageId } = getProperties(this, 'directionName', 'links', 'script', 'engineId', 'stageId');
       const linkedAttrs = get(this, '_configuredLinkedAttrs');
 
       set(links, directionName, this);
 
-      return getOwner(this).lookup('affinity-engine/stage:script-proxy').create({
+      return getOwner(this).factoryFor('affinity-engine/stage:script-proxy').create({
         links,
         linkedAttrs,
         linkedFixtures: get(this, '_linkedFixtures'),
-        ...getProperties(this, 'script', 'engineId', 'stageId')
+        script,
+        engineId,
+        stageId
       });
     }
   }).readOnly(),
@@ -130,9 +132,15 @@ export default Ember.Object.extend(Evented, {
 
   _createDirectable() {
     const directableDefinition = get(this, '_directableDefinition') || {};
-    const Directable = getOwner(this).lookup('affinity-engine/stage:directable');
+    const { attrs, componentPath, layer, links, engineId, stageId } = getProperties(this, 'attrs', 'componentPath', 'layer', 'links', 'engineId', 'stageId');
+    const Directable = getOwner(this)._lookupFactory('affinity-engine/stage:directable');
     const directable = Directable.extend(directableDefinition).create({
-      ...getProperties(this, 'attrs', 'componentPath', 'layer', 'links', 'engineId', 'stageId'),
+      attrs,
+      componentPath,
+      layer,
+      links,
+      engineId,
+      stageId,
       direction: this
     });
 

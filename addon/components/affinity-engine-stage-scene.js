@@ -86,13 +86,13 @@ export default Component.extend(ManagedFocusMixin, {
   },
 
   _buildScript() {
-    const factory = getOwner(this).lookup('affinity-engine/stage:script');
+    const factory = getOwner(this).factoryFor('affinity-engine/stage:script');
 
     return factory.create(getProperties(this, 'engineId', 'stageId'));
   },
 
   _buildScene(id) {
-    const factory = getOwner(this).lookup(`affinity-engine/stage/scene:${id}`);
+    const factory = getOwner(this).factoryFor(`affinity-engine/stage/scene:${id}`);
 
     if (isNone(factory)) {
       warn(`Expected to find a scene with id '${id}'. None was found.`);
