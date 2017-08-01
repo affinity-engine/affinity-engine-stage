@@ -42,9 +42,10 @@ export default Component.extend(ManagedFocusMixin, {
   didReceiveAttrs(...args) {
     this._super(...args);
 
-    if (get(args[0], 'newAttrs.sceneOptions.value') !== get(args[0], 'oldAttrs.sceneOptions.value')) {
+    if (get(this, '_oldSceneOptions') !== get(this, 'sceneOptions')) {
       this._clearDirections();
       this._startScene();
+      set(this, '_oldSceneOptions', get(this, 'sceneOptions'));
     }
   },
 

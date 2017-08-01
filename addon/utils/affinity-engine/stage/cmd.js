@@ -2,7 +2,6 @@ import Ember from 'ember';
 
 const {
   get,
-  run,
   typeOf
 } = Ember;
 
@@ -15,13 +14,11 @@ export default function cmd(optionsOrCb, onlyCb) {
       this.ensurePromise();
     }
 
-    run(() => {
-      cb.apply(this, args);
+    cb.apply(this, args);
 
-      if (get(options, 'render')) {
-        this.render()
-      }
-    });
+    if (get(options, 'render')) {
+      this.render()
+    }
 
     return this;
   };

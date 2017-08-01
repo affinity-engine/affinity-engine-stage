@@ -3,7 +3,6 @@ import { registrant } from 'affinity-engine';
 
 const {
   Mixin,
-  K,
   computed,
   get,
   getProperties,
@@ -59,7 +58,7 @@ export default Mixin.create({
     });
   },
 
-  _executeTransitions(transitions, parentQueue, resolve = K) {
+  _executeTransitions(transitions, parentQueue, resolve = function() {}) {
     const transition = transitions.shift();
 
     if (isBlank(transition)) {
