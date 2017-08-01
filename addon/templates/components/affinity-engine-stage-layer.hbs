@@ -1,17 +1,17 @@
 {{#affinity-engine-animation-box-wrapper animationAdapter=animationLibrary transitions=transitions didCompleteQueue=(action resolve)}}
-  {{#each layerDirectables as |directable|}}
-    {{component directable.componentPath
-      directable=directable
+  {{#each layerDirections as |direction|}}
+    {{component direction.componentPath
+      direction=direction
       isFocused=isFocused
       engineId=engineId
       stageId=stageId
     }}
   {{/each}}
 
-  {{#each-in childLayers as |name directables|}}
+  {{#each-in childLayers as |name directions|}}
     {{affinity-engine-stage-layer
-      directables=directables
-      layerDirectablesMap=layerDirectablesMap
+      directions=directions
+      layerDirectionsMap=layerDirectionsMap
       isFocused=isFocused
       name=name
       engineId=engineId

@@ -53,7 +53,7 @@ test('Affinity Engine | stage | Directions | Scene', function(assert) {
   });
 
   step(150);
-  
+
   andThen(() => {
     assert.equal($hook('basic_direction_header').length, 2, 'a scene has closed');
     assert.equal($hook('basic_direction_header').eq(0).text().trim(), 'Scene Two', 'main scene is still present');

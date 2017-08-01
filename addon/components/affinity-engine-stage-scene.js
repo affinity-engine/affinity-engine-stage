@@ -26,7 +26,7 @@ export default Component.extend(ManagedFocusMixin, {
   eBus: multiton('message-bus', 'engineId'),
   esBus: multiton('message-bus', 'engineId', 'stageId'),
 
-  directables: computed(() => Ember.A()),
+  directions: computed(() => Ember.A()),
   layersMap: computed(() => Ember.Object.create()),
 
   init(...args) {
@@ -34,37 +34,37 @@ export default Component.extend(ManagedFocusMixin, {
 
     const esBus = get(this, 'esBus');
 
-    esBus.subscribe('shouldRemoveDirectable', this, this._removeDirectable);
-    esBus.subscribe('shouldAddDirectable', this, this._addDirectable);
-    esBus.subscribe('shouldAddLayerDirectable', this, this._addLayerDirectable);
+    esBus.subscribe('shouldRemoveDirection', this, this._removeDirection);
+    esBus.subscribe('shouldAddDirection', this, this._addDirection);
+    esBus.subscribe('shouldAddLayerDirection', this, this._addLayerDirection);
   },
 
   didReceiveAttrs(...args) {
     this._super(...args);
 
     if (get(args[0], 'newAttrs.sceneOptions.value') !== get(args[0], 'oldAttrs.sceneOptions.value')) {
-      this._clearDirectables();
+      this._clearDirections();
       this._startScene();
     }
   },
 
-  _addDirectable(directable) {
-    get(this, 'directables').pushObject(directable);
+  _addDirection(direction) {
+    get(this, 'directions').pushObject(direction);
   },
 
-  _addLayerDirectable(layer, directable) {
-    set(this, `layerDirectablesMap.${layer.replace(/\./g, '/')}`, directable);
+  _addLayerDirection(layer, direction) {
+    set(this, `layerDirectionsMap.${layer.replace(/\./g, '/')}`, direction);
   },
 
-  _clearDirectables() {
-    get(this, 'directables').clear();
-    set(this, 'layerDirectablesMap', Ember.Object.create());
+  _clearDirections() {
+    get(this, 'directions').clear();
+    set(this, 'layerDirectionsMap', Ember.Object.create());
   },
 
-  _removeDirectable(directable) {
-    get(this, 'directables').removeObject(directable);
+  _removeDirection(direction) {
+    get(this, 'directions').removeObject(direction);
 
-    if (isPresent(directable)) { directable.destroy(); }
+    if (isPresent(direction)) { direction.destroy(); }
   },
 
   _startScene() {
@@ -82,7 +82,7 @@ export default Component.extend(ManagedFocusMixin, {
 
     this._updateAutosave(sceneId, _sceneName);
 
-    start.perform(script, get(this, 'dataManager.data'), get(sceneOptions, 'window'));
+    start.perform(script, get(this, 'dataManager.data'), get(sceneOptions, 'windowDirection'));
   },
 
   _buildScript() {

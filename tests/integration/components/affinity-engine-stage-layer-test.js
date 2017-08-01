@@ -8,7 +8,7 @@ const {
   getOwner
 } = Ember;
 
-moduleForComponent('affinity-engine-stage-layer', 'Integration | Component | ember engine stage layer', {
+moduleForComponent('affinity-engine-stage-layer', 'Integration | Component | affinity engine stage layer', {
   integration: true,
 
   beforeEach() {
@@ -51,13 +51,13 @@ test('class name is bound to layer name', function(assert) {
   assert.ok($hook('affinity_engine_stage_layer').hasClass('ae-stage-layer-foo'), 'has correct class when name is foo');
 });
 
-test('renders a filtered list of directables', function(assert) {
+test('renders a filtered list of directions', function(assert) {
   assert.expect(2);
 
   const name = 'foo';
   const componentPath = 'simple-directable';
 
-  const directables = Ember.A([{
+  const directions = Ember.A([{
     layer: 'foo.bar',
     componentPath
   }, {
@@ -71,10 +71,10 @@ test('renders a filtered list of directables', function(assert) {
     componentPath
   }]);
 
-  this.setProperties({ name, directables });
+  this.setProperties({ name, directions });
 
   this.render(hbs`{{affinity-engine-stage-layer
-    directables=directables
+    directions=directions
     name=name
     hook="parent_layer"
   }}`);
@@ -86,13 +86,13 @@ test('renders a filtered list of directables', function(assert) {
   assert.ok(parentLayerDirectables.toArray().every((elem) => Ember.$(elem).text().trim() === name), 'filtered list is correct');
 });
 
-test('renders a filtered list of directables', function(assert) {
+test('renders a filtered list of directions', function(assert) {
   assert.expect(2);
 
   const name = 'foo';
   const componentPath = 'simple-directable';
 
-  const directables = Ember.A([{
+  const directions = Ember.A([{
     layer: 'foo.bar',
     componentPath
   }, {
@@ -106,10 +106,10 @@ test('renders a filtered list of directables', function(assert) {
     componentPath
   }]);
 
-  this.setProperties({ name, directables });
+  this.setProperties({ name, directions });
 
   this.render(hbs`{{affinity-engine-stage-layer
-    directables=directables
+    directions=directions
     name=name
     hook="parent_layer"
   }}`);
@@ -121,13 +121,13 @@ test('renders a filtered list of directables', function(assert) {
   assert.ok(parentLayerDirectables.toArray().every((elem) => Ember.$(elem).text().trim() === name), 'filtered list is correct');
 });
 
-test('renders child layers based on the layer names of its directables', function(assert) {
+test('renders child layers based on the layer names of its directions', function(assert) {
   assert.expect(13);
 
   const name = 'foo';
   const componentPath = 'simple-directable';
 
-  const directables = Ember.A([{
+  const directions = Ember.A([{
     layer: 'foo.bar',
     componentPath
   }, {
@@ -141,39 +141,39 @@ test('renders child layers based on the layer names of its directables', functio
     componentPath
   }]);
 
-  this.setProperties({ name, directables });
+  this.setProperties({ name, directions });
 
   this.render(hbs`{{affinity-engine-stage-layer
-    directables=directables
+    directions=directions
     name=name
     hook="parent_layer"
   }}`);
 
   const fooLayer = this.$(`${hook('parent_layer')} .ember-animation-box-active-instance`).first();
   const fooLayerDirectables = fooLayer.children(hook('simple_directable'));
-  assert.equal(fooLayerDirectables.length, 1, 'foo layer directables rendered');
+  assert.equal(fooLayerDirectables.length, 1, 'foo layer directions rendered');
   assert.equal(fooLayerDirectables.first().text().trim(), 'foo', 'correct foo layer filter');
 
   const fooBarLayer = fooLayer.children('.ae-stage-layer-foo-bar').children(hook('ember_animation_box')).children('.ember-animation-box-active-instance').first();
   const fooBarLayerDirectables = fooBarLayer.children(hook('simple_directable'));
   assert.equal(fooBarLayer.length, 1, 'foo-bar layer rendered');
-  assert.equal(fooBarLayerDirectables.length, 1, 'foo-bar layer directables rendered');
+  assert.equal(fooBarLayerDirectables.length, 1, 'foo-bar layer directions rendered');
   assert.equal(fooBarLayerDirectables.first().text().trim(), 'foo.bar', 'correct foo-bar layer filter');
 
   const fooBarBazLayer = fooBarLayer.children('.ae-stage-layer-foo-bar-baz').children(hook('ember_animation_box')).children('.ember-animation-box-active-instance').first();
   const fooBarBazLayerDirectables = fooBarBazLayer.children(hook('simple_directable'));
   assert.equal(fooBarBazLayer.length, 1, 'foo-bar-baz layer rendered');
-  assert.equal(fooBarBazLayerDirectables.length, 1, 'foo-bar-baz layer directables rendered');
+  assert.equal(fooBarBazLayerDirectables.length, 1, 'foo-bar-baz layer directions rendered');
   assert.equal(fooBarBazLayerDirectables.first().text().trim(), 'foo.bar.baz', 'correct foo-bar-baz layer filter');
 
   const fooBazLayer = fooLayer.children('.ae-stage-layer-foo-baz').children(hook('ember_animation_box')).children('.ember-animation-box-active-instance').first();
   const fooBazLayerDirectables = fooBazLayer.children(hook('simple_directable'));
   assert.equal(fooBazLayer.length, 1, 'foo-baz layer rendered');
-  assert.equal(fooBazLayerDirectables.length, 0, 'foo-bar layer directables rendered');
+  assert.equal(fooBazLayerDirectables.length, 0, 'foo-bar layer directions rendered');
 
   const fooBazFooLayer = fooBazLayer.children('.ae-stage-layer-foo-baz-foo').children(hook('ember_animation_box')).children('.ember-animation-box-active-instance').first();
   const fooBazFooLayerDirectables = fooBazFooLayer.children(hook('simple_directable'));
   assert.equal(fooBazFooLayer.length, 1, 'foo-baz-foo layer rendered');
-  assert.equal(fooBazFooLayerDirectables.length, 1, 'foo-baz-foo layer directables rendered');
+  assert.equal(fooBazFooLayerDirectables.length, 1, 'foo-baz-foo layer directions rendered');
   assert.equal(fooBazFooLayerDirectables.first().text().trim(), 'foo.baz.foo', 'correct foo-baz-foo layer filter');
 });

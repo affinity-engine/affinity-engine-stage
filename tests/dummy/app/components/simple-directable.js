@@ -6,5 +6,5 @@ const { computed: { alias } } = Ember;
 export default Component.extend({
   hook: 'simple_directable',
 
-  text: alias('directable.layer')
+  text: alias('direction.layer')
 });

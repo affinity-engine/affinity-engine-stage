@@ -1,6 +1,7 @@
 module.exports = {
   root: true,
   globals: {
+    'Proxy': true,
     'Reflect': true
   },
   parserOptions: {

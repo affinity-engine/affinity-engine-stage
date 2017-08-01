@@ -10,7 +10,7 @@ const {
   isPresent
 } = Ember;
 
-const { alias } = computed;
+const { reads } = computed;
 
 export default Component.extend(DirectableComponentMixin, {
   layout,
@@ -20,39 +20,40 @@ export default Component.extend(DirectableComponentMixin, {
   classNames: ['ae-stage-layer'],
   classNameBindings: ['layerName'],
 
-  directables: computed(() => Ember.A()),
+  directions: computed(() => Ember.A()),
   name: '',
 
-  directable: alias('directableObserver.value'),
-  transitions: alias('directable.transitions'),
+  configuration: reads('direction.configuration'),
+  direction: reads('directionObserver.value'),
+  transitions: reads('configuration.transitions'),
 
-  directableObserver: computed('layerDirectablesMap', 'name', {
+  directionObserver: computed('layerDirectionsMap', 'name', {
     get() {
-      const { layerDirectablesMap, name } = getProperties(this, 'layerDirectablesMap', 'name');
+      const { layerDirectionsMap, name } = getProperties(this, 'layerDirectionsMap', 'name');
       const safeLayerName = name.replace(/\./g, '/');
 
       return Ember.Object.extend({
-        value: computed(`layerDirectablesMap.${safeLayerName}`, {
+        value: computed(`layerDirectionsMap.${safeLayerName}`, {
           get() {
             return isPresent(safeLayerName) ?
-              get(this, `layerDirectablesMap.${safeLayerName}`) :
+              get(this, `layerDirectionsMap.${safeLayerName}`) :
               {};
           }
         })
-      }).create({ layerDirectablesMap });
+      }).create({ layerDirectionsMap });
     }
   }),
 
-  animationLibrary: computed('directable.animationLibrary', {
+  animationLibrary: computed('direction.animationLibrary', {
     get() {
-      return get(this, 'directable.animationLibrary') || '';
+      return get(this, 'direction.animationLibrary') || '';
     }
   }),
 
-  layerDirectables: computed('directables.@each.layer', 'name', {
+  layerDirections: computed('directions.@each.layer', 'name', {
     get() {
-      return get(this, 'directables').filter((directable) => {
-        return get(directable, 'layer') === get(this, 'name');
+      return get(this, 'directions').filter((direction) => {
+        return get(direction, 'layer') === get(this, 'name');
       });
     }
   }).readOnly(),
@@ -63,24 +64,24 @@ export default Component.extend(DirectableComponentMixin, {
     }
   }).readOnly(),
 
-  childLayers: computed('directables.@each.layer', {
+  childLayers: computed('directions.@each.layer', {
     get() {
       const name = get(this, 'name');
       const parentName = name ? `${name}.` : '';
 
-      const childLayerDirectables = get(this, 'directables').filter((directable) => {
-        return get(directable, 'layer').replace(name, '').length > 1;
+      const childLayerDirections = get(this, 'directions').filter((direction) => {
+        return get(direction, 'layer').replace(name, '').length > 1;
       });
 
-      const childLayerNames = Ember.A(childLayerDirectables.map((directable) => {
-        return get(directable, 'layer');
+      const childLayerNames = Ember.A(childLayerDirections.map((direction) => {
+        return get(direction, 'layer');
       })).uniq();
 
       return childLayerNames.reduce((layers, layer) => {
         const subName = layer.replace(parentName, '').split('.')[0];
         const childLayerName = name ? `${name}.${subName}` : subName;
-        const childLayer = childLayerDirectables.filter((directable) => {
-          return get(directable, 'layer') === layer;
+        const childLayer = childLayerDirections.filter((direction) => {
+          return get(direction, 'layer') === layer;
         });
 
         if (layers[childLayerName]) {

@@ -1,13 +1,10 @@
 import Ember from 'ember';
-import { configurable } from 'affinity-engine';
 import { Direction, cmd } from 'affinity-engine-stage';
 import multiton from 'ember-multiton-service';
 
 const {
-  computed,
   get,
-  merge,
-  set
+  merge
 } = Ember;
 
 export default Direction.extend({
@@ -15,43 +12,29 @@ export default Direction.extend({
   esBus: multiton('message-bus', 'engineId', 'stageId'),
   layerManager: multiton('affinity-engine/stage/layer-manager', 'engineId', 'stageId'),
 
-  attrs: computed(() => Ember.Object.create({
-    transitions: Ember.A()
-  })),
+  render() {
+    const layer = this.getConfiguration('layer');
+
+    get(this, 'esBus').publish('shouldAddLayerDirection', layer, this);
+  },
 
   _configurationTiers: [
-    'attrs',
+    'instanceConfig',
     'config.attrs.component.stage.direction.layer',
     'config.attrs.component.stage',
     'config.attrs.global'
   ],
 
-  _directableDefinition: computed('_configurationTiers', {
-    get() {
-      const configurationTiers = get(this, '_configurationTiers');
-
-      return {
-        animationLibrary: configurable(configurationTiers, 'animationLibrary'),
-        layer: configurable(configurationTiers, 'layer'),
-        transitions: configurable(configurationTiers, 'transitions')
-      }
-    }
+  _setup: cmd(function(layer, options) {
+    this.configure(merge({
+      layer,
+      transitions: Ember.A()
+    }, options));
   }),
 
-  _setup: cmd(function(layer) {
-    set(this, 'attrs.layer', layer);
-  }),
-
-  transition: cmd({ async: true, directable: true }, function(effect, duration, options = {}) {
-    const transitions = get(this, 'attrs.transitions');
+  transition: cmd({ async: true, render: true }, function(effect, duration, options = {}) {
+    const transitions = this.getConfiguration('transitions');
 
     transitions.pushObject(merge({ duration, effect }, options));
-  }),
-
-  _ensureDirectable() {
-    const directable = get(this, 'directable') || set(this, 'directable', this._createDirectable());
-    const layer = get(this, 'attrs.layer');
-
-    get(this, 'esBus').publish('shouldAddLayerDirectable', layer, directable);
-  }
+  })
 });

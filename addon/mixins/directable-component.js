@@ -15,31 +15,31 @@ export default Mixin.create({
   init(...args) {
     this._super(...args);
 
-    const directable = get(this, 'directable');
+    const direction = get(this, 'direction');
 
-    if (isBlank(directable)) { return; }
+    if (isBlank(direction)) { return; }
 
-    set(directable, 'component', this);
+    set(direction, 'component', this);
   },
 
   resolveAndDestroy(...args) {
     this.resolve(...args);
-    this.removeDirectable();
+    this.removeDirection();
   },
 
   resolve(...args) {
     if (get(this, 'isDestroyed') || get(this, 'isDestroying')) { return; }
 
-    const direction = get(this, 'directable.direction');
+    const direction = get(this, 'direction');
 
     if (isPresent(direction)) { direction.resolve(...args); }
   },
 
-  removeDirectable() {
+  removeDirection() {
     if (get(this, 'isDestroyed') || get(this, 'isDestroying')) { return; }
 
-    const directable = get(this, 'directable');
+    const direction = get(this, 'direction');
 
-    get(this, 'esBus').publish('shouldRemoveDirectable', directable);
+    get(this, 'esBus').publish('shouldRemoveDirection', direction);
   }
 });

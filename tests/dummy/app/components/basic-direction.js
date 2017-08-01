@@ -14,15 +14,15 @@ export default Component.extend(DirectableComponentMixin, {
 
   classNames: ['basic-direction'],
 
-  header: alias('directable.header'),
-  text: alias('directable.text'),
-  footerSecondary: alias('directable.footerSecondary'),
-  footerText: alias('directable.footerText'),
+  header: alias('direction.configuration.header'),
+  text: alias('direction.configuration.text'),
+  footerSecondary: alias('direction.configuration.footerSecondary'),
+  footerText: alias('direction.configuration.footerText'),
 
   init(...args) {
     this._super(...args);
 
-    get(this, 'directable.direction').resolve();
+    get(this, 'direction').resolve();
   },
 
   footer: computed('footerSecondary', 'footerText', {

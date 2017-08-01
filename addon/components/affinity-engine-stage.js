@@ -46,8 +46,8 @@ export default Component.extend({
       eBus,
       esBus,
       stageId,
-      window
-    } = getProperties(this, 'initialScene', 'eBus', 'esBus', 'stageId', 'window');
+      windowDirection
+    } = getProperties(this, 'initialScene', 'eBus', 'esBus', 'stageId', 'windowDirection');
 
     esBus.subscribe('shouldStartScene', this, this._startScene);
     esBus.subscribe('shouldChangeScene', this, this._changeScene);
@@ -61,7 +61,7 @@ export default Component.extend({
     } else {
       this._startScene(initialScene, {
         autosave: false,
-        window
+        windowDirection
       });
     }
   },

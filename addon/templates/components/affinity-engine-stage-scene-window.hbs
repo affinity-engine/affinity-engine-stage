@@ -6,15 +6,15 @@
   didTransitionOut=(action "didTransitionOut")
 }}
   {{#if screen}}
-    <div class="ae-stage-scene-window-screen {{screenClassNames}}" style={{childStyle}} data-test={{hook "affinity_engine_stage_scene_window_screen"}}></div>
+    <div class="ae-stage-scene-window-screen {{screen}}" style={{childStyle}} data-test={{hook "affinity_engine_stage_scene_window_screen"}}></div>
   {{/if}}
 
   <div class="ae-stage-scene-window-main {{windowClassNames}}" style={{childStyle}} data-test={{hook "affinity_engine_stage_scene_window_main"}}>
     {{affinity-engine-stage
       initialScene=sceneId
       engineId=engineId
-      stageId=stageModalId
-      window=window
+      stageId=window
+      windowDirection=windowDirection
     }}
   </div>
 {{/affinity-engine-animation-box-wrapper}}

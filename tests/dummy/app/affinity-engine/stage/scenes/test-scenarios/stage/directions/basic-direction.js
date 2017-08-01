@@ -9,7 +9,7 @@ export default Scene.extend({
 
     yield step();
 
-    basic1.text('foo');
+    basic1.configure('text', 'foo');
 
     yield step();
 
@@ -17,14 +17,14 @@ export default Scene.extend({
 
     yield step();
 
-    basic2.text('foo');
+    basic2.configure('text', 'foo');
 
     yield step();
 
-    script.basic('Uninstantiated Header').text('bar');
+    script.basic('Uninstantiated Header').configure('text', 'bar');
 
     yield step();
 
-    script.appender('alpha').secondary('omega')._.basic('Chained Header').text('baz');
+    script.appender('alpha').configure('footerSecondary', 'omega')._.basic('Chained Header').configure('text', 'baz');
   })
 });

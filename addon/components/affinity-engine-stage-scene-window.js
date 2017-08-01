@@ -12,29 +12,30 @@ const {
 } = Ember;
 
 const { String: { htmlSafe } } = Ember;
-const { alias } = computed;
+const { reads } = computed;
 
 export default Component.extend(DirectableComponentMixin, {
   layout,
 
-  directable: computed(() => Ember.Object.create()),
+  direction: computed(() => Ember.Object.create()),
 
   hook: 'affinity_engine_stage_scene_window',
-  attributeBindings: ['stageModalId:data-scene-window-id'],
+  attributeBindings: ['window:data-scene-window-id'],
   classNames: ['ae-stage-scene-window'],
 
-  esmBus: multiton('message-bus', 'engineId', 'stageModalId'),
+  esmBus: multiton('message-bus', 'engineId', 'window'),
 
-  animationLibrary: alias('directable.animationLibrary'),
-  windowClassNames: alias('directable.windowClassNames'),
-  priority: alias('directable.priority'),
-  sceneId: alias('directable.sceneId'),
-  stageModalId: alias('directable.stageModalId'),
-  screen: alias('directable.screen'),
-  screenClassNames: alias('directable.screenClassNames'),
-  transitionIn: alias('directable.transitionIn'),
-  transitionOut: alias('directable.transitionOut'),
-  window: alias('directable.window'),
+  configuration: reads('direction.configuration'),
+  animationLibrary: reads('configuration.animationLibrary'),
+  windowClassNames: reads('configuration.windowClassNames'),
+  priority: reads('configuration.priority'),
+  sceneId: reads('configuration.sceneId'),
+  window: reads('configuration.window'),
+  screen: reads('configuration.screen'),
+  screenClassNames: reads('configuration.screenClassNames'),
+  transitionIn: reads('configuration.transitionIn'),
+  transitionOut: reads('configuration.transitionOut'),
+  windowDirection: reads('configuration.windowDirection'),
 
   childStyle: computed('priority', {
     get() {
@@ -62,7 +63,7 @@ export default Component.extend(DirectableComponentMixin, {
 
   actions: {
     didTransitionOut() {
-      this.removeDirectable();
+      this.removeDirection();
     }
   }
 });
