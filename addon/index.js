@@ -1,4 +1,3 @@
-import Directable from 'affinity-engine-stage/affinity-engine/stage/directable';
 import Direction from 'affinity-engine-stage/affinity-engine/stage/direction';
 import Scene from 'affinity-engine-stage/affinity-engine/stage/scene';
 import Script from 'affinity-engine-stage/affinity-engine/stage/script';
@@ -15,20 +14,17 @@ import step from 'affinity-engine-stage/affinity-engine/stage/test-support/step'
 import cmd from 'affinity-engine-stage/utils/affinity-engine/stage/cmd';
 import layerName from 'affinity-engine-stage/utils/affinity-engine/stage/layer-name';
 
-import { initialize as registerDirectable } from 'affinity-engine-stage/instance-initializers/affinity-engine/stage/register-directable';
 import { initialize as registerDirections } from 'affinity-engine-stage/instance-initializers/affinity-engine/stage/register-directions';
 import { initialize as registerScenes } from 'affinity-engine-stage/instance-initializers/affinity-engine/stage/register-scenes';
 import { initialize as registerScript } from 'affinity-engine-stage/instance-initializers/affinity-engine/stage/register-script';
 
 const initialize = function initialize(appInstance) {
-  registerDirectable(appInstance);
   registerDirections(appInstance);
   registerScenes(appInstance);
   registerScript(appInstance);
 };
 
 export {
-  Directable,
   Direction,
   Scene,
   Script,
