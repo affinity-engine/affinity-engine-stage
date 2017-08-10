@@ -3,9 +3,10 @@ export default {
     stage: {
       direction: {
         appender: {
-          _linkedAttrs: {
-            footerSecondary: 'footerSecondary',
-            text: 'footerText'
+          link: {
+            basic: {
+              footerViaConfig: 'via config'
+            }
           }
         }
       }

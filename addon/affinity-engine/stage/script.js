@@ -25,6 +25,8 @@ export default Ember.Object.extend(Evented, {
 
     const direction = this._createDirection(directionName, this);
 
+    direction._applyEngineConfig();
+
     return direction._setup(...args);
   },
 

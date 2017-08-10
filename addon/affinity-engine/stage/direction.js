@@ -1,5 +1,5 @@
 import Ember from 'ember';
-import { deepMerge } from 'affinity-engine';
+import { deepMerge, nativeCopy } from 'affinity-engine';
 import multiton from 'ember-multiton-service';
 
 const {
@@ -19,60 +19,13 @@ const { RSVP: { Promise } } = Ember;
 export default Ember.Object.extend(Evented, {
   _isDirection: true,
 
-  config: multiton('affinity-engine/config', 'engineId'),
+  engineConfig: multiton('affinity-engine/config', 'engineId'),
   esBus: multiton('message-bus', 'engineId', 'stageId'),
 
-  instanceConfig: computed(() => Ember.Object.create()),
-  links: computed(() => Ember.Object.create({
-    configurations: Ember.A(),
-    fixtures: Ember.Object.create()
+  configuration: computed(() => Ember.Object.create({
+    link: {}
   })),
   _configurationTiers: computed(() => []),
-  _linkedFixtures: computed(() => Ember.Object.create()),
-
-  configuration: computed({
-    get() {
-      let configuration = get(this, '_configuration');
-
-      if (!configuration) {
-        configuration = set(this, '_configuration', new Proxy(this, {
-          get: (target, key) => {
-            if (typeof key !== 'string') return;
-
-            const tiers = get(target, '_configurationTiers');
-            const tier = tiers.find((tier) => {
-              if (tier.indexOf('.@each') > -1) {
-                const parts = tier.split('.@each');
-                const firstPart = get(target, parts[0]);
-                if (firstPart && firstPart.find) {
-                  return firstPart.find((part) => {
-                    if (part !== configuration) return get(part, parts[1].length > 0 ? `${parts[1]}.${key}` : key);
-                  }) !== undefined;
-                } else {
-                  return false;
-                }
-              } else {
-                return get(target, `${tier}.${key}`);
-              }
-            });
-
-            if (isPresent(tier)) {
-              if (tier.indexOf('.@each') > -1) {
-                const parts = tier.split('.@each');
-                const part = get(target, parts[0]).find((part) => get(part, parts[1].length > 0 ? `${parts[1]}.${key}` : key));
-
-                return get(part, parts[1].length > 0 ? `${parts[1]}.${key}` : key);
-              } else {
-                return get(target, `${tier}.${key}`);
-              }
-            }
-          }
-        }))
-      }
-
-      return configuration;
-    }
-  }),
 
   init(...args) {
     this._super(...args);
@@ -84,28 +37,69 @@ export default Ember.Object.extend(Evented, {
     });
   },
 
+  _applyEngineConfig() {
+    this._applyConfigSource(get(this, 'engineConfig.attrs'));
+  },
+
+  _applyLinkedConfig(link) {
+    this._applyConfigSource(link);
+    set(this, 'configuration.link', link);
+  },
+
+  _applyConfigSource(source) {
+    const configuration = get(this, 'configuration');
+    const tiers = get(this, '_configurationTiers');
+
+    tiers.forEach((tier) => {
+      deepMerge(configuration, nativeCopy(get(source, tier) || {}));
+    });
+  },
+
+  applyFixture(fixture) {
+    this._applyConfigSource(fixture);
+  },
+
   configure(key, value) {
     if (typeof key === 'object') {
-      setProperties(get(this, 'instanceConfig'), key);
+      setProperties(get(this, 'configuration'), key);
     } else {
-      set(get(this, 'instanceConfig'), key, value);
+      set(get(this, 'configuration'), key, value);
     }
 
-    // TODO: potentially expensive; if 'configuration' were an Ember Object it
-    // would notify the property change on its own. however, I don't know a way
-    // to return default values for Ember Object properties that are 'undefined'
-    this.notifyPropertyChange('configuration');
+    return this;
+  },
+
+  link(types, key, value) {
+    if (!Array.isArray(types)) types = [types];
+
+    types.forEach((type) => {
+      const link = get(this, 'configuration.link');
+
+      if (typeof type === 'object') {
+        setProperties(link, type);
+      } else {
+        const linkType = type.split('.').reduce((target, path) => {
+          return get(target, path) || set(target, path, {});
+        }, link);
+
+        if (typeof key === 'object') {
+          setProperties(linkType, key);
+        } else {
+          set(linkType, key, value);
+        }
+      }
+    });
 
     return this;
   },
 
   getConfiguration(...keys) {
     if (keys.length === 1) {
-      return get(this, `instanceConfig.${keys[0]}`);
+      return get(this, `configuration.${keys[0]}`);
     } else if (keys.length === 0) {
-      return get(this, 'instanceConfig');
+      return get(this, 'configuration');
     } else {
-      return getProperties(get(this, 'instanceConfig'), ...keys);
+      return getProperties(get(this, 'configuration'), ...keys);
     }
   },
 
@@ -144,33 +138,16 @@ export default Ember.Object.extend(Evented, {
 
   _scriptProxy: computed({
     get() {
-      const { directionName, links, linkedConfigurations, script, engineId, stageId } = getProperties(this, 'directionName', 'links', 'linkedConfigurations', 'script', 'engineId', 'stageId');
-
-      set(links, directionName, this);
+      const { configuration, script, engineId, stageId } = getProperties(this, 'configuration', 'script', 'engineId', 'stageId');
 
       return getOwner(this).factoryFor('affinity-engine/stage:script-proxy').create({
-        links,
-        linkedConfigurations,
-        linkedFixtures: get(this, '_linkedFixtures'),
+        configuration,
         script,
         engineId,
         stageId
       });
     }
   }).readOnly(),
-
-  linkedConfigurations: computed({
-    get() {
-      const configurations = get(this, 'links.configurations').copy();
-      configurations.push(get(this, 'configuration'));
-
-      return configurations;
-    }
-  }),
-
-  _linkFixture(fixture) {
-    deepMerge(get(this, '_linkedFixtures'), fixture);
-  },
 
   _$instance: computed({
     get() {

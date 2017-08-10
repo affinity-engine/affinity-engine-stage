@@ -17,6 +17,7 @@ export default Component.extend(DirectableComponentMixin, {
   header: alias('direction.configuration.header'),
   text: alias('direction.configuration.text'),
   footerSecondary: alias('direction.configuration.footerSecondary'),
+  footerViaConfig: alias('direction.configuration.footerViaConfig'),
   footerText: alias('direction.configuration.footerText'),
 
   init(...args) {
@@ -25,9 +26,9 @@ export default Component.extend(DirectableComponentMixin, {
     get(this, 'direction').resolve();
   },
 
-  footer: computed('footerSecondary', 'footerText', {
+  footer: computed('footerSecondary', 'footerText', 'footerViaConfig', {
     get() {
-      return `${get(this, 'footerText')} ${get(this, 'footerSecondary')}`;
+      return `${get(this, 'footerText')} ${get(this, 'footerSecondary')} ${get(this, 'footerViaConfig')}`;
     }
   })
 });

@@ -58,6 +58,6 @@ test('Affinity Engine | stage | Directions | BasicDirection', function(assert) {
   andThen(() => {
     assert.equal(Ember.$(`${hook('basic_direction_header')}:nth(3)`).text().trim(), 'Chained Header', 'chained header is correct');
     assert.equal(Ember.$(`${hook('basic_direction_text')}:nth(3)`).text().trim(), 'baz', 'chained basic text set initially');
-    assert.equal(Ember.$(`${hook('basic_direction_footer')}:nth(3)`).text().trim(), 'alpha omega', 'direction passed successfully');
+    assert.equal(Ember.$(`${hook('basic_direction_footer')}:nth(3)`).text().trim(), 'alpha omega via config', 'direction passed successfully');
   });
 });

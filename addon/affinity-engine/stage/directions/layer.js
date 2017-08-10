@@ -8,7 +8,6 @@ const {
 } = Ember;
 
 export default Direction.extend({
-  config: multiton('affinity-engine/config', 'engineId'),
   esBus: multiton('message-bus', 'engineId', 'stageId'),
   layerManager: multiton('affinity-engine/stage/layer-manager', 'engineId', 'stageId'),
 
@@ -19,10 +18,9 @@ export default Direction.extend({
   },
 
   _configurationTiers: [
-    'instanceConfig',
-    'config.attrs.component.stage.direction.layer',
-    'config.attrs.component.stage',
-    'config.attrs.global'
+    'global',
+    'component.stage',
+    'component.stage.direction.layer'
   ],
 
   _setup: cmd(function(layer, options) {

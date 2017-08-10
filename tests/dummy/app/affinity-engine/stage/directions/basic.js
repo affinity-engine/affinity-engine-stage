@@ -10,10 +10,10 @@ export default Direction.extend({
   layer: 'engine.meta.basic',
 
   _configurationTiers: [
-    'instanceConfig',
-    'links.configurations.@each',
-    'config.attrs.stage',
-    'config.attrs.globals'
+    'global',
+    'stage',
+    'basic',
+    'stage.component.basic'
   ],
 
   _setup: cmd({ render: true, async: true }, function(header, options) {

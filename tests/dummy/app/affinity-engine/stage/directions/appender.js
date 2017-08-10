@@ -1,18 +1,13 @@
-import Ember from 'ember';
 import { Direction, cmd } from 'affinity-engine-stage';
-
-const { merge } = Ember;
 
 export default Direction.extend({
   _configurationTiers: [
-    'instanceConfig',
-    'links.configurations.@each',
-    'config.attrs.component.stage.direction.appender',
-    'config.attrs.component.stage',
-    'config.attrs.globals'
+    'global',
+    'component.stage',
+    'component.stage.direction.appender'
   ],
 
-  _setup: cmd(function(footerText, options) {
-    this.configure(merge({ footerText}, options));
+  _setup: cmd(function(footerText) {
+    this.link('global', { footerText });
   })
 });

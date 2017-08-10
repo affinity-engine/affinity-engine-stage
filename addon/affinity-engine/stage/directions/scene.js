@@ -3,11 +3,11 @@ import { Direction, cmd } from 'affinity-engine-stage';
 import multiton from 'ember-multiton-service';
 
 const {
+  assign,
   computed,
   get,
   isBlank,
-  isPresent,
-  merge
+  isPresent
 } = Ember;
 
 const { reads } = computed;
@@ -19,17 +19,16 @@ export default Direction.extend({
   esBus: multiton('message-bus', 'engineId', 'stageId'),
   esmBus: multiton('message-bus', 'engineId', 'window'),
 
-  window: reads('instanceConfig.window'),
+  window: reads('configuration.window'),
 
   _configurationTiers: [
-    'instanceConfig',
-    'config.attrs.component.stage.direction.scene',
-    'config.attrs.component.stage',
-    'config.attrs.global'
+    'global',
+    'component.stage',
+    'component.stage.direction.scene'
   ],
 
   _setup: cmd(function(sceneId, options) {
-    this.configure(merge({
+    this.configure(assign({
       sceneId,
       windowDirection: this
     }, options));

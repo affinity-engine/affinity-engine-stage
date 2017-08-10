@@ -25,6 +25,6 @@ export default Scene.extend({
 
     yield step();
 
-    script.appender('alpha').configure('footerSecondary', 'omega')._.basic('Chained Header').configure('text', 'baz');
+    script.appender('alpha').link(['foo', 'stage.component.basic'], 'footerSecondary', 'omega')._.basic('Chained Header').configure('text', 'baz');
   })
 });
