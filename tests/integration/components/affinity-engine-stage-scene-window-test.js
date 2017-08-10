@@ -19,10 +19,10 @@ moduleForComponent('affinity-engine-stage-scene-window', 'Integration | Componen
   }
 });
 
-test('it applies `direction.windowClassNames`', function(assert) {
+test('it applies `direction.classNames`', function(assert) {
   assert.expect(1);
 
-  this.set('direction', { configuration: { windowClassNames: ['foo'] } });
+  this.set('direction', { configuration: { classNames: ['foo'] } });
 
   this.render(hbs`{{affinity-engine-stage-scene-window direction=direction engineId="foo" window="bar"}}`);
 

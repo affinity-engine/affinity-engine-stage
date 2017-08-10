@@ -1,5 +1,6 @@
 import Ember from 'ember';
 import layout from '../templates/components/affinity-engine-stage-scene-window';
+import { classNames } from 'affinity-engine';
 import { DirectableComponentMixin } from 'affinity-engine-stage';
 import multiton from 'ember-multiton-service';
 
@@ -27,15 +28,16 @@ export default Component.extend(DirectableComponentMixin, {
 
   configuration: reads('direction.configuration'),
   animationLibrary: reads('configuration.animationLibrary'),
-  windowClassNames: reads('configuration.windowClassNames'),
   priority: reads('configuration.priority'),
   sceneId: reads('configuration.sceneId'),
   window: reads('configuration.window'),
   screen: reads('configuration.screen'),
-  screenClassNames: reads('configuration.screenClassNames'),
   transitionIn: reads('configuration.transitionIn'),
   transitionOut: reads('configuration.transitionOut'),
   windowDirection: reads('configuration.windowDirection'),
+
+  windowClassNames: classNames('configuration.classNames'),
+  screenClassNames: classNames('screen'),
 
   childStyle: computed('priority', {
     get() {

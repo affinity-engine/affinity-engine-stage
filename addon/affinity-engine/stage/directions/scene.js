@@ -24,6 +24,7 @@ export default Direction.extend({
   _configurationTiers: [
     'global',
     'component.stage',
+    'scene',
     'component.stage.direction.scene'
   ],
 

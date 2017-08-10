@@ -20,6 +20,7 @@ export default Direction.extend({
   _configurationTiers: [
     'global',
     'component.stage',
+    'layer',
     'component.stage.direction.layer'
   ],
 
