@@ -9,26 +9,26 @@ export default Scene.extend({
 
     yield step();
 
-    const metaLayer = yield script.layer('engine.meta').transition({ opacity: 0.5 });
+    const metaLayer = yield script.layer('engine.meta').transition({ effect: { opacity: 0.5 } });
 
     yield step();
 
-    metaLayer.transition({ opacity: 0.3 });
+    metaLayer.transition({ effect: { opacity: 0.3 } });
 
     yield step();
 
-    yield metaLayer.transition({ padding: '456px' }).transition({ opacity: 0.4 }).transition({ opacity: 0.5 });
+    yield metaLayer.transition({ effect: { padding: '456px' } }).transition({ effect: { opacity: 0.4 } }).transition({ effect: { opacity: 0.5 } });
 
     yield step();
 
-    script.layer('engine.meta').transition({ padding: '123px' });
+    script.layer('engine.meta').transition({ effect: { padding: '123px' } });
 
     yield step();
 
-    script.layer('engine.meta').transition({ padding: '450px' }).transition({ margin: '789px' }).transition({ margin: '555px' });
+    script.layer('engine.meta').transition({ effect: { padding: '450px' } }).transition({ effect: { margin: '789px' } }).transition({ effect: { margin: '555px' } });
 
     yield step();
 
-    metaLayer.transition({ opacity: 0.3 });
+    metaLayer.transition({ effect: { opacity: 0.3 } });
   })
 });

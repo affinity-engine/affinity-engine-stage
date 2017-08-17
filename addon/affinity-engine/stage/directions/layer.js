@@ -3,8 +3,8 @@ import { Direction, cmd } from 'affinity-engine-stage';
 import multiton from 'ember-multiton-service';
 
 const {
-  get,
-  merge
+  assign,
+  get
 } = Ember;
 
 export default Direction.extend({
@@ -25,15 +25,13 @@ export default Direction.extend({
   ],
 
   _setup: cmd(function(layer, options) {
-    this.configure(merge({
+    this.configure(assign({
       layer,
       transitions: Ember.A()
     }, options));
   }),
 
-  transition: cmd({ async: true, render: true }, function(effect, duration, options = {}) {
-    const transitions = this.getConfiguration('transitions');
-
-    transitions.pushObject(merge({ duration, effect }, options));
+  transition: cmd({ async: true, render: true }, function(options = {}) {
+    this.getConfiguration('transitions').pushObject(options);
   })
 });
