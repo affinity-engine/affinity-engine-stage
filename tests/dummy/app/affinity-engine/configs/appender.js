@@ -3,9 +3,12 @@ export default {
     stage: {
       direction: {
         appender: {
+          footerViaConfigAlias: 'via config',
           link: {
             basic: {
-              footerViaConfig: 'via config'
+              footerViaConfig: {
+                alias: 'footerViaConfigAlias'
+              }
             }
           }
         }
