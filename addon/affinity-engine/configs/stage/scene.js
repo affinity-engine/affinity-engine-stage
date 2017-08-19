@@ -3,6 +3,7 @@ export default {
   component: {
     stage: {
       direction: {
+        layer: 'windows',
         scene: {
           transitionIn: {
             effect: { opacity: [1, 0] },

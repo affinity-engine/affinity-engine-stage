@@ -1,4 +1,4 @@
-{{#affinity-engine-animation-box-wrapper animationAdapter=animationLibrary transitions=transitions didCompleteQueue=(action resolve)}}
+{{#affinity-engine-animation-box-wrapper animator=animator transitions=transitions didCompleteQueue=(action resolve)}}
   {{#each layerDirections as |direction|}}
     {{component direction.componentPath
       direction=direction

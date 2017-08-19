@@ -12,7 +12,6 @@ const {
   set
 } = Ember;
 
-const { String: { htmlSafe } } = Ember;
 const { reads } = computed;
 
 export default Component.extend(DirectableComponentMixin, {
@@ -27,8 +26,7 @@ export default Component.extend(DirectableComponentMixin, {
   esmBus: multiton('message-bus', 'engineId', 'window'),
 
   configuration: reads('direction.configuration'),
-  animationLibrary: reads('configuration.animationLibrary'),
-  priority: reads('configuration.priority'),
+  animator: reads('configuration.animator'),
   sceneId: reads('configuration.sceneId'),
   window: reads('configuration.window'),
   screen: reads('configuration.screen'),
@@ -38,15 +36,6 @@ export default Component.extend(DirectableComponentMixin, {
 
   windowClassNames: classNames('configuration.classNames'),
   screenClassNames: classNames('screen'),
-
-  childStyle: computed('priority', {
-    get() {
-      const priorityMultiplier = 1000;
-      const priority = get(this, 'priority') * priorityMultiplier;
-
-      return htmlSafe(`z-index: ${priority};`);
-    }
-  }).readOnly(),
 
   init(...args) {
     this._super(...args);

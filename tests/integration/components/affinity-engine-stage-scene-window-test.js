@@ -29,14 +29,14 @@ test('it applies `direction.classNames`', function(assert) {
   assert.ok($hook('affinity_engine_stage_scene_window_main').hasClass('foo'), 'has class');
 });
 
-test('it applies a z-index based on `direction.priority``', function(assert) {
+test('it applies a z-index based on `direction.zIndex``', function(assert) {
   assert.expect(1);
 
-  this.set('direction', { configuration: { priority: 5 } });
+  this.set('direction', { configuration: { zIndex: 5 } });
 
   this.render(hbs`{{affinity-engine-stage-scene-window direction=direction engineId="foo" window="bar"}}`);
 
-  assert.equal($hook('affinity_engine_stage_scene_window_main').attr('style'), 'z-index: 5000;', 'style is correct');
+  assert.equal($hook('affinity_engine_stage_scene_window').attr('style'), 'z-index:5;', 'style is correct');
 });
 
 test('it applies the screen based on `direction.screen`', function(assert) {
@@ -47,16 +47,6 @@ test('it applies the screen based on `direction.screen`', function(assert) {
   this.render(hbs`{{affinity-engine-stage-scene-window direction=direction engineId="foo" window="bar"}}`);
 
   assert.ok($hook('affinity_engine_stage_scene_window_screen').length > 0, 'screen is visible');
-});
-
-test('it gives the screen a priority based on `direction.priority`', function(assert) {
-  assert.expect(1);
-
-  this.set('direction', { configuration: { screen: true, priority: 5 } });
-
-  this.render(hbs`{{affinity-engine-stage-scene-window direction=direction engineId="foo" window="bar"}}`);
-
-  assert.ok($hook('affinity_engine_stage_scene_window_screen').attr('style'), 'z-index: 5000;', 'style is correct');
 });
 
 test('it renders a child stage', function(assert) {

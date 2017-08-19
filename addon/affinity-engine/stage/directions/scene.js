@@ -14,7 +14,6 @@ const { reads } = computed;
 
 export default Direction.extend({
   componentPath: 'affinity-engine-stage-scene-window',
-  layer: 'windows',
 
   esBus: multiton('message-bus', 'engineId', 'stageId'),
   esmBus: multiton('message-bus', 'engineId', 'window'),

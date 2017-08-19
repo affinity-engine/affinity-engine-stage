@@ -44,9 +44,9 @@ export default Component.extend(DirectableComponentMixin, {
     }
   }),
 
-  animationLibrary: computed('direction.animationLibrary', {
+  animator: computed('direction.animator', {
     get() {
-      return get(this, 'direction.animationLibrary') || '';
+      return get(this, 'direction.animator') || '';
     }
   }),
 

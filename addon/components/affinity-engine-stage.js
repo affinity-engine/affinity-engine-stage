@@ -32,7 +32,7 @@ export default Component.extend({
   esBus: multiton('message-bus', 'engineId', 'stageId'),
   dataManager: registrant('affinity-engine/data-manager'),
 
-  animationLibrary: configurable(configurationTiers, 'animationLibrary'),
+  animator: configurable(configurationTiers, 'animator'),
   transitionIn: deepConfigurable(configurationTiers, 'transitionIn'),
   transitionOut: deepConfigurable(configurationTiers, 'transitionOut'),
 

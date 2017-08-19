@@ -9,7 +9,7 @@ export default Scene.extend({
 
     yield step();
 
-    script.scene('test-scenarios/stage/directions/scene/3', { window: 'simple-window', priority: 2, classNames: 'ae-center' });
-    script.scene('test-scenarios/stage/directions/scene/4', { window: 'window-with-screen', priority: 1, classNames: 'ae-center', screen: 'foo' });
+    script.scene('test-scenarios/stage/directions/scene/3', { window: 'simple-window', zIndex: 5000, classNames: 'ae-center' });
+    script.scene('test-scenarios/stage/directions/scene/4', { window: 'window-with-screen', zIndex: 5000, classNames: 'ae-center', screen: 'foo' });
   })
 });

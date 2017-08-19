@@ -15,6 +15,7 @@ const {
 } = Ember;
 
 const { RSVP: { Promise } } = Ember;
+const { reads } = computed;
 
 export default Ember.Object.extend(Evented, {
   _isDirection: true,
@@ -22,8 +23,12 @@ export default Ember.Object.extend(Evented, {
   engineConfig: multiton('affinity-engine/config', 'engineId'),
   esBus: multiton('message-bus', 'engineId', 'stageId'),
 
+  layer: reads('configuration.layer'),
+
   configuration: computed(() => Ember.Object.create({
-    link: {}
+    link: {},
+    layer: 'stage',
+    zIndex: 0
   })),
   _configurationTiers: computed(() => []),
 
