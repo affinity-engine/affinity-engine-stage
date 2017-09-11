@@ -1,20 +1,12 @@
-{{#affinity-engine-animation-box-wrapper
-  animator=animator
-  transitionIn=transitionIn
-  transitionOut=transitionOut
-  willTransitionOut=willTransitionOut
-  didTransitionOut=(action "didTransitionOut")
-}}
-  {{#if screen}}
-    <div class="ae-stage-scene-window-screen {{screenClassNames}}" data-test={{hook "affinity_engine_stage_scene_window_screen"}}></div>
-  {{/if}}
+{{#if screen}}
+  <div class="ae-stage-scene-window-screen {{screenClassNames}}" data-test={{hook "affinity_engine_stage_scene_window_screen"}}></div>
+{{/if}}
 
-  <div class="ae-stage-scene-window-main {{windowClassNames}}" data-test={{hook "affinity_engine_stage_scene_window_main"}}>
-    {{affinity-engine-stage
-      initialScene=sceneId
-      engineId=engineId
-      stageId=window
-      windowDirection=windowDirection
-    }}
-  </div>
-{{/affinity-engine-animation-box-wrapper}}
+<div class="ae-stage-scene-window-main {{windowClassNames}}" data-test={{hook "affinity_engine_stage_scene_window_main"}}>
+  {{affinity-engine-stage
+    initialScene=sceneId
+    engineId=engineId
+    stageId=window
+    windowDirection=windowDirection
+  }}
+</div>

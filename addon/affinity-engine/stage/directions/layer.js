@@ -4,7 +4,8 @@ import multiton from 'ember-multiton-service';
 
 const {
   assign,
-  get
+  get,
+  set
 } = Ember;
 
 export default Direction.extend({
@@ -18,17 +19,30 @@ export default Direction.extend({
   },
 
   _configurationTiers: [
-    'global',
-    'component.stage',
+    'component.stage.direction.layer',
     'layer',
-    'component.stage.direction.layer'
+    'component.stage.direction.every',
+    'component.stage.every',
+    'children'
   ],
 
   _setup: cmd(function(layer, options) {
+    const activeLayers = get(this, 'script._activeLayers') || set(this, 'script._activeLayers', {});
+    const activeLayer = get(activeLayers, `${layer}._instance`);
+    if (activeLayer) {
+      if (options) activeLayer.configure(options);
+
+      return activeLayer;
+    }
+
     this.configure(assign({
       layer,
       transitions: Ember.A()
     }, options));
+
+    layer.split('.').reduce((previousLayer, pathName) => {
+      return get(previousLayer, pathName) || set(previousLayer, pathName, {});
+    }, activeLayers)._instance = this;
   }),
 
   transition: cmd({ async: true, render: true }, function(options = {}) {

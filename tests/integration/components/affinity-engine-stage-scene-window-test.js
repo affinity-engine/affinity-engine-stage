@@ -22,7 +22,7 @@ moduleForComponent('affinity-engine-stage-scene-window', 'Integration | Componen
 test('it applies `direction.classNames`', function(assert) {
   assert.expect(1);
 
-  this.set('direction', { configuration: { classNames: ['foo'] } });
+  this.set('direction', { configuration: { attrs: { classNames: ['foo'] } } });
 
   this.render(hbs`{{affinity-engine-stage-scene-window direction=direction engineId="foo" window="bar"}}`);
 
@@ -32,7 +32,7 @@ test('it applies `direction.classNames`', function(assert) {
 test('it applies a z-index based on `direction.zIndex``', function(assert) {
   assert.expect(1);
 
-  this.set('direction', { configuration: { zIndex: 5 } });
+  this.set('direction', { configuration: { attrs: { zIndex: 5 } } });
 
   this.render(hbs`{{affinity-engine-stage-scene-window direction=direction engineId="foo" window="bar"}}`);
 
@@ -42,7 +42,7 @@ test('it applies a z-index based on `direction.zIndex``', function(assert) {
 test('it applies the screen based on `direction.screen`', function(assert) {
   assert.expect(1);
 
-  this.set('direction', { configuration: { screen: true } });
+  this.set('direction', { configuration: { attrs: { screen: true } } });
 
   this.render(hbs`{{affinity-engine-stage-scene-window direction=direction engineId="foo" window="bar"}}`);
 

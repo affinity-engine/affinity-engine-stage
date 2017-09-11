@@ -14,11 +14,12 @@ export default Component.extend(DirectableComponentMixin, {
 
   classNames: ['basic-direction'],
 
-  header: alias('direction.configuration.header'),
-  text: alias('direction.configuration.text'),
-  footerSecondary: alias('direction.configuration.footerSecondary'),
-  footerViaConfig: alias('direction.configuration.footerViaConfig'),
-  footerText: alias('direction.configuration.footerText'),
+  configuration: alias('direction.configuration.attrs'),
+  header: alias('configuration.header'),
+  text: alias('configuration.text'),
+  footerSecondary: alias('configuration.footerSecondary'),
+  footerViaConfig: alias('configuration.footerViaConfig'),
+  footerText: alias('configuration.footerText'),
 
   init(...args) {
     this._super(...args);

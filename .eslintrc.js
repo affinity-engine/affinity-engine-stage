@@ -1,9 +1,5 @@
 module.exports = {
   root: true,
-  globals: {
-    'Proxy': true,
-    'Reflect': true
-  },
   parserOptions: {
     ecmaVersion: 2017,
     sourceType: 'module'
@@ -13,5 +9,8 @@ module.exports = {
     browser: true
   },
   rules: {
+  },
+  globals: {
+    Reflect: true
   }
 };

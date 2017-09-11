@@ -3,4 +3,4 @@
 
 # affinity-engine-stage
 
-You'll find the interactive guides [here](http://www.affinityengine.org/#/components/stage).
+You'll find the interactive guides [here](http://www.affinityengine.org/#/api/stage).

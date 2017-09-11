@@ -18,13 +18,14 @@ export default Direction.extend({
   esBus: multiton('message-bus', 'engineId', 'stageId'),
   esmBus: multiton('message-bus', 'engineId', 'window'),
 
-  window: reads('configuration.window'),
+  window: reads('configuration.attrs.window'),
 
   _configurationTiers: [
-    'global',
-    'component.stage',
+    'component.stage.direction.scene',
     'scene',
-    'component.stage.direction.scene'
+    'component.stage.direction.every',
+    'component.stage.every',
+    'children'
   ],
 
   _setup: cmd(function(sceneId, options) {

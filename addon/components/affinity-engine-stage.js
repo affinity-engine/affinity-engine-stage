@@ -13,10 +13,11 @@ const {
 } = Ember;
 
 const configurationTiers = [
-  'sceneOptions',
-  'config.attrs.component.stage.scene',
-  'config.attrs.component.stage',
-  'config.attrs.global'
+  'component.stage.direction.scene',
+  'scene',
+  'component.stage.direction.every',
+  'component.stage.every',
+  'children'
 ];
 
 export default Component.extend({
@@ -106,12 +107,12 @@ export default Component.extend({
     });
   },
 
-  _changeScene(sceneId, sceneOptions) {
-    this._startScene(sceneId, sceneOptions);
+  _changeScene(sceneId, configuration) {
+    this._startScene(sceneId, configuration);
   },
 
-  _startScene(sceneId, sceneOptions) {
-    set(sceneOptions, 'sceneId', sceneId);
+  _startScene(sceneId, configuration) {
+    set(configuration, 'sceneId', sceneId);
 
     const { transitionIn, transitionOut } = getProperties(this, 'transitionIn', 'transitionOut');
 
@@ -120,7 +121,7 @@ export default Component.extend({
         in: transitionIn,
         out: transitionOut,
         cb: () => {
-          set(this, 'sceneOptions', sceneOptions);
+          set(this, 'configuration', configuration);
         }
       }
     });

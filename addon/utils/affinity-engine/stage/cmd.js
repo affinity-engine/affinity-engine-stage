@@ -14,12 +14,12 @@ export default function cmd(optionsOrCb, onlyCb) {
       this.ensurePromise();
     }
 
-    cb.apply(this, args);
+    const returnValue = cb.apply(this, args);
 
     if (get(options, 'render')) {
       this.render()
     }
 
-    return this;
+    return returnValue || this;
   };
 }

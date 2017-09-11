@@ -1,6 +1,6 @@
 import Ember from 'ember';
 import layout from '../templates/components/affinity-engine-stage-scene-window';
-import { classNames } from 'affinity-engine';
+import { AnimatableMixin, classNames } from 'affinity-engine';
 import { DirectableComponentMixin } from 'affinity-engine-stage';
 import multiton from 'ember-multiton-service';
 
@@ -14,7 +14,7 @@ const {
 
 const { reads } = computed;
 
-export default Component.extend(DirectableComponentMixin, {
+export default Component.extend(AnimatableMixin, DirectableComponentMixin, {
   layout,
 
   direction: computed(() => Ember.Object.create()),
@@ -25,7 +25,7 @@ export default Component.extend(DirectableComponentMixin, {
 
   esmBus: multiton('message-bus', 'engineId', 'window'),
 
-  configuration: reads('direction.configuration'),
+  configuration: reads('direction.configuration.attrs'),
   animator: reads('configuration.animator'),
   sceneId: reads('configuration.sceneId'),
   window: reads('configuration.window'),
@@ -52,9 +52,7 @@ export default Component.extend(DirectableComponentMixin, {
     });
   },
 
-  actions: {
-    didTransitionOut() {
-      this.removeDirection();
-    }
+  didTransitionOut() {
+    this.removeDirection();
   }
 });

@@ -1,21 +1,19 @@
-{{#affinity-engine-animation-box-wrapper animator=animator transitions=transitions didCompleteQueue=(action resolve)}}
-  {{#each layerDirections as |direction|}}
-    {{component direction.componentPath
-      direction=direction
-      isFocused=isFocused
-      engineId=engineId
-      stageId=stageId
-    }}
-  {{/each}}
+{{#each layerDirections as |direction|}}
+  {{component direction.componentPath
+    direction=direction
+    isFocused=isFocused
+    engineId=engineId
+    stageId=stageId
+  }}
+{{/each}}
 
-  {{#each-in childLayers as |name directions|}}
-    {{affinity-engine-stage-layer
-      directions=directions
-      layerDirectionsMap=layerDirectionsMap
-      isFocused=isFocused
-      name=name
-      engineId=engineId
-      stageId=stageId
-    }}
-  {{/each-in}}
-{{/affinity-engine-animation-box-wrapper}}
+{{#each-in childLayers as |name directions|}}
+  {{affinity-engine-stage-layer
+    directions=directions
+    layerDirectionsMap=layerDirectionsMap
+    isFocused=isFocused
+    name=name
+    engineId=engineId
+    stageId=stageId
+  }}
+{{/each-in}}

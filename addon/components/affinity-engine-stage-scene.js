@@ -42,10 +42,10 @@ export default Component.extend(ManagedFocusMixin, {
   didReceiveAttrs(...args) {
     this._super(...args);
 
-    if (get(this, '_oldSceneOptions') !== get(this, 'sceneOptions')) {
+    if (get(this, '_oldSceneOptions') !== get(this, 'configuration')) {
       this._clearDirections();
       this._startScene();
-      set(this, '_oldSceneOptions', get(this, 'sceneOptions'));
+      set(this, '_oldSceneOptions', get(this, 'configuration'));
     }
   },
 
@@ -69,8 +69,8 @@ export default Component.extend(ManagedFocusMixin, {
   },
 
   _startScene() {
-    const sceneOptions = get(this, 'sceneOptions');
-    const sceneId = get(sceneOptions, 'sceneId');
+    const configuration = get(this, 'configuration');
+    const sceneId = get(configuration, 'sceneId');
 
     setProperties(this, {
       currentSceneId: sceneId
@@ -83,7 +83,7 @@ export default Component.extend(ManagedFocusMixin, {
 
     this._updateAutosave(sceneId, _sceneName);
 
-    start.perform(script, get(this, 'dataManager.data'), get(sceneOptions, 'windowDirection'));
+    start.perform(script, get(this, 'dataManager.data'), get(configuration, 'windowDirection'));
   },
 
   _buildScript() {
@@ -108,7 +108,7 @@ export default Component.extend(ManagedFocusMixin, {
   },
 
   _updateAutosave(sceneId, sceneName) {
-    if (get(this, 'sceneOptions.autosave') === false) { return; }
+    if (get(this, 'configuration.autosave') === false) { return; }
 
     const eBus = get(this, 'eBus');
     const data = get(this, 'dataManager.data');

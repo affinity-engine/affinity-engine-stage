@@ -30,7 +30,7 @@ export default Mixin.create({
   },
 
   observedStyles: computed(() => []),
-  zIndex: reads('direction.configuration.zIndex'),
+  zIndex: reads('direction.configuration.attrs.zIndex'),
 
   _initObservedStyles() {
     const observedStyles = get(this, 'observedStyles');

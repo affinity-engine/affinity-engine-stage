@@ -3,15 +3,26 @@ export default {
   component: {
     stage: {
       direction: {
-        layer: 'windows',
         scene: {
-          transitionIn: {
-            effect: { opacity: [1, 0] },
-            duration: 250
-          },
-          transitionOut: {
-            effect: { opacity: 0 },
-            duration: 250
+          attrs: {
+            layer: 'stage.windows',
+            transitionIn: {
+              effect: { opacity: [1, 0] },
+              duration: 250
+            },
+            transitionOut: {
+              effect: { opacity: 0 },
+              duration: 250
+            }
+          }
+        }
+      },
+      layer: {
+        stage: {
+          windows: {
+            attrs: {
+              zIndex: 1000
+            }
           }
         }
       }

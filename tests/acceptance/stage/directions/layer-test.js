@@ -30,42 +30,42 @@ test('Affinity Engine | stage | Directions | Layer', function(assert) {
   step(25);
 
   andThen(() => {
-    assert.equal(parseFloat(Ember.$(`.ae-stage-layer-engine ${hook('ember_animation_box')}`).css('opacity')).toFixed(1), 1, 'parent layer did not transition');
-    assert.equal(parseFloat(Ember.$(`.ae-stage-layer-engine-meta ${hook('ember_animation_box')}`).css('opacity')).toFixed(1), 0.5, 'layer transitioned');
-    assert.equal(parseFloat(Ember.$(`.ae-stage-layer-engine-meta-basic ${hook('ember_animation_box')}`).css('opacity')).toFixed(1), 1, 'child layer did not transition');
+    assert.equal(parseFloat(Ember.$('.ae-stage-layer-engine').css('opacity')).toFixed(1), 1, 'parent layer did not transition');
+    assert.equal(parseFloat(Ember.$('.ae-stage-layer-engine-meta').css('opacity')).toFixed(1), 0.5, 'layer transitioned');
+    assert.equal(parseFloat(Ember.$('.ae-stage-layer-engine-meta-basic').css('opacity')).toFixed(1), 1, 'child layer did not transition');
   });
 
   step(25);
 
   andThen(() => {
-    assert.equal(parseFloat(Ember.$(`.ae-stage-layer-engine-meta ${hook('ember_animation_box')}`).css('opacity')).toFixed(1), 0.3, 'instantiated layer can transition');
+    assert.equal(parseFloat(Ember.$('.ae-stage-layer-engine-meta').css('opacity')).toFixed(1), 0.3, 'instantiated layer can transition');
   });
 
   step(25);
 
   andThen(() => {
-    assert.equal(Ember.$(`.ae-stage-layer-engine-meta ${hook('ember_animation_box')}`).css('padding'), '456px', 'instantiated layer can change multiple attribute');
-    assert.equal(parseFloat(Ember.$(`.ae-stage-layer-engine-meta ${hook('ember_animation_box')}`).css('opacity')).toFixed(1), 0.5, 'instantiated layer can transition a full queue');
+    assert.equal(Ember.$('.ae-stage-layer-engine-meta').css('padding'), '456px', 'instantiated layer can change multiple attribute');
+    assert.equal(parseFloat(Ember.$('.ae-stage-layer-engine-meta').css('opacity')).toFixed(1), 0.5, 'instantiated layer can transition a full queue');
   });
 
   step(75);
 
   andThen(() => {
-    assert.equal(parseFloat(Ember.$(`.ae-stage-layer-engine-meta ${hook('ember_animation_box')}`).css('opacity')).toFixed(1), 0.5, 'layer keeps old transition');
-    assert.equal(Ember.$(`.ae-stage-layer-engine-meta ${hook('ember_animation_box')}`).css('padding'), '123px', 'layer adds new transition');
+    assert.equal(parseFloat(Ember.$('.ae-stage-layer-engine-meta').css('opacity')).toFixed(1), 0.5, 'layer keeps old transition');
+    assert.equal(Ember.$('.ae-stage-layer-engine-meta').css('padding'), '123px', 'layer adds new transition');
   });
 
   step(75);
 
   andThen(() => {
-    assert.equal(Ember.$(`.ae-stage-layer-engine-meta ${hook('ember_animation_box')}`).css('padding'), '450px', 'layer can rechange attribute');
-    assert.equal(Ember.$(`.ae-stage-layer-engine-meta ${hook('ember_animation_box')}`).css('margin'), '555px', 'layer can undergo full transition queues');
+    assert.equal(Ember.$('.ae-stage-layer-engine-meta').css('padding'), '450px', 'layer can rechange attribute');
+    assert.equal(Ember.$('.ae-stage-layer-engine-meta').css('margin'), '555px', 'layer can undergo full transition queues');
 
   });
 
   step(75);
 
   andThen(() => {
-    assert.equal(parseFloat(Ember.$(`.ae-stage-layer-engine-meta ${hook('ember_animation_box')}`).css('opacity')).toFixed(1), 0.3, 'instantiated layer can transition after non-instantiated');
+    assert.equal(parseFloat(Ember.$('.ae-stage-layer-engine-meta').css('opacity')).toFixed(1), 0.3, 'instantiated layer can transition after non-instantiated');
   });
 });

@@ -4,6 +4,7 @@ import multiton from 'ember-multiton-service';
 
 const {
   Evented,
+  assign,
   computed,
   get,
   getOwner,
@@ -23,13 +24,16 @@ export default Ember.Object.extend(Evented, {
   engineConfig: multiton('affinity-engine/config', 'engineId'),
   esBus: multiton('message-bus', 'engineId', 'stageId'),
 
-  layer: reads('configuration.layer'),
+  layer: reads('configuration.attrs.layer'),
 
   configuration: computed(() => Ember.Object.create({
-    link: {},
-    layer: 'stage',
-    zIndex: 0
+    links: {},
+    attrs: {
+      layer: 'stage',
+      zIndex: 0
+    }
   })),
+  linkedDirections: computed(() => Ember.Object.create()),
   _configurationTiers: computed(() => []),
 
   init(...args) {
@@ -46,14 +50,14 @@ export default Ember.Object.extend(Evented, {
     this._applyConfigSource(get(this, 'engineConfig.attrs'));
   },
 
-  _applyLinkedConfig(link) {
-    this._applyConfigSource(link);
-    set(this, 'configuration.link', link);
+  _applyLinkedConfig(links) {
+    this._applyConfigSource(links);
+    deepMerge(get(this, 'configuration.links'), links);
   },
 
   _applyConfigSource(source) {
     const configuration = get(this, 'configuration');
-    const tiers = get(this, '_configurationTiers');
+    const tiers = get(this, '_configurationTiers').reverse();
 
     tiers.forEach((tier) => {
       deepMerge(configuration, nativeCopy(get(source, tier) || {}));
@@ -61,14 +65,14 @@ export default Ember.Object.extend(Evented, {
   },
 
   applyFixture(fixture) {
-    this._applyConfigSource(fixture);
+    deepMerge(get(this, 'configuration'), nativeCopy(fixture || {}));
   },
 
   configure(key, value) {
     if (typeof key === 'object') {
-      setProperties(get(this, 'configuration'), key);
+      setProperties(get(this, 'configuration.attrs'), key);
     } else {
-      set(get(this, 'configuration'), key, value);
+      set(get(this, 'configuration.attrs'), key, value);
     }
 
     return this;
@@ -78,19 +82,20 @@ export default Ember.Object.extend(Evented, {
     if (!Array.isArray(types)) types = [types];
 
     types.forEach((type) => {
-      const link = get(this, 'configuration.link');
+      const links = get(this, 'configuration.links');
 
       if (typeof type === 'object') {
-        setProperties(link, type);
+        deepMerge(links, type);
       } else {
         const linkType = type.split('.').reduce((target, path) => {
-          return get(target, path) || set(target, path, {});
-        }, link);
+          return get(target, path) || set(target, path, { });
+        }, links);
+        const attrs = get(linkType, 'attrs') || set(linkType, 'attrs', {});
 
         if (typeof key === 'object') {
-          setProperties(linkType, key);
+          setProperties(attrs, key);
         } else {
-          set(linkType, key, value);
+          set(attrs, key, value);
         }
       }
     });
@@ -100,11 +105,11 @@ export default Ember.Object.extend(Evented, {
 
   getConfiguration(...keys) {
     if (keys.length === 1) {
-      return get(this, `configuration.${keys[0]}`);
+      return get(this, `configuration.attrs.${keys[0]}`);
     } else if (keys.length === 0) {
-      return get(this, 'configuration');
+      return get(this, 'configuration.attrs');
     } else {
-      return getProperties(get(this, 'configuration'), ...keys);
+      return getProperties(get(this, 'configuration.attrs'), ...keys);
     }
   },
 
@@ -143,13 +148,17 @@ export default Ember.Object.extend(Evented, {
 
   _scriptProxy: computed({
     get() {
-      const { configuration, script, engineId, stageId } = getProperties(this, 'configuration', 'script', 'engineId', 'stageId');
+      const { configuration, linkedDirections, script, engineId, stageId } = getProperties(this, 'configuration', 'linkedDirections', 'script', 'engineId', 'stageId');
+      const linkToThisDirection = {};
+
+      linkToThisDirection[get(this, 'directionName')] = this;
 
       return getOwner(this).factoryFor('affinity-engine/stage:script-proxy').create({
         configuration,
         script,
         engineId,
-        stageId
+        stageId,
+        linkedDirections: assign({}, linkedDirections, linkToThisDirection)
       });
     }
   }).readOnly(),

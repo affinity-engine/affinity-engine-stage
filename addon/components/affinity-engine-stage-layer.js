@@ -1,9 +1,12 @@
 import Ember from 'ember';
 import layout from '../templates/components/affinity-engine-stage-layer';
+import { AnimatableMixin } from 'affinity-engine';
 import { DirectableComponentMixin, layerName } from 'affinity-engine-stage';
+import multiton from 'ember-multiton-service';
 
 const {
   Component,
+  assign,
   computed,
   get,
   getProperties,
@@ -12,7 +15,7 @@ const {
 
 const { reads } = computed;
 
-export default Component.extend(DirectableComponentMixin, {
+export default Component.extend(AnimatableMixin, DirectableComponentMixin, {
   layout,
 
   hook: 'affinity_engine_stage_layer',
@@ -20,12 +23,33 @@ export default Component.extend(DirectableComponentMixin, {
   classNames: ['ae-stage-layer'],
   classNameBindings: ['layerName'],
 
+  config: multiton('affinity-engine/config', 'engineId'),
+
   directions: computed(() => Ember.A()),
   name: '',
 
-  configuration: reads('direction.configuration'),
   direction: reads('directionObserver.value'),
+  directionConfiguration: reads('direction.configuration.attrs'),
   transitions: reads('configuration.transitions'),
+  animator: reads('configuration.animator'),
+  zIndex: reads('configuration.zIndex'),
+
+  _baseConfiguration: computed('config', 'name', {
+    get() {
+      const name = get(this, 'name');
+
+      return name ? get(this, `config.attrs.component.stage.layer.${name}.attrs`) || {} : {};
+    }
+  }),
+
+  configuration: computed('directionConfiguration', '_baseConfiguration', {
+    get() {
+      const baseConfiguration = get(this, '_baseConfiguration');
+      const directionConfiguration =  get(this, 'directionConfiguration') || {};
+
+      return assign({}, baseConfiguration, directionConfiguration);
+    }
+  }),
 
   directionObserver: computed('layerDirectionsMap', 'name', {
     get() {
@@ -41,12 +65,6 @@ export default Component.extend(DirectableComponentMixin, {
           }
         })
       }).create({ layerDirectionsMap });
-    }
-  }),
-
-  animator: computed('direction.animator', {
-    get() {
-      return get(this, 'direction.animator') || '';
     }
   }),
 
@@ -93,5 +111,9 @@ export default Component.extend(DirectableComponentMixin, {
         return layers;
       }, {});
     }
-  }).readOnly()
+  }).readOnly(),
+
+  didCompleteQueue() {
+    this.resolve();
+  }
 });

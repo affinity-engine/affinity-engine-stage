@@ -14,7 +14,7 @@ moduleForAcceptance('Acceptance | affinity-engine/stage/directions/scene', {
 });
 
 test('Affinity Engine | stage | Directions | Scene', function(assert) {
-  assert.expect(15);
+  assert.expect(16);
 
   visit('/affinity-engine/test-scenarios/stage/directions/scene').then(() => {
     assert.equal($hook('basic_direction_header').text().trim(), 'Scene One', 'starts on scene 1');
@@ -33,6 +33,7 @@ test('Affinity Engine | stage | Directions | Scene', function(assert) {
     assert.equal($hook('basic_direction_header').eq(0).text().trim(), 'Scene Two', 'main scene is unchanged');
     assert.equal($hook('basic_direction_header').eq(1).text().trim(), 'Scene Three', 'first child scene is present');
     assert.equal($hook('basic_direction_header').eq(2).text().trim(), 'Scene Four', 'second child scene is present');
+    assert.equal(Ember.$('.ae-stage-layer-stage-windows').attr('style'), 'z-index:1000;', 'window layer has correct configuration');
 
     assert.equal(
       Ember.$(`${hook('affinity_engine_stage_scene_window')}[data-scene-window-id="simple-window"]`).

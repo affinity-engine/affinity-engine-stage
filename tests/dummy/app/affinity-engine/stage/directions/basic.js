@@ -7,13 +7,12 @@ const {
 
 export default Direction.extend({
   componentPath: 'basic-direction',
-  layer: 'engine.meta.basic',
 
   _configurationTiers: [
-    'global',
-    'stage',
+    'children',
+    'component.stage.all',
     'basic',
-    'stage.component.basic'
+    'component.stage.direction.basic'
   ],
 
   _setup: cmd({ render: true, async: true }, function(header, options) {
