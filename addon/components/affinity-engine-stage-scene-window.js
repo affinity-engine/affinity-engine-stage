@@ -20,6 +20,7 @@ export default Component.extend(AnimatableMixin, DirectableComponentMixin, {
   direction: computed(() => Ember.Object.create()),
 
   hook: 'affinity_engine_stage_scene_window',
+  mediaElementSelector: '.ae-stage',
   attributeBindings: ['window:data-scene-window-id'],
   classNames: ['ae-stage-scene-window'],
 

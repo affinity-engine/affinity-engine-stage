@@ -19,6 +19,7 @@ export default Component.extend(AnimatableMixin, DirectableComponentMixin, {
   layout,
 
   hook: 'affinity_engine_stage_layer',
+  mediaElementSelector: '.ae-stage',
 
   classNames: ['ae-stage-layer'],
   classNameBindings: ['layerName'],
