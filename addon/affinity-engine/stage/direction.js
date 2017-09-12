@@ -57,7 +57,7 @@ export default Ember.Object.extend(Evented, {
 
   _applyConfigSource(source) {
     const configuration = get(this, 'configuration');
-    const tiers = get(this, '_configurationTiers').reverse();
+    const tiers = get(this, '_configurationTiers').slice(0).reverse();
 
     tiers.forEach((tier) => {
       deepMerge(configuration, nativeCopy(get(source, tier) || {}));
