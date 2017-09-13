@@ -47,6 +47,7 @@ export default Ember.Object.extend(Evented, {
   },
 
   _applyEngineConfig() {
+    this._applyConfigSource(get(this, 'engineConfig.attrs.default'));
     this._applyConfigSource(get(this, 'engineConfig.attrs'));
   },
 
