@@ -23,9 +23,9 @@ export default Direction.extend({
   _configurationTiers: [
     'component.stage.direction.scene',
     'scene',
-    'component.stage.direction.every',
-    'component.stage.every',
-    'children'
+    'component.stage.direction.all',
+    'component.stage.all',
+    'all'
   ],
 
   _setup: cmd(function(sceneId, options) {

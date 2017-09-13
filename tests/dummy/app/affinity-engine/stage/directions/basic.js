@@ -9,7 +9,7 @@ export default Direction.extend({
   componentPath: 'basic-direction',
 
   _configurationTiers: [
-    'children',
+    'all',
     'component.stage.all',
     'basic',
     'component.stage.direction.basic'

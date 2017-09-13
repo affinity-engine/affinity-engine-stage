@@ -15,9 +15,9 @@ const {
 const configurationTiers = [
   'component.stage.direction.scene',
   'scene',
-  'component.stage.direction.every',
-  'component.stage.every',
-  'children'
+  'component.stage.direction.all',
+  'component.stage.all',
+  'all'
 ];
 
 export default Component.extend({
