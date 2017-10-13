@@ -6,3 +6,8 @@
 
   perspective: $ae-stage-perspective;
 }
+
+// ensure animation box instances are always full width
+.ae-stage > div > div {
+  width: 100%;
+}
