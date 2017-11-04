@@ -83,7 +83,7 @@ export default Component.extend(ManagedFocusMixin, {
 
     this._updateAutosave(sceneId, _sceneName);
 
-    start.perform(script, get(this, 'dataManager.data'), get(configuration, 'windowDirection'));
+    start.perform(script, get(this, 'dataManager.data'), { window: get(configuration, 'windowDirection') });
   },
 
   _buildScript() {

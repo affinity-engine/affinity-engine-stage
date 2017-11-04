@@ -39,7 +39,7 @@ export default Component.extend(AnimatableMixin, DirectableComponentMixin, {
     get() {
       const name = get(this, 'name');
 
-      return name ? get(this, `config.attrs.component.stage.layer.${name}.attrs`) || {} : {};
+      return name ? get(this, `config.attrs.component.stage.layer.${name}.attrs`) || get(this, `config.attrs.default.component.stage.layer.${name}.attrs`) || {} : {};
     }
   }),
 
