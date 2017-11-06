@@ -12,7 +12,8 @@ const {
   isNone,
   isPresent,
   set,
-  setProperties
+  setProperties,
+  typeOf
 } = Ember;
 
 const { RSVP: { Promise } } = Ember;
@@ -34,6 +35,8 @@ export default Ember.Object.extend(Evented, {
     }
   })),
   linkedDirections: computed(() => Ember.Object.create()),
+  deepMergedAttributes: computed(() => []),
+  _deepMergedAttributes: ['classNames'],
   _configurationTiers: computed(() => []),
 
   init(...args) {
@@ -70,9 +73,21 @@ export default Ember.Object.extend(Evented, {
   },
 
   configure(key, value) {
+    const deepMergedAttributes = get(this, '_allDeepMergedAttributes');
+
     if (typeof key === 'object') {
+      deepMergedAttributes.forEach((attr) => {
+        const defaultValue = get(this, `configuration.attrs.${attr}`);
+        if (typeOf(get(key, attr)) === 'object' && typeOf(defaultValue) === 'object') {
+          set(key, attr, deepMerge(defaultValue, get(key, attr)));
+        }
+      });
       setProperties(get(this, 'configuration.attrs'), key);
     } else {
+      const defaultValue = get(this, `configuration.attrs.${key}`);
+      if (deepMergedAttributes.includes(key) && typeOf(value) === 'object' && typeOf(defaultValue) === 'object') {
+        value = deepMerge(defaultValue, value);
+      }
       set(get(this, 'configuration.attrs'), key, value);
     }
 
@@ -146,6 +161,12 @@ export default Ember.Object.extend(Evented, {
       };
     }
   },
+
+  _allDeepMergedAttributes: computed('deepMergedAttributes.[]', {
+    get() {
+      return get(this, 'deepMergedAttributes').concat(get(this, '_deepMergedAttributes'));
+    }
+  }),
 
   _scriptProxy: computed({
     get() {
