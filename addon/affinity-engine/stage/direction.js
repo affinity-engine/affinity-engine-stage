@@ -36,7 +36,7 @@ export default Ember.Object.extend(Evented, {
   })),
   linkedDirections: computed(() => Ember.Object.create()),
   deepMergedAttributes: computed(() => []),
-  _deepMergedAttributes: ['classNames'],
+  _deepMergedAttributes: ['classNames', 'keys', 'menu'],
   _configurationTiers: computed(() => []),
 
   init(...args) {

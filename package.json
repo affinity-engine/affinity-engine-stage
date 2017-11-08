@@ -1,6 +1,6 @@
 {
   "name": "affinity-engine-stage",
-  "version": "0.2.8",
+  "version": "0.2.9",
   "description": "Where the magic happens",
   "keywords": [
     "ember-addon",
