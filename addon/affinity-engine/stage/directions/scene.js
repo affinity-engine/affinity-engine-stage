@@ -28,7 +28,7 @@ export default Direction.extend({
     'all'
   ],
 
-  _setup: cmd(function(sceneId, options = {}) {
+  _setup: cmd({ async: true }, function(sceneId, options = {}) {
     this.configure(assign({
       sceneId,
       windowDirection: this
@@ -46,10 +46,12 @@ export default Direction.extend({
 
     if ((isBlank(window) || window === stageId) && isPresent(sceneId)) {
       get(this, 'esBus').publish('shouldChangeScene', sceneId, this.getConfiguration());
+      this.resolve();
     }
   }),
 
   close: cmd(function() {
     get(this, 'esmBus').publish('shouldCloseWindow');
+    this.resolve();
   })
 });
