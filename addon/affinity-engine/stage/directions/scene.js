@@ -28,7 +28,7 @@ export default Direction.extend({
     'all'
   ],
 
-  _setup: cmd(function(sceneId, options) {
+  _setup: cmd(function(sceneId, options = {}) {
     this.configure(assign({
       sceneId,
       windowDirection: this
@@ -36,7 +36,7 @@ export default Direction.extend({
 
     const stageId = get(this, 'stageId');
 
-    if (stageId !== 'main') {
+    if (stageId !== 'main' && !options.window) {
       this.configure('window', stageId);
     }
 
